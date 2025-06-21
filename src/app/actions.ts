@@ -49,7 +49,8 @@ export async function continueConversation({ message, chatHistory }: { message: 
 
       // Case 1: Reply is an object. Try to find a known key.
       if (typeof reply === 'object' && reply !== null) {
-        const messageText = reply.reply || reply.message || reply.text;
+        // Check for 'output' first, then fall back to other common keys.
+        const messageText = reply.output || reply.reply || reply.message || reply.text;
         if (typeof messageText === 'string') {
           return messageText;
         }
