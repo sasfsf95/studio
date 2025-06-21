@@ -17,9 +17,11 @@ interface LeftSidebarProps {
   setCharacterImage: (image: string | null) => void;
   theme: string;
   setTheme: (theme: string) => void;
+  companionName: string;
+  setCompanionName: (name: string) => void;
 }
 
-export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme }: LeftSidebarProps) {
+export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme, companionName, setCompanionName }: LeftSidebarProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleCameraClick = () => {
@@ -81,7 +83,7 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
 
         <div className="text-center">
             <h2 className="text-3xl font-bold flex items-center gap-2">
-                Aria <Sparkles className="h-6 w-6 text-primary" />
+                {companionName} <Sparkles className="h-6 w-6 text-primary" />
             </h2>
             <p className="text-muted-foreground">Your Intimate AI Companion</p>
             <div className="flex items-center justify-center gap-2 mt-2 text-green-400">
@@ -122,7 +124,7 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
                     <div className="px-6 pb-4 space-y-4 text-sm">
                       <div>
                         <Label htmlFor="companion-name" className="text-muted-foreground text-xs font-medium">Name</Label>
-                        <Input id="companion-name" defaultValue="Aria" className="mt-1 bg-black/40 border-white/10 h-9" />
+                        <Input id="companion-name" value={companionName} onChange={(e) => setCompanionName(e.target.value)} className="mt-1 bg-black/40 border-white/10 h-9" />
                       </div>
                       <div>
                         <Label htmlFor="personality" className="text-muted-foreground text-xs font-medium">Personality</Label>

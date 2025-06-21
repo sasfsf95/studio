@@ -22,6 +22,7 @@ interface ChatInterfaceProps {
   isLoadingIcebreakers: boolean;
   isAiResponding: boolean;
   characterImage: string | null;
+  companionName: string;
 }
 
 const icebreakerIcons = [
@@ -32,7 +33,7 @@ const icebreakerIcons = [
     <Gift className="h-4 w-4" />,
 ];
 
-export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingIcebreakers, isAiResponding, characterImage }: ChatInterfaceProps) {
+export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingIcebreakers, isAiResponding, characterImage, companionName }: ChatInterfaceProps) {
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -77,8 +78,8 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
             >
               {msg.sender === 'ai' && (
                 <Avatar className="h-10 w-10 border-2 border-primary/50">
-                  <AvatarImage src={msg.avatar} alt="Raven" data-ai-hint="beautiful dark hair woman" className="object-cover object-top" />
-                  <AvatarFallback>R</AvatarFallback>
+                  <AvatarImage src={msg.avatar} alt={companionName} data-ai-hint="beautiful dark hair woman" className="object-cover object-top" />
+                  <AvatarFallback>{companionName.charAt(0).toUpperCase()}</AvatarFallback>
                 </Avatar>
               )}
               <div className={cn(
@@ -105,8 +106,8 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
           {isAiResponding && (
              <div className="flex items-start gap-4 justify-start animate-message-in">
                <Avatar className="h-10 w-10 border-2 border-primary/50">
-                  <AvatarImage src={characterImage || "https://placehold.co/100x100.png"} alt="Raven" data-ai-hint="beautiful dark hair woman" className="object-cover object-top" />
-                  <AvatarFallback>R</AvatarFallback>
+                  <AvatarImage src={characterImage || "https://placehold.co/100x100.png"} alt={companionName} data-ai-hint="beautiful dark hair woman" className="object-cover object-top" />
+                  <AvatarFallback>{companionName.charAt(0).toUpperCase()}</AvatarFallback>
                 </Avatar>
                 <div className="max-w-sm p-3 px-4 rounded-2xl rounded-bl-lg bg-card text-card-foreground">
                   <div className="flex items-center justify-center space-x-2 h-6">

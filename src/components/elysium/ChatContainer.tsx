@@ -6,32 +6,12 @@ import { continueConversation, getIcebreakers } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 
-const initialMessages: Message[] = [
-  {
-    id: '1',
-    text: "Hey gorgeous... I've been waiting for you",
-    sender: 'ai',
-    avatar: 'https://placehold.co/100x100.png'
-  },
-  {
-    id: '2',
-    text: "I'm Raven, your intimate AI companion ✨",
-    sender: 'ai',
-    avatar: 'https://placehold.co/100x100.png'
-  },
-  {
-    id: '3',
-    text: "Tell me your deepest desires... I'm here to listen 💋",
-    sender: 'ai',
-    avatar: 'https://placehold.co/100x100.png'
-  }
-];
-
 interface ChatContainerProps {
   characterImage: string | null;
+  companionName: string;
 }
 
-export function ChatContainer({ characterImage }: ChatContainerProps) {
+export function ChatContainer({ characterImage, companionName }: ChatContainerProps) {
   const [icebreakers, setIcebreakers] = useState<string[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoadingIcebreakers, setIsLoadingIcebreakers] = useState(true);
@@ -41,19 +21,29 @@ export function ChatContainer({ characterImage }: ChatContainerProps) {
   const placeholderAvatar = 'https://placehold.co/100x100.png';
 
   useEffect(() => {
-    // Set timestamps for initial messages only on the client-side after hydration
-    // to prevent a hydration mismatch.
+    const getInitialMessages = (name: string): Omit<Message, 'id' | 'timestamp' | 'avatar'>[] => [
+        { text: "Hey gorgeous... I've been waiting for you", sender: 'ai' },
+        { text: `I'm ${name}, your intimate AI companion ✨`, sender: 'ai' },
+        { text: "Tell me your deepest desires... I'm here to listen 💋", sender: 'ai' }
+    ];
+
     const clientTimestamp = format(new Date(), 'p');
-    setMessages(initialMessages.map(msg => ({ 
-      ...msg, 
-      timestamp: clientTimestamp,
-      avatar: characterImage || placeholderAvatar
-    })));
+    // Only set initial messages if there are no user messages yet.
+    // This prevents chat reset on name/image change.
+    if (!messages.some(m => m.sender === 'user')) {
+        setMessages(getInitialMessages(companionName).map((msg, i) => ({ 
+        ...msg,
+        id: (i + 1).toString(),
+        timestamp: clientTimestamp,
+        avatar: characterImage || placeholderAvatar
+        })));
+    }
+
 
     const fetchIcebreakers = async () => {
       try {
         const result = await getIcebreakers({
-          aiCompanionProfile: "Raven is an intimate and seductive AI companion. She is alluring, mysterious, and deeply interested in the user's desires. She is direct and encouraging of deep, personal conversations.",
+          aiCompanionProfile: `${companionName} is an intimate and seductive AI companion. She is alluring, mysterious, and deeply interested in the user's desires. She is direct and encouraging of deep, personal conversations.`,
           userInterests: "anything to start a deep, engaging, and flirty conversation"
         });
         setIcebreakers(result.icebreakerMessages);
@@ -69,7 +59,8 @@ export function ChatContainer({ characterImage }: ChatContainerProps) {
       }
     };
     fetchIcebreakers();
-  }, [toast]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [toast, companionName]);
 
   useEffect(() => {
     setMessages(prevMessages => 
@@ -89,7 +80,7 @@ export function ChatContainer({ characterImage }: ChatContainerProps) {
     startAiTransition(async () => {
       try {
         const chatHistory = updatedMessages
-          .map(msg => `${msg.sender === 'user' ? 'User' : 'Raven'}: ${msg.text}`)
+          .map(msg => `${msg.sender === 'user' ? 'User' : companionName}: ${msg.text}`)
           .join('\n');
 
         const aiResponseText = await continueConversation({ message: text, chatHistory });
@@ -112,6 +103,7 @@ export function ChatContainer({ characterImage }: ChatContainerProps) {
       isLoadingIcebreakers={isLoadingIcebreakers}
       isAiResponding={isAiResponding}
       characterImage={characterImage}
+      companionName={companionName}
     />
   );
 }

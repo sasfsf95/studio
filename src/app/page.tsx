@@ -7,6 +7,7 @@ import { LeftSidebar } from '@/components/elysium/LeftSidebar';
 export default function Home() {
   const [characterImage, setCharacterImage] = useState<string | null>(null);
   const [theme, setTheme] = useState('romantic-pink');
+  const [companionName, setCompanionName] = useState('Aria');
 
   useEffect(() => {
     const root = document.documentElement;
@@ -29,9 +30,11 @@ export default function Home() {
         setCharacterImage={setCharacterImage} 
         theme={theme}
         setTheme={setTheme}
+        companionName={companionName}
+        setCompanionName={setCompanionName}
       />
       <main className="flex-1 flex flex-col">
-        <ChatContainer characterImage={characterImage} />
+        <ChatContainer characterImage={characterImage} companionName={companionName} />
       </main>
     </div>
   );
