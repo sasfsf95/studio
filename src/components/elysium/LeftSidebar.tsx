@@ -60,7 +60,7 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
               alt="Raven AI Companion"
               data-ai-hint="beautiful woman"
               fill
-              className="object-cover"
+              className="object-cover object-top"
               priority
             />
             <div className="absolute top-3 left-3">

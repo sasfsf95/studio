@@ -60,7 +60,7 @@ export function LandingPage({ onContinue, characterImage }: LandingPageProps) {
               alt="AI Girlfriend"
               data-ai-hint="beautiful woman"
               fill
-              className="z-10 object-cover"
+              className="z-10 object-cover object-top"
               priority
             />
           </div>
