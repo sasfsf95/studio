@@ -4,47 +4,47 @@
 
 @layer base {
   :root {
-    --background: 285 15% 9%;
+    --background: 290 20% 8%;
     --foreground: 300 10% 90%;
-    --card: 285 15% 12%;
+    --card: 290 15% 12%;
     --card-foreground: 300 10% 90%;
-    --popover: 285 15% 9%;
+    --popover: 290 15% 8%;
     --popover-foreground: 300 10% 90%;
     --primary: 320 90% 65%;
     --primary-foreground: 320 10% 100%;
-    --secondary: 285 15% 20%;
+    --secondary: 290 15% 20%;
     --secondary-foreground: 300 10% 90%;
-    --muted: 285 15% 20%;
+    --muted: 290 15% 20%;
     --muted-foreground: 300 10% 60%;
     --accent: 320 90% 65%;
     --accent-foreground: 320 10% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 285 15% 20%;
-    --input: 285 15% 24%;
+    --border: 290 15% 25%;
+    --input: 290 15% 15%;
     --ring: 320 90% 70%;
     --radius: 0.8rem;
   }
 
   .dark {
-    --background: 285 15% 9%;
+    --background: 290 20% 8%;
     --foreground: 300 10% 90%;
-    --card: 285 15% 12%;
+    --card: 290 15% 12%;
     --card-foreground: 300 10% 90%;
-    --popover: 285 15% 9%;
+    --popover: 290 15% 8%;
     --popover-foreground: 300 10% 90%;
     --primary: 320 90% 65%;
     --primary-foreground: 320 10% 100%;
-    --secondary: 285 15% 20%;
+    --secondary: 290 15% 20%;
     --secondary-foreground: 300 10% 90%;
-    --muted: 285 15% 20%;
+    --muted: 290 15% 20%;
     --muted-foreground: 300 10% 60%;
     --accent: 320 90% 65%;
     --accent-foreground: 320 10% 100%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 285 15% 20%;
-    --input: 285 15% 24%;
+    --border: 290 15% 25%;
+    --input: 290 15% 15%;
     --ring: 320 90% 70%;
   }
 }
@@ -55,5 +55,8 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-color: hsl(var(--background));
+    background-image: radial-gradient(ellipse at top, hsl(320 50% 15% / 0.2), transparent 70%), 
+                      radial-gradient(ellipse at bottom, hsl(320 50% 15% / 0.2), transparent 70%);
   }
 }

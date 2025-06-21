@@ -3,14 +3,16 @@ import React, { useState, useRef, useEffect } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Send, Sparkles, Loader2, Mic, Drama, Flame } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
+import { Send, Mic, Heart, Sparkles, Sun, Camera, Gift, Drama, Flame, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Textarea } from '../ui/textarea';
 
 export interface Message {
   id: string;
   text: string;
   sender: 'user' | 'ai';
+  timestamp?: string;
+  avatar?: string;
 }
 
 interface ChatInterfaceProps {
@@ -21,13 +23,29 @@ interface ChatInterfaceProps {
   isAiResponding: boolean;
 }
 
+const icebreakerIcons = [
+    <Heart className="h-4 w-4" />,
+    <Sparkles className="h-4 w-4" />,
+    <Sun className="h-4 w-4" />,
+    <Camera className="h-4 w-4" />,
+    <Gift className="h-4 w-4" />,
+];
+
 export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingIcebreakers, isAiResponding }: ChatInterfaceProps) {
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [inputValue]);
 
   const handleSend = () => {
     if (inputValue.trim() && !isAiResponding) {
@@ -43,19 +61,22 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
   };
 
   return (
-    <div className="flex flex-col h-full p-2 sm:p-4 space-y-2">
+    <div className="flex flex-col h-full p-4 space-y-4">
       <ScrollArea className="flex-1 pr-4 -mr-4">
         <div className="space-y-6 p-4">
           {messages.map((msg) => (
             <div key={msg.id} className={cn("flex items-end gap-3", msg.sender === 'user' ? 'justify-end' : 'justify-start')}>
               {msg.sender === 'ai' && (
                 <Avatar className="h-9 w-9">
-                  <AvatarImage src="https://placehold.co/100x100.png" alt="Raven" data-ai-hint="beautiful dark hair woman" />
+                  <AvatarImage src={msg.avatar} alt="Raven" data-ai-hint="beautiful dark hair woman" />
                   <AvatarFallback>R</AvatarFallback>
                 </Avatar>
               )}
-              <div className={cn('max-w-sm md:max-w-md lg:max-w-lg p-3 px-4 rounded-2xl text-base leading-relaxed backdrop-blur-sm shadow-lg border border-white/5', msg.sender === 'user' ? 'bg-secondary/80 text-secondary-foreground rounded-br-none' : 'bg-card/80 text-card-foreground rounded-bl-none')}>
-                <p>{msg.text}</p>
+              <div className="flex flex-col gap-1.5 items-start">
+                  <div className={cn('max-w-md p-3 px-4 rounded-2xl text-base leading-relaxed', msg.sender === 'user' ? 'bg-primary text-primary-foreground rounded-br-none' : 'bg-black/50 text-card-foreground rounded-bl-none')}>
+                    <p>{msg.text}</p>
+                  </div>
+                  {msg.timestamp && <p className="text-xs text-muted-foreground">{msg.timestamp}</p>}
               </div>
             </div>
           ))}
@@ -65,7 +86,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
                   <AvatarImage src="https://placehold.co/100x100.png" alt="Raven" data-ai-hint="beautiful dark hair woman" />
                   <AvatarFallback>R</AvatarFallback>
                 </Avatar>
-                <div className="max-w-sm md:max-w-md lg:max-w-lg p-3 px-4 rounded-2xl bg-card/80 text-card-foreground rounded-bl-none shadow-lg border border-white/5">
+                <div className="max-w-sm md:max-w-md lg:max-w-lg p-3 px-4 rounded-2xl bg-black/50 text-card-foreground rounded-bl-none">
                   <div className="flex items-center space-x-2">
                     <span className="h-2 w-2 bg-muted-foreground rounded-full animate-pulse [animation-delay:-0.3s]"></span>
                     <span className="h-2 w-2 bg-muted-foreground rounded-full animate-pulse [animation-delay:-0.15s]"></span>
@@ -78,58 +99,53 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
         </div>
       </ScrollArea>
       
-      {!isAiResponding && (
-        <div className="space-y-3 px-1">
-          {isLoadingIcebreakers && (
-             <div className="flex items-center justify-center text-sm text-muted-foreground p-2">
-               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-               Thinking of some fun ways to start...
-             </div>
-          )}
-          {!isLoadingIcebreakers && icebreakers.length > 0 && messages.length < 2 && (
-            <div className="flex flex-wrap gap-2 items-center justify-center">
-               <Sparkles className="h-5 w-5 text-primary/80 flex-shrink-0" />
-               {icebreakers.slice(0, 3).map((ice, index) => (
-                  <Button key={index} variant="secondary" size="sm" className="rounded-full bg-secondary/80 backdrop-blur-sm" onClick={() => handleIcebreakerClick(ice)}>
-                     {ice}
-                  </Button>
-               ))}
+      <div className="space-y-4">
+        {isLoadingIcebreakers ? (
+            <div className="flex items-center justify-center p-2"><Loader2 className="h-5 w-5 animate-spin text-muted-foreground" /></div>
+        ) : (
+            <div className="flex flex-wrap gap-2 items-center justify-start">
+                {icebreakers.slice(0, 5).map((ice, index) => (
+                    <Button key={index} variant="outline" size="sm" className="rounded-full bg-black/30 border-white/10 text-muted-foreground hover:bg-black/50 hover:text-foreground" onClick={() => handleIcebreakerClick(ice)}>
+                        {icebreakerIcons[index % icebreakerIcons.length]} {ice}
+                    </Button>
+                ))}
             </div>
-          )}
-        </div>
-      )}
+        )}
 
-      {!isAiResponding && messages.length > 1 && (
-        <div className="px-1 py-2 flex justify-center items-center gap-2 flex-wrap">
-            <Button variant="outline" size="sm" className="rounded-full border-primary/30 hover:bg-primary/10 hover:border-primary/70 text-primary/80 hover:text-primary transition-colors">
+        <div className="flex justify-start items-center gap-2 flex-wrap">
+            <Button variant="outline" size="sm" className="rounded-full bg-black/30 border-white/10 text-muted-foreground hover:bg-black/50 hover:text-foreground">
+                <Gift className="mr-2 h-4 w-4" /> Send Gift
+            </Button>
+            <Button variant="outline" size="sm" className="rounded-full bg-black/30 border-white/10 text-muted-foreground hover:bg-black/50 hover:text-foreground">
                 <Drama className="mr-2 h-4 w-4" /> Role Play
             </Button>
             <Button variant="default" size="sm" className="rounded-full bg-gradient-to-r from-primary to-fuchsia-600 text-primary-foreground shadow-lg shadow-primary/20 hover:opacity-90 transition-opacity">
                 <Flame className="mr-2 h-4 w-4" /> Get Intimate
             </Button>
         </div>
-      )}
       
-      <div className="flex items-center gap-2 border rounded-full p-1.5 bg-input/80 backdrop-blur-sm border-white/10 mt-auto">
-        <Textarea
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              e.preventDefault();
-              handleSend();
-            }
-          }}
-          placeholder="Tell me your desires..."
-          className="flex-1 bg-transparent border-0 resize-none focus-visible:ring-0 focus-visible:ring-offset-0 p-2"
-          rows={1}
-        />
-        <Button size="icon" variant="ghost" disabled={isAiResponding} className="flex-shrink-0">
-            <Mic className="h-5 w-5 text-muted-foreground" />
-        </Button>
-        <Button size="icon" onClick={handleSend} disabled={!inputValue.trim() || isAiResponding} className="bg-primary hover:bg-primary/90 flex-shrink-0 rounded-full">
-          <Send className="h-5 w-5 text-primary-foreground" />
-        </Button>
+        <div className="flex items-end gap-2 border rounded-xl p-2 bg-black/40 border-white/10">
+          <Textarea
+            ref={textareaRef}
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSend();
+              }
+            }}
+            placeholder="Tell me your desires..."
+            className="flex-1 bg-transparent border-0 resize-none focus-visible:ring-0 focus-visible:ring-offset-0 p-2 max-h-32"
+            rows={1}
+          />
+          <Button size="icon" variant="ghost" disabled={isAiResponding} className="flex-shrink-0 h-10 w-10 rounded-full bg-primary hover:bg-primary/90">
+              <Mic className="h-5 w-5 text-primary-foreground" />
+          </Button>
+          <Button size="icon" onClick={handleSend} disabled={!inputValue.trim() || isAiResponding} className="bg-input hover:bg-input/80 flex-shrink-0 h-10 w-10 rounded-lg">
+            <Send className="h-5 w-5" />
+          </Button>
+        </div>
       </div>
     </div>
   );

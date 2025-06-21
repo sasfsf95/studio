@@ -30,17 +30,25 @@ const prompt = ai.definePrompt({
   name: 'generateIcebreakerMessagesPrompt',
   input: {schema: GenerateIcebreakerMessagesInputSchema},
   output: {schema: GenerateIcebreakerMessagesOutputSchema},
-  prompt: `You are an expert at creating engaging icebreaker messages.
+  prompt: `You are an expert at creating engaging, flirty, and slightly provocative icebreaker messages.
 
   Based on the AI companion's profile and the user's interests, generate a list of 5 distinct icebreaker messages that the user can use to start a conversation.
+  The messages should be short, like a button label.
 
   AI Companion Profile: {{{aiCompanionProfile}}}
   User Interest: {{{userInterests}}}
 
+  Example Icebreakers:
+  - I miss you
+  - Tell me something sexy
+  - Good morning beautiful
+  - Send me a selfie
+  - I have a surprise for you
+
   Consider the AI companion's personality and interests to create messages that feel natural and relevant.
   The icebreaker messages should not be boring and should encourage an engaging, interesting conversation.
 
-  Output the icebreaker messages in array of strings.
+  Output the icebreaker messages in an array of strings.
   Ensure that the response is a valid JSON.
   `,
 });
@@ -56,4 +64,3 @@ const generateIcebreakerMessagesFlow = ai.defineFlow(
     return output!;
   }
 );
-
