@@ -84,10 +84,10 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
                 msg.sender === 'user' ? 'items-end' : 'items-start'
               )}>
                   <div className={cn(
-                    'max-w-md p-3 px-4 rounded-2xl text-base leading-relaxed', 
-                    msg.sender === 'user' 
-                      ? 'bg-gradient-to-br from-primary to-fuchsia-600 text-primary-foreground rounded-br-lg' 
-                      : 'bg-card text-card-foreground rounded-bl-lg shadow-xl shadow-primary/20'
+                    'max-w-md p-3 px-4 rounded-2xl text-base leading-relaxed transition-all duration-300 ease-out hover:scale-[1.02] cursor-pointer',
+                    msg.sender === 'user'
+                      ? 'bg-gradient-to-br from-primary to-fuchsia-600 text-primary-foreground rounded-br-lg shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30'
+                      : 'bg-card text-card-foreground rounded-bl-lg shadow-xl shadow-primary/20 hover:shadow-2xl hover:shadow-primary/30'
                   )}>
                     <p>{msg.text}</p>
                   </div>
