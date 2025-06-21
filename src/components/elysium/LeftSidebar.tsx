@@ -7,7 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Crown, Sparkles, MessageSquare, Heart, Camera, Flame, WandSparkles } from 'lucide-react';
+import { Crown, Sparkles, MessageSquare, Heart, Camera, Flame, WandSparkles, Users } from 'lucide-react';
 import { useRef, type ChangeEvent } from 'react';
 import { cn } from '@/lib/utils';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -124,34 +124,29 @@ export function LeftSidebar({ characterImage, setCharacterImage }: LeftSidebarPr
                       </div>
                       <div>
                         <Label htmlFor="personality" className="text-muted-foreground text-xs font-medium">Personality</Label>
-                        <Select defaultValue="romantic-pink">
+                        <Select defaultValue="seductive-lover">
                           <SelectTrigger id="personality" className="mt-1 bg-black/40 border-white/10 h-9">
                             <SelectValue placeholder="Select a personality" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="romantic-pink">
+                            <SelectItem value="seductive-lover">
                               <div className="flex items-center gap-2">
-                                <Heart className="h-4 w-4" style={{ color: '#f472b6' }}/> Romantic Pink
+                                <Flame className="h-4 w-4" style={{ color: '#ef4444' }}/> Seductive Lover
                               </div>
                             </SelectItem>
-                            <SelectItem value="seductive-red">
+                            <SelectItem value="intimate-friend">
                               <div className="flex items-center gap-2">
-                                <Flame className="h-4 w-4" style={{ color: '#ef4444' }}/> Seductive Red
+                                <Heart className="h-4 w-4" style={{ color: '#f472b6' }}/> Intimate Friend
                               </div>
                             </SelectItem>
-                            <SelectItem value="dreamy-purple">
+                            <SelectItem value="best-friend">
                               <div className="flex items-center gap-2">
-                                <Heart className="h-4 w-4" style={{ color: '#a855f7' }}/> Dreamy Purple
+                                <Users className="h-4 w-4" style={{ color: '#3b82f6' }}/> Best Friend
                               </div>
                             </SelectItem>
-                            <SelectItem value="elegant-dark">
+                            <SelectItem value="mysterious-confidante">
                               <div className="flex items-center gap-2">
-                                <Heart className="h-4 w-4" style={{ color: '#9ca3af' }}/> Elegant Dark
-                              </div>
-                            </SelectItem>
-                            <SelectItem value="fantasy-gold">
-                              <div className="flex items-center gap-2">
-                                <Sparkles className="h-4 w-4" style={{ color: '#eab308' }}/> Fantasy Gold
+                                <WandSparkles className="h-4 w-4" style={{ color: '#a855f7' }}/> Mysterious Confidante
                               </div>
                             </SelectItem>
                           </SelectContent>
