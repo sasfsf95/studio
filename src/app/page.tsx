@@ -6,7 +6,7 @@ import { LeftSidebar } from '@/components/elysium/LeftSidebar';
 import { LandingPage } from '@/components/elysium/LandingPage';
 
 export default function Home() {
-  const [characterImage, setCharacterImage] = useState<string | null>("https://firebasestudio.ai/gallery/Elysium/2.png");
+  const [characterImage, setCharacterImage] = useState<string | null>("https://firebasestudio.ai/gallery/Elysium/3.png");
   const [theme, setTheme] = useState('romantic-pink');
   const [companionName, setCompanionName] = useState('Aria');
   const [showChat, setShowChat] = useState(false);
@@ -21,7 +21,19 @@ export default function Home() {
     });
     // Add the new theme class
     if (theme) {
+      document.body.classList.add(`theme-${theme}`);
+    }
+    
+    // Fallback for the root element if body doesn't work for all cases
+    if (theme) {
       root.classList.add(`theme-${theme}`);
+    }
+
+    return () => {
+      if (theme) {
+        document.body.classList.remove(`theme-${theme}`);
+        root.classList.remove(`theme-${theme}`);
+      }
     }
   }, [theme]);
 
