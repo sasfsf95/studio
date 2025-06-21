@@ -53,14 +53,14 @@ export function LandingPage({ onContinue, characterImage }: LandingPageProps) {
       
       <main className="z-10 flex flex-col items-center justify-center text-center flex-grow pt-20 pb-10">
         <div className="relative mb-6 animate-float">
-          <div className="relative w-[280px] h-[420px] md:w-[300px] md:h-[450px]">
+          <div className="relative w-[280px] h-[420px] md:w-[300px] md:h-[450px] rounded-2xl overflow-hidden">
              <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-primary/20 via-primary/10 to-transparent rounded-full blur-3xl"></div>
             <Image
               src={characterImage || "https://firebasestudio.ai/gallery/Elysium/4.png"}
               alt="AI Girlfriend"
               data-ai-hint="beautiful woman"
               fill
-              className="z-10 object-contain"
+              className="z-10 object-cover"
               priority
             />
           </div>
