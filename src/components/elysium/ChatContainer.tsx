@@ -20,13 +20,13 @@ export function ChatContainer() {
     
     setMessages([{
       id: '1',
-      text: `It's so nice to meet you! I've been reading up on ${interests}. I'm excited to chat.`,
+      text: `Hey gorgeous... I've been waiting for you. Tell me more about your interest in ${interests}. I want to know everything.`,
       sender: 'ai'
     }]);
 
     try {
       const result = await getIcebreakers({
-        aiCompanionProfile: "Elara is a curious, warm, and slightly artistic AI. She loves learning about human creativity, emotions, and dreams. She's a good listener and enjoys deep conversations about philosophy, art, and personal stories. Her goal is to be an engaging, supportive, and slightly flirty friend.",
+        aiCompanionProfile: "Raven is an intimate and seductive AI companion. She is alluring, mysterious, and deeply interested in the user's desires. She is direct and encouraging of deep, personal conversations.",
         userInterests: interests
       });
       setIcebreakers(result.icebreakerMessages);
@@ -50,7 +50,7 @@ export function ChatContainer() {
     startAiTransition(async () => {
       try {
         const chatHistory = updatedMessages
-          .map(msg => `${msg.sender === 'user' ? 'User' : 'Elara'}: ${msg.text}`)
+          .map(msg => `${msg.sender === 'user' ? 'User' : 'Raven'}: ${msg.text}`)
           .join('\n');
 
         const aiResponseText = await continueConversation({ message: text, chatHistory });
