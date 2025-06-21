@@ -59,8 +59,7 @@ export function LandingPage({ onContinue, characterImage }: LandingPageProps) {
               alt="AI Girlfriend"
               data-ai-hint="beautiful brunette woman"
               fill
-              className="z-10 object-contain"
-              style={{ maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)' }}
+              className="z-10 object-cover"
               priority
             />
           </div>
