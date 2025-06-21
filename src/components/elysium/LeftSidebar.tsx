@@ -7,7 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Crown, Sparkles, MessageSquare, Heart, Camera, Flame } from 'lucide-react';
+import { Crown, Sparkles, MessageSquare, Heart, Camera, Flame, SlidersHorizontal } from 'lucide-react';
 import { useRef, type ChangeEvent } from 'react';
 import { cn } from '@/lib/utils';
 
@@ -175,6 +175,11 @@ export function LeftSidebar({ characterImage, setCharacterImage }: LeftSidebarPr
                   <p className="font-semibold">45%</p>
               </div>
               <Progress value={45} className="h-2 bg-secondary" />
+               <div className="flex justify-between items-center">
+                  <p className="flex items-center gap-2 text-muted-foreground"><SlidersHorizontal className="h-4 w-4" /> Customization</p>
+                  <p className="font-semibold">75%</p>
+              </div>
+              <Progress value={75} className="h-2 bg-secondary" />
             </div>
         </CardContent>
       </Card>
