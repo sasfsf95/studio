@@ -61,6 +61,8 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
     }
   };
 
+  const conversationStarted = messages.some((msg) => msg.sender === 'user');
+
   return (
     <div className="flex flex-col h-full p-4 space-y-4">
       <ScrollArea className="flex-1 pr-4 -mr-4">
@@ -120,16 +122,18 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
       </ScrollArea>
       
       <div className="space-y-4">
-        {isLoadingIcebreakers ? (
-            <div className="flex items-center justify-center p-2"><Loader2 className="h-5 w-5 animate-spin text-muted-foreground" /></div>
-        ) : (
-            <div className="flex flex-wrap gap-2 items-center justify-start">
-                {icebreakers.slice(0, 5).map((ice, index) => (
-                    <Button key={index} variant="outline" size="sm" className="rounded-full bg-black/30 border-white/10 text-muted-foreground hover:bg-black/50 hover:text-foreground" onClick={() => handleIcebreakerClick(ice)}>
-                        {icebreakerIcons[index % icebreakerIcons.length]} {ice}
-                    </Button>
-                ))}
-            </div>
+        {!conversationStarted && (
+          isLoadingIcebreakers ? (
+              <div className="flex items-center justify-center p-2"><Loader2 className="h-5 w-5 animate-spin text-muted-foreground" /></div>
+          ) : (
+              <div className="flex flex-wrap gap-2 items-center justify-start">
+                  {icebreakers.slice(0, 5).map((ice, index) => (
+                      <Button key={index} variant="outline" size="sm" className="rounded-full bg-black/30 border-white/10 text-muted-foreground hover:bg-black/50 hover:text-foreground" onClick={() => handleIcebreakerClick(ice)}>
+                          {icebreakerIcons[index % icebreakerIcons.length]} {ice}
+                      </Button>
+                  ))}
+              </div>
+          )
         )}
 
         <div className="flex justify-start items-center gap-2 flex-wrap">
