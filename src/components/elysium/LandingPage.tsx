@@ -54,9 +54,9 @@ export function LandingPage({ onContinue }: LandingPageProps) {
           <div className="relative w-[280px] h-[420px] md:w-[300px] md:h-[450px]">
              <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-primary/20 via-primary/10 to-transparent rounded-full blur-3xl"></div>
             <Image
-              src="https://placehold.co/400x600.png"
+              src="https://firebasestudio.ai/gallery/Elysium/1.png"
               alt="AI Girlfriend"
-              data-ai-hint="beautiful woman portrait"
+              data-ai-hint="beautiful dark hair woman"
               width={400}
               height={600}
               className="relative z-10 object-contain"
