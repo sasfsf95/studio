@@ -11,7 +11,7 @@ export async function getIcebreakers(input: GenerateIcebreakerMessagesInput) {
 }
 
 export async function continueConversation({ message, chatHistory }: { message: string, chatHistory: string }): Promise<string> {
-  const webhookUrl = 'https://sasa2.app.n8n.cloud/webhook-test/yukiai';
+  const webhookUrl = 'https://sasa2.app.n8n.cloud/webhook/yukiai';
 
   try {
     const response = await fetch(webhookUrl, {
