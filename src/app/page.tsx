@@ -7,7 +7,7 @@ import { LeftSidebar } from '@/components/elysium/LeftSidebar';
 import { LandingPage } from '@/components/elysium/LandingPage';
 
 export default function Home() {
-  const [characterImage, setCharacterImage] = useState<string | null>("https://firebasestudio.ai/gallery/Elysium/3.png");
+  const [characterImage, setCharacterImage] = useState<string | null>("https://firebasestudio.ai/gallery/Elysium/4.png");
   const [theme, setTheme] = useState('romantic-pink');
   const [companionName, setCompanionName] = useState('Aria');
   const [showChat, setShowChat] = useState(false);

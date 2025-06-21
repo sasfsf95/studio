@@ -56,11 +56,11 @@ export function LandingPage({ onContinue, characterImage }: LandingPageProps) {
           <div className="relative w-[280px] h-[420px] md:w-[300px] md:h-[450px]">
              <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-primary/20 via-primary/10 to-transparent rounded-full blur-3xl"></div>
             <Image
-              src={characterImage || "https://firebasestudio.ai/gallery/Elysium/3.png"}
+              src={characterImage || "https://firebasestudio.ai/gallery/Elysium/4.png"}
               alt="AI Girlfriend"
               data-ai-hint="beautiful woman"
               fill
-              className="z-10 object-cover"
+              className="z-10 object-contain"
               priority
             />
           </div>
