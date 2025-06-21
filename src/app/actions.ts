@@ -19,50 +19,52 @@ export async function continueConversation({ message, chatHistory }: { message: 
       headers: {
         'Content-Type': 'application/json',
       },
-      // Sending a structured payload that the webhook can easily parse.
       body: JSON.stringify({ message, chatHistory }),
     });
 
     if (!response.ok) {
       const errorBody = await response.text();
-      console.error("Webhook error:", response.status, errorBody);
-      return `Sorry, I had a problem communicating. The server said: ${response.statusText}`;
+      console.error("Webhook returned an error:", { status: response.status, body: errorBody });
+      return `Sorry, I'm having trouble connecting. The server said: ${response.statusText}`;
     }
-    
-    const data = await response.json();
 
-    // n8n can wrap responses in various ways. Let's try to find the actual reply.
-    let reply: string | undefined = '';
+    const responseText = await response.text();
     
-    // Helper function to extract reply from a potential data object
-    const extractReply = (d: any): string | undefined => {
-        if (typeof d !== 'object' || d === null) return undefined;
-        return d.reply || d.text || d.message;
-    };
-
-    // Case 1: Response is a string directly
-    if (typeof data === 'string') {
-        reply = data;
-    } 
-    // Case 2: Response is an object, possibly nested (e.g., { "json": { "reply": "..." } })
-    else if (typeof data === 'object' && data !== null && !Array.isArray(data)) {
-        reply = extractReply(data) || extractReply(data.json) || extractReply(data.body);
+    if (!responseText.trim()) {
+        console.error("Webhook returned an empty response.");
+        return "I'm at a loss for words... the connection seems to have dropped.";
     }
-    // Case 3: Response is an array of objects
-    else if (Array.isArray(data) && data.length > 0) {
+
+    try {
+      const data = JSON.parse(responseText);
+      let reply: any;
+
+      if (Array.isArray(data) && data.length > 0) {
         const firstItem = data[0];
-        reply = extractReply(firstItem) || extractReply(firstItem.json) || extractReply(firstItem.body);
-    }
-    
-    if (reply && typeof reply === 'string') {
-      return reply;
-    }
+        reply = firstItem.json || firstItem;
+      } else {
+        reply = data;
+      }
 
-    console.error("Unexpected webhook response format:", JSON.stringify(data, null, 2));
-    return "I received a response I didn't understand. Let's talk about something else?";
+      if (typeof reply === 'object' && reply !== null) {
+        const messageText = reply.reply || reply.message || reply.text;
+        if (typeof messageText === 'string') {
+          return messageText;
+        }
+      } else if (typeof reply === 'string') {
+        return reply;
+      }
+      
+      console.error("Could not find a valid reply in webhook JSON response:", responseText);
+      return "I received a response I didn't understand. Can we try something else?";
+
+    } catch (error) {
+      // If JSON.parse fails, assume it's a plain text response.
+      return responseText;
+    }
 
   } catch (error) {
-    console.error("Failed to call or parse webhook response:", error);
+    console.error("Failed to call webhook:", error);
     return "My circuits are a bit fuzzy right now, could you say that again?";
   }
 }
