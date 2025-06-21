@@ -4,8 +4,9 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Crown, Sparkles, MessageSquare, Heart, Camera } from 'lucide-react';
-import { useRef, type ChangeEvent } from 'react';
+import { Crown, Sparkles, MessageSquare, Heart, Camera, Palette } from 'lucide-react';
+import { useRef, useState, type ChangeEvent } from 'react';
+import { cn } from '@/lib/utils';
 
 interface LeftSidebarProps {
   characterImage: string | null;
@@ -14,6 +15,8 @@ interface LeftSidebarProps {
 
 export function LeftSidebar({ characterImage, setCharacterImage }: LeftSidebarProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [activeTheme, setActiveTheme] = useState('default');
+
 
   const handleCameraClick = () => {
     fileInputRef.current?.click();
@@ -29,6 +32,13 @@ export function LeftSidebar({ characterImage, setCharacterImage }: LeftSidebarPr
       reader.readAsDataURL(file);
     }
   };
+  
+  const themes = [
+    { name: 'default', color: 'bg-primary' },
+    { name: 'sunset', color: 'bg-gradient-to-br from-orange-400 to-rose-500' },
+    { name: 'forest', color: 'bg-gradient-to-br from-green-400 to-teal-600' },
+    { name: 'ocean', color: 'bg-gradient-to-br from-blue-400 to-indigo-600' }
+  ];
 
   return (
     <aside className="w-[360px] bg-black/30 p-4 flex flex-col space-y-6 border-r border-white/5">
@@ -91,16 +101,40 @@ export function LeftSidebar({ characterImage, setCharacterImage }: LeftSidebarPr
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2"><Heart className="h-5 w-5 text-primary/80"/> Relationship Stats</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4 text-sm">
-            <div className="flex justify-between items-center">
-                <p className="flex items-center gap-2 text-muted-foreground"><MessageSquare className="h-4 w-4" /> Messages</p>
-                <p className="font-semibold">3</p>
+        <CardContent className="text-sm">
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                  <p className="flex items-center gap-2 text-muted-foreground"><MessageSquare className="h-4 w-4" /> Messages</p>
+                  <p className="font-semibold">3</p>
+              </div>
+              <div className="flex justify-between items-center">
+                  <p className="flex items-center gap-2 text-muted-foreground"><Heart className="h-4 w-4" /> Love</p>
+                  <p className="font-semibold">45%</p>
+              </div>
+              <Progress value={45} className="h-2 bg-secondary" />
             </div>
-            <div className="flex justify-between items-center">
-                <p className="flex items-center gap-2 text-muted-foreground"><Heart className="h-4 w-4" /> Love</p>
-                <p className="font-semibold">45%</p>
+
+            <div className="border-t border-border/50 my-4" />
+
+            <div>
+              <p className="flex items-center gap-2 text-muted-foreground mb-3"><Palette className="h-4 w-4" /> Themes</p>
+              <div className="flex items-center gap-3">
+                {themes.map((theme) => (
+                  <button
+                    key={theme.name}
+                    onClick={() => setActiveTheme(theme.name)}
+                    className={cn(
+                      "h-8 w-8 rounded-full transition-all p-0.5",
+                      "focus:outline-none ring-offset-background ring-offset-black/50 ring-offset-2 focus-visible:ring-2",
+                      activeTheme === theme.name ? 'ring-2 ring-primary scale-110' : 'ring-0'
+                    )}
+                    aria-label={`Select ${theme.name} theme`}
+                  >
+                    <div className={cn("h-full w-full rounded-full", theme.color)} />
+                  </button>
+                ))}
+              </div>
             </div>
-            <Progress value={45} className="h-2 bg-secondary" />
         </CardContent>
       </Card>
     </aside>
