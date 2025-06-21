@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 
 interface LandingPageProps {
   onContinue: () => void;
+  characterImage: string | null;
 }
 
 const Star = ({ className }: { className?: string }) => (
@@ -27,7 +28,7 @@ const Star = ({ className }: { className?: string }) => (
 );
 
 
-export function LandingPage({ onContinue }: LandingPageProps) {
+export function LandingPage({ onContinue, characterImage }: LandingPageProps) {
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-[#110E19] text-white flex flex-col items-center justify-center p-4">
       {/* Background glowing lines */}
@@ -54,7 +55,7 @@ export function LandingPage({ onContinue }: LandingPageProps) {
           <div className="relative w-[280px] h-[420px] md:w-[300px] md:h-[450px]">
              <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-primary/20 via-primary/10 to-transparent rounded-full blur-3xl"></div>
             <Image
-              src="https://firebasestudio.ai/gallery/Elysium/2.png"
+              src={characterImage || "https://firebasestudio.ai/gallery/Elysium/2.png"}
               alt="AI Girlfriend"
               data-ai-hint="beautiful brunette woman"
               width={400}

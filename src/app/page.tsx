@@ -30,7 +30,7 @@ export default function Home() {
   };
 
   if (!showChat) {
-    return <LandingPage onContinue={handleContinue} />;
+    return <LandingPage onContinue={handleContinue} characterImage={characterImage} />;
   }
 
   return (
