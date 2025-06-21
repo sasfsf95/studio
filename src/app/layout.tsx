@@ -3,7 +3,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
-  title: 'MyAnima.ai',
+  title: 'myanima.ai',
   description: 'Anima: Virtual AI Girlfriend',
 };
 
@@ -13,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <head>
       </head>
       <body className="antialiased">

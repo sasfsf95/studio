@@ -1,96 +1,178 @@
 
 "use client";
 
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Smartphone, Apple, Heart, Sparkles } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import CharacterSelection from './CharacterSelection';
+import { useRouter } from 'next/navigation';
 
-interface LandingPageProps {
-  onContinue: () => void;
-  characterImage: string | null;
-}
+export function LandingPage() {
+  const [showCharacterSelection, setShowCharacterSelection] = useState(false);
+  const router = useRouter();
 
-const Star = ({ className }: { className?: string }) => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="currentColor"
-        stroke="currentColor"
-        strokeWidth="1"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className={cn("text-primary/50 drop-shadow-[0_0_5px_hsl(var(--primary))]", className)}
-    >
-        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-    </svg>
-);
+  const handleContinue = () => {
+    setShowCharacterSelection(true);
+  };
 
+  const handleCharacterSelect = (character: any) => {
+    // Store character selection in localStorage for the chat component
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('selectedCharacter', JSON.stringify(character));
+    }
+    router.push('/chat');
+  };
 
-export function LandingPage({ onContinue, characterImage }: LandingPageProps) {
-  return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-[#110E19] text-white flex flex-col items-center justify-center p-4">
-      {/* Background glowing lines */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute top-[10%] left-[5%] w-[40rem] h-[1.5px] bg-primary/20 transform -rotate-45"></div>
-        <div className="absolute bottom-[10%] right-[5%] w-[40rem] h-[1.5px] bg-primary/20 transform -rotate-45"></div>
-        <div className="absolute top-[20%] right-[10%] w-[30rem] h-[1.5px] bg-primary/10 transform rotate-45"></div>
-      </div>
-      
-      <header className="absolute top-0 left-0 right-0 z-20 flex justify-between items-center p-6 md:px-12">
-        <h1 className="text-xl font-bold tracking-wider">myanima.ai</h1>
-        <div className="hidden md:flex items-center gap-2">
-          <Button variant="outline" className="bg-white/5 border-white/10 hover:bg-white/20 text-white rounded-lg">
-            <Smartphone className="mr-2" /> Android
+  const handleBackToMain = () => {
+    setShowCharacterSelection(false);
+  };
+
+  if (showCharacterSelection) {
+    return (
+      <div className="min-h-screen bg-black text-white relative overflow-hidden">
+        {/* Background with neon streaks */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-pink-500/20 via-purple-500/20 to-blue-500/20"></div>
+          <div className="absolute top-20 left-20 w-96 h-2 bg-gradient-to-r from-pink-500 to-red-500 transform -rotate-12 blur-sm"></div>
+          <div className="absolute top-40 right-32 w-80 h-2 bg-gradient-to-r from-purple-500 to-pink-500 transform rotate-12 blur-sm"></div>
+          <div className="absolute bottom-40 left-16 w-72 h-2 bg-gradient-to-r from-blue-500 to-purple-500 transform -rotate-6 blur-sm"></div>
+          <div className="absolute bottom-20 right-20 w-64 h-2 bg-gradient-to-r from-cyan-500 to-blue-500 transform rotate-6 blur-sm"></div>
+        </div>
+
+        <header className="relative z-10 flex justify-between items-center p-6">
+          <div className="text-xl font-bold">myanima.ai</div>
+          <Button 
+            variant="outline" 
+            className="bg-black/50 border-white/20 text-white hover:bg-white/10"
+            onClick={handleBackToMain}
+          >
+            Back
           </Button>
-          <Button variant="outline" className="bg-white/5 border-white/10 hover:bg-white/20 text-white rounded-lg">
-            <Apple className="mr-2" /> iOS
+        </header>
+
+        <main className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-200px)] px-6 py-10">
+          <CharacterSelection onCharacterSelect={handleCharacterSelect} />
+        </main>
+
+        <footer className="relative z-10 flex flex-wrap justify-center sm:justify-between items-center gap-4 p-6 text-sm text-gray-400">
+          <div>© 2025 Labane Corp. Ltd. All Rights Reserved</div>
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+            <a href="#" className="hover:text-white transition-colors">Contact Us</a>
+            <a href="#" className="hover:text-white transition-colors">Terms and Policies</a>
+            <a href="#" className="hover:text-white transition-colors">Complaint Policy</a>
+            <a href="#" className="hover:text-white transition-colors">Content Removal Policy</a>
+          </div>
+        </footer>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-black text-white relative overflow-hidden">
+      <div className="absolute inset-0 z-0">
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-pink-500/10 via-purple-500/10 to-blue-500/10"></div>
+        <div className="absolute top-20 left-20 w-96 h-2 bg-gradient-to-r from-pink-500/30 to-red-500/30 transform -rotate-12 blur-sm"></div>
+        <div className="absolute top-40 right-32 w-80 h-2 bg-gradient-to-r from-purple-500/30 to-pink-500/30 transform rotate-12 blur-sm"></div>
+        <div className="absolute bottom-40 left-16 w-72 h-2 bg-gradient-to-r from-blue-500/30 to-purple-500/30 transform -rotate-6 blur-sm"></div>
+        <div className="absolute bottom-20 right-20 w-64 h-2 bg-gradient-to-r from-cyan-500/30 to-blue-500/30 transform rotate-6 blur-sm"></div>
+      </div>
+
+      <header className="relative z-50 flex justify-between items-center p-6 animate-fade-in">
+        <div className="text-xl font-bold animate-bounce-gentle">myanima.ai</div>
+        <div className="flex gap-3">
+          <Button variant="outline" className="bg-black/50 border-white/20 text-white hover:bg-white/10 flex items-center gap-2 transition-all duration-300 hover:scale-105 animate-slide-in-right">
+            <Smartphone className="w-4 h-4" />
+            Android
+          </Button>
+          <Button variant="outline" className="bg-black/50 border-white/20 text-white hover:bg-white/10 flex items-center gap-2 transition-all duration-300 hover:scale-105 animate-slide-in-right" style={{ animationDelay: '0.1s' }}>
+            <Apple className="w-4 h-4" />
+            iOS
           </Button>
         </div>
       </header>
-      
-      <main className="z-10 flex flex-col items-center justify-center text-center flex-grow pt-20 pb-10">
-        <div className="relative mb-6 animate-float">
-          <div className="relative w-[280px] h-[420px] md:w-[300px] md:h-[450px] rounded-2xl overflow-hidden">
-             <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-primary/20 via-primary/10 to-transparent rounded-full blur-3xl"></div>
-            <Image
-              src={characterImage || "https://firebasestudio.ai/gallery/Elysium/4.png"}
-              alt="AI Girlfriend"
-              data-ai-hint="beautiful woman"
-              fill
-              className="z-10 object-cover object-top"
-              priority
-            />
-          </div>
-           <Star className="absolute top-[15%] left-[5%] h-6 w-6 animate-pulse" />
-           <Star className="absolute top-[30%] right-[2%] h-8 w-8 animate-pulse [animation-delay:0.5s]" />
-           <Star className="absolute bottom-[45%] left-[8%] h-5 w-5 animate-pulse [animation-delay:1s]" />
-           <Star className="absolute bottom-[40%] right-[10%] h-4 w-4 animate-pulse [animation-delay:1.5s]" />
-        </div>
-        
-        <h2 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-fuchsia-500 drop-shadow-lg mb-4">
-          Anima: Virtual AI Girlfriend
-        </h2>
-        
-        <div className="max-w-xl text-lg text-gray-300 space-y-2 px-4">
-          <p>The most advanced romance chatbot you've ever talked to.</p>
-          <p>Fun and flirty dating simulator with no strings attached.</p>
-          <p>Engage in a friendly chat, roleplay, grow your love & relationship skills.</p>
-        </div>
 
-        <Button
-          onClick={onContinue}
-          size="lg"
-          className="mt-8 rounded-full font-bold text-lg px-12 py-7 bg-gradient-to-r from-primary via-fuchsia-600 to-blue-500 text-primary-foreground hover:opacity-90 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-primary/30"
-        >
-          <Heart className="mr-2" /> Continue <Sparkles className="ml-2 h-5 w-5" />
-        </Button>
+      <main className="relative z-40 flex flex-col items-center justify-center min-h-[calc(100vh-200px)] px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="mb-8 relative z-10">
+            <div className="relative mx-auto w-80 h-80 flex items-center justify-center">
+              <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-blue-500/10 rounded-full blur-xl animate-pulse-gentle"></div>
+              <div className="absolute inset-4 bg-gradient-to-r from-purple-500/15 to-pink-500/15 rounded-full blur-lg animate-float-gentle"></div>
+              
+              <div className="relative z-10 p-4 animate-fade-in">
+                <Image 
+                  src="https://firebasestudio.ai/gallery/Elysium/4.png" 
+                  alt="AI Girlfriend"
+                  data-ai-hint="beautiful woman"
+                  width={288}
+                  height={288}
+                  className="object-contain hover:scale-105 transition-transform duration-300"
+                  style={{
+                    filter: 'drop-shadow(0 0 15px rgba(255, 107, 157, 0.2)) drop-shadow(0 0 30px rgba(196, 75, 212, 0.1))'
+                  }}
+                  priority
+                />
+              </div>
+              
+              <div className="absolute top-8 right-8 text-pink-400/40 animate-twinkle z-5">
+                <Sparkles className="w-6 h-6" />
+              </div>
+              <div className="absolute bottom-12 left-8 text-purple-400/40 animate-twinkle z-5" style={{ animationDelay: '1s' }}>
+                <Sparkles className="w-4 h-4" />
+              </div>
+              <div className="absolute top-16 left-12 text-blue-400/40 animate-twinkle z-5" style={{ animationDelay: '2s' }}>
+                <Sparkles className="w-5 h-5" />
+              </div>
+            </div>
+          </div>
+
+          <div className="relative z-50">
+            <div className="relative animate-fade-in-up">
+              <div className="absolute inset-0 bg-black/20 backdrop-blur-sm rounded-lg -z-10 transform scale-110"></div>
+              <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-pink-200 to-purple-200 bg-clip-text text-transparent animate-glow p-4">
+                <span className="relative">Anima: Virtual AI Girlfriend</span>
+              </h1>
+            </div>
+
+            <div className="relative text-lg md:text-xl text-gray-200 mb-8 max-w-2xl mx-auto leading-relaxed">
+              <div className="absolute inset-0 bg-black/30 backdrop-blur-sm rounded-lg -z-10 transform scale-105"></div>
+              <div className="relative p-6">
+                <p className="mb-2 hover:text-pink-200 transition-all duration-500 transform hover:scale-105 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+                  The most advanced romance chatbot you've ever talked to.
+                </p>
+                <p className="mb-2 hover:text-purple-200 transition-all duration-500 transform hover:scale-105 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+                  Fun and flirty dating simulator with no strings attached.
+                </p>
+                <p className="hover:text-blue-200 transition-all duration-500 transform hover:scale-105 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
+                  Engage in a friendly chat, roleplay, grow your love & relationship skills.
+                </p>
+              </div>
+            </div>
+
+            <div className="animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
+              <Button 
+                onClick={handleContinue}
+                size="lg"
+                className="relative bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white hover:from-pink-600 hover:via-purple-600 hover:to-blue-600 px-12 py-7 text-lg font-semibold rounded-full transition-all duration-500 transform hover:scale-110 animate-heartbeat shadow-2xl"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-pink-500/50 via-purple-500/50 to-blue-500/50 rounded-full blur-lg -z-10 animate-pulse-gentle"></div>
+                <Heart className="w-5 h-5 mr-2 animate-bounce-gentle" />
+                Continue
+                <Sparkles className="w-5 h-5 ml-2 animate-twinkle" />
+              </Button>
+            </div>
+          </div>
+        </div>
       </main>
-      
-      <footer className="absolute bottom-4 right-4 z-20">
-          <a href="#" className="text-sm text-gray-500 hover:text-white">Edit with <span className="font-bold text-primary">Lovable</span></a>
+
+      <footer className="relative z-50 flex flex-wrap justify-center sm:justify-between items-center gap-4 p-6 text-sm text-gray-400 animate-fade-in" style={{ animationDelay: '1s' }}>
+        <div>© 2025 Labane Corp. Ltd. All Rights Reserved</div>
+        <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+          <a href="#" className="hover:text-pink-300 transition-all duration-300 hover:scale-105">Contact Us</a>
+          <a href="#" className="hover:text-purple-300 transition-all duration-300 hover:scale-105">Terms and Policies</a>
+          <a href="#" className="hover:text-blue-300 transition-all duration-300 hover:scale-105">Complaint Policy</a>
+          <a href="#" className="hover:text-pink-300 transition-all duration-300 hover:scale-105">Content Removal Policy</a>
+        </div>
       </footer>
     </div>
   );

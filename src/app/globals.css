@@ -23,7 +23,6 @@
     --border: 290 15% 25%;
     --input: 290 15% 15%;
     --ring: 320 90% 70%;
-    --radius: 0.8rem;
   }
 
   .dark {
@@ -55,9 +54,6 @@
   }
   body {
     @apply bg-background text-foreground;
-    background-color: hsl(var(--background));
-    background-image: radial-gradient(ellipse at top, hsl(320 50% 15% / 0.2), transparent 70%), 
-                      radial-gradient(ellipse at bottom, hsl(320 50% 15% / 0.2), transparent 70%);
   }
 }
 
