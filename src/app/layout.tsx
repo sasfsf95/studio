@@ -3,8 +3,8 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
-  title: 'Elysium',
-  description: 'Your AI Companion',
+  title: 'MyAnima.ai',
+  description: 'Anima: Virtual AI Girlfriend',
 };
 
 export default function RootLayout({

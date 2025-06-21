@@ -40,7 +40,7 @@ export function LandingPage({ onContinue, characterImage }: LandingPageProps) {
       </div>
       
       <header className="absolute top-0 left-0 right-0 z-20 flex justify-between items-center p-6 md:px-12">
-        <h1 className="text-xl font-bold tracking-wider">Elysium.ai</h1>
+        <h1 className="text-xl font-bold tracking-wider">myanima.ai</h1>
         <div className="hidden md:flex items-center gap-2">
           <Button variant="outline" className="bg-white/5 border-white/10 hover:bg-white/20 text-white rounded-lg">
             <Smartphone className="mr-2" /> Android
