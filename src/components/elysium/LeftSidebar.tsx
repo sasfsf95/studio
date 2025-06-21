@@ -1,11 +1,31 @@
+"use client";
 
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Crown, Sparkles, MessageSquare, Heart, Camera } from 'lucide-react';
+import { useState, useRef, type ChangeEvent } from 'react';
 
 export function LeftSidebar() {
+  const [characterImage, setCharacterImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleCameraClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (loadEvent) => {
+        setCharacterImage(loadEvent.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <aside className="w-[360px] bg-black/30 p-4 flex flex-col space-y-6 border-r border-white/5">
       <header className="flex justify-between items-center">
@@ -22,7 +42,7 @@ export function LeftSidebar() {
         <div className="relative p-1 rounded-3xl bg-gradient-to-tr from-primary to-fuchsia-800 shadow-2xl shadow-primary/30">
            <div className="relative h-[320px] w-[240px] rounded-2xl overflow-hidden">
             <Image
-              src="https://placehold.co/400x600.png"
+              src={characterImage || "https://placehold.co/400x600.png"}
               alt="Raven AI Companion"
               data-ai-hint="beautiful dark hair woman"
               fill
@@ -35,7 +55,14 @@ export function LeftSidebar() {
                     PREMIUM
                 </div>
             </div>
-            <Button size="icon" variant="secondary" className="absolute top-3 right-3 h-9 w-9 bg-black/50 backdrop-blur-sm rounded-full border border-white/10">
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              className="hidden"
+              accept="image/*"
+            />
+            <Button onClick={handleCameraClick} size="icon" variant="secondary" className="absolute top-3 right-3 h-9 w-9 bg-black/50 backdrop-blur-sm rounded-full border border-white/10">
                 <Camera className="h-5 w-5" />
             </Button>
            </div>
