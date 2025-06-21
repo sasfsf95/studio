@@ -21,6 +21,7 @@ interface ChatInterfaceProps {
   onSendMessage: (text: string) => void;
   isLoadingIcebreakers: boolean;
   isAiResponding: boolean;
+  characterImage: string | null;
 }
 
 const icebreakerIcons = [
@@ -31,7 +32,7 @@ const icebreakerIcons = [
     <Gift className="h-4 w-4" />,
 ];
 
-export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingIcebreakers, isAiResponding }: ChatInterfaceProps) {
+export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingIcebreakers, isAiResponding, characterImage }: ChatInterfaceProps) {
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -83,7 +84,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
           {isAiResponding && (
              <div className="flex items-end gap-3 justify-start">
                <Avatar className="h-9 w-9">
-                  <AvatarImage src="https://placehold.co/100x100.png" alt="Raven" data-ai-hint="beautiful dark hair woman" />
+                  <AvatarImage src={characterImage || "https://placehold.co/100x100.png"} alt="Raven" data-ai-hint="beautiful dark hair woman" />
                   <AvatarFallback>R</AvatarFallback>
                 </Avatar>
                 <div className="max-w-sm md:max-w-md lg:max-w-lg p-3 px-4 rounded-2xl bg-black/50 text-card-foreground rounded-bl-none">

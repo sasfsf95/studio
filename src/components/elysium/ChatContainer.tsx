@@ -27,18 +27,28 @@ const initialMessages: Message[] = [
   }
 ];
 
-export function ChatContainer() {
+interface ChatContainerProps {
+  characterImage: string | null;
+}
+
+export function ChatContainer({ characterImage }: ChatContainerProps) {
   const [icebreakers, setIcebreakers] = useState<string[]>([]);
-  const [messages, setMessages] = useState<Message[]>(initialMessages);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [isLoadingIcebreakers, setIsLoadingIcebreakers] = useState(true);
   const [isAiResponding, startAiTransition] = useTransition();
   const { toast } = useToast();
+  
+  const placeholderAvatar = 'https://placehold.co/100x100.png';
 
   useEffect(() => {
     // Set timestamps for initial messages only on the client-side after hydration
     // to prevent a hydration mismatch.
     const clientTimestamp = format(new Date(), 'p');
-    setMessages(initialMessages.map(msg => ({ ...msg, timestamp: clientTimestamp })));
+    setMessages(initialMessages.map(msg => ({ 
+      ...msg, 
+      timestamp: clientTimestamp,
+      avatar: characterImage || placeholderAvatar
+    })));
 
     const fetchIcebreakers = async () => {
       try {
@@ -60,6 +70,16 @@ export function ChatContainer() {
     };
     fetchIcebreakers();
   }, [toast]);
+
+  useEffect(() => {
+    setMessages(prevMessages => 
+        prevMessages.map(msg => 
+            msg.sender === 'ai' 
+                ? { ...msg, avatar: characterImage || placeholderAvatar } 
+                : msg
+        )
+    );
+  }, [characterImage]);
   
   const handleSendMessage = (text: string) => {
     const newUserMessage: Message = { id: Date.now().toString(), text, sender: 'user', timestamp: format(new Date(), 'p') };
@@ -74,11 +94,11 @@ export function ChatContainer() {
 
         const aiResponseText = await continueConversation({ message: text, chatHistory });
 
-        const aiResponse: Message = { id: (Date.now() + 1).toString(), text: aiResponseText, sender: 'ai', timestamp: format(new Date(), 'p'), avatar: 'https://placehold.co/100x100.png' };
+        const aiResponse: Message = { id: (Date.now() + 1).toString(), text: aiResponseText, sender: 'ai', timestamp: format(new Date(), 'p'), avatar: characterImage || placeholderAvatar };
         setMessages(prev => [...prev, aiResponse]);
       } catch (error) {
          console.error("Failed to get AI response:", error);
-         const aiErrorResponse: Message = { id: (Date.now() + 1).toString(), text: "My circuits are a bit fuzzy right now, could you say that again?", sender: 'ai', timestamp: format(new Date(), 'p'), avatar: 'https://placehold.co/100x100.png' };
+         const aiErrorResponse: Message = { id: (Date.now() + 1).toString(), text: "My circuits are a bit fuzzy right now, could you say that again?", sender: 'ai', timestamp: format(new Date(), 'p'), avatar: characterImage || placeholderAvatar };
          setMessages(prev => [...prev, aiErrorResponse]);
       }
     });
@@ -91,6 +111,7 @@ export function ChatContainer() {
       onSendMessage={handleSendMessage}
       isLoadingIcebreakers={isLoadingIcebreakers}
       isAiResponding={isAiResponding}
+      characterImage={characterImage}
     />
   );
 }

@@ -5,10 +5,14 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Crown, Sparkles, MessageSquare, Heart, Camera } from 'lucide-react';
-import { useState, useRef, type ChangeEvent } from 'react';
+import { useRef, type ChangeEvent } from 'react';
 
-export function LeftSidebar() {
-  const [characterImage, setCharacterImage] = useState<string | null>(null);
+interface LeftSidebarProps {
+  characterImage: string | null;
+  setCharacterImage: (image: string | null) => void;
+}
+
+export function LeftSidebar({ characterImage, setCharacterImage }: LeftSidebarProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleCameraClick = () => {
