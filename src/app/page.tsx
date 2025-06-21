@@ -3,11 +3,13 @@
 import { useState, useEffect } from 'react';
 import { ChatContainer } from '@/components/elysium/ChatContainer';
 import { LeftSidebar } from '@/components/elysium/LeftSidebar';
+import { LandingPage } from '@/components/elysium/LandingPage';
 
 export default function Home() {
   const [characterImage, setCharacterImage] = useState<string | null>(null);
   const [theme, setTheme] = useState('romantic-pink');
   const [companionName, setCompanionName] = useState('Aria');
+  const [showChat, setShowChat] = useState(false);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -22,6 +24,14 @@ export default function Home() {
       root.classList.add(`theme-${theme}`);
     }
   }, [theme]);
+
+  const handleContinue = () => {
+    setShowChat(true);
+  };
+
+  if (!showChat) {
+    return <LandingPage onContinue={handleContinue} />;
+  }
 
   return (
     <div className="h-screen w-full flex bg-background text-foreground">
