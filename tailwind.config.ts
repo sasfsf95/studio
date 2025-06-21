@@ -84,14 +84,14 @@ export default {
           },
         },
         'message-in': {
-          '0%': { opacity: '0', transform: 'translateY(1rem) scale(0.95)' },
+          '0%': { opacity: '0', transform: 'translateY(20px) scale(0.9)' },
           '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
         },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        'message-in': 'message-in 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards',
+        'message-in': 'message-in 0.5s ease-out forwards',
       },
     },
   },

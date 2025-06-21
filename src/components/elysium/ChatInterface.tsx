@@ -87,7 +87,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
                     'max-w-md p-3 px-4 rounded-2xl text-base leading-relaxed', 
                     msg.sender === 'user' 
                       ? 'bg-gradient-to-br from-primary to-fuchsia-600 text-primary-foreground rounded-br-lg' 
-                      : 'bg-card text-card-foreground rounded-bl-lg'
+                      : 'bg-card text-card-foreground rounded-bl-lg shadow-xl shadow-primary/20'
                   )}>
                     <p>{msg.text}</p>
                   </div>
