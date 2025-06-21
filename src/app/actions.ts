@@ -39,6 +39,7 @@ export async function continueConversation({ message, chatHistory }: { message: 
       const data = JSON.parse(responseText);
       let reply: any;
 
+      // Handle n8n's common array wrapper format
       if (Array.isArray(data) && data.length > 0) {
         const firstItem = data[0];
         reply = firstItem.json || firstItem;
@@ -46,20 +47,27 @@ export async function continueConversation({ message, chatHistory }: { message: 
         reply = data;
       }
 
+      // Case 1: Reply is an object. Try to find a known key.
       if (typeof reply === 'object' && reply !== null) {
         const messageText = reply.reply || reply.message || reply.text;
         if (typeof messageText === 'string') {
           return messageText;
         }
-      } else if (typeof reply === 'string') {
-        return reply;
+        // Fallback for objects: stringify the whole thing so the user can see the structure.
+        return JSON.stringify(reply);
+      }
+
+      // Case 2: Reply is a primitive (string, number, boolean). Convert to string and return.
+      if (reply !== null && reply !== undefined) {
+          return String(reply);
       }
       
-      console.error("Could not find a valid reply in webhook JSON response:", responseText);
-      return "I received a response I didn't understand. Can we try something else?";
+      // Fallback for empty or unhandled responses like `[]` or `{}`
+      console.error("Webhook returned an empty or unhandled response:", responseText);
+      return "I'm at a loss for words... the connection seems to have dropped.";
 
     } catch (error) {
-      // If JSON.parse fails, assume it's a plain text response.
+      // Case 3: Response was not valid JSON, so return it as plain text.
       return responseText;
     }
 
