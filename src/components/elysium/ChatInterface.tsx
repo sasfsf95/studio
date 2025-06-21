@@ -64,31 +64,50 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
   return (
     <div className="flex flex-col h-full p-4 space-y-4">
       <ScrollArea className="flex-1 pr-4 -mr-4">
-        <div className="space-y-6 p-4">
+        <div className="space-y-8 p-4">
           {messages.map((msg) => (
-            <div key={msg.id} className={cn("flex items-end gap-3", msg.sender === 'user' ? 'justify-end' : 'justify-start')}>
+            <div 
+              key={msg.id} 
+              className={cn(
+                "flex items-start gap-4 animate-message-in",
+                msg.sender === 'user' ? 'justify-end' : 'justify-start'
+              )}
+            >
               {msg.sender === 'ai' && (
-                <Avatar className="h-9 w-9">
+                <Avatar className="h-10 w-10 border-2 border-primary/50">
                   <AvatarImage src={msg.avatar} alt="Raven" data-ai-hint="beautiful dark hair woman" />
                   <AvatarFallback>R</AvatarFallback>
                 </Avatar>
               )}
-              <div className="flex flex-col gap-1.5 items-start">
-                  <div className={cn('max-w-md p-3 px-4 rounded-2xl text-base leading-relaxed', msg.sender === 'user' ? 'bg-primary text-primary-foreground rounded-br-none' : 'bg-black/50 text-card-foreground rounded-bl-none')}>
+              <div className={cn(
+                "flex flex-col gap-1.5",
+                msg.sender === 'user' ? 'items-end' : 'items-start'
+              )}>
+                  <div className={cn(
+                    'max-w-md p-3 px-4 rounded-2xl text-base leading-relaxed shadow-lg', 
+                    msg.sender === 'user' 
+                      ? 'bg-gradient-to-br from-primary to-fuchsia-600 text-primary-foreground rounded-br-lg' 
+                      : 'bg-secondary text-card-foreground rounded-bl-lg'
+                  )}>
                     <p>{msg.text}</p>
                   </div>
-                  {msg.timestamp && <p className="text-xs text-muted-foreground">{msg.timestamp}</p>}
+                  {msg.timestamp && <p className="text-xs text-muted-foreground px-1">{msg.timestamp}</p>}
               </div>
+              {msg.sender === 'user' && (
+                <Avatar className="h-10 w-10 border-2 border-border">
+                  <AvatarFallback>U</AvatarFallback>
+                </Avatar>
+              )}
             </div>
           ))}
           {isAiResponding && (
-             <div className="flex items-end gap-3 justify-start">
-               <Avatar className="h-9 w-9">
+             <div className="flex items-start gap-4 justify-start animate-message-in">
+               <Avatar className="h-10 w-10 border-2 border-primary/50">
                   <AvatarImage src={characterImage || "https://placehold.co/100x100.png"} alt="Raven" data-ai-hint="beautiful dark hair woman" />
                   <AvatarFallback>R</AvatarFallback>
                 </Avatar>
-                <div className="max-w-sm md:max-w-md lg:max-w-lg p-3 px-4 rounded-2xl bg-black/50 text-card-foreground rounded-bl-none">
-                  <div className="flex items-center space-x-2">
+                <div className="max-w-sm p-3 px-4 rounded-2xl rounded-bl-lg bg-secondary text-card-foreground shadow-lg">
+                  <div className="flex items-center justify-center space-x-2 h-6">
                     <span className="h-2 w-2 bg-muted-foreground rounded-full animate-pulse [animation-delay:-0.3s]"></span>
                     <span className="h-2 w-2 bg-muted-foreground rounded-full animate-pulse [animation-delay:-0.15s]"></span>
                     <span className="h-2 w-2 bg-muted-foreground rounded-full animate-pulse"></span>
