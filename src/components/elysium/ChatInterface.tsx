@@ -54,7 +54,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
                   <AvatarFallback>R</AvatarFallback>
                 </Avatar>
               )}
-              <div className={cn('max-w-sm md:max-w-md lg:max-w-lg p-3 px-4 rounded-2xl text-base leading-relaxed', msg.sender === 'user' ? 'bg-secondary text-secondary-foreground rounded-br-none' : 'bg-card text-card-foreground rounded-bl-none shadow-sm')}>
+              <div className={cn('max-w-sm md:max-w-md lg:max-w-lg p-3 px-4 rounded-2xl text-base leading-relaxed backdrop-blur-sm shadow-lg border border-white/5', msg.sender === 'user' ? 'bg-secondary/80 text-secondary-foreground rounded-br-none' : 'bg-card/80 text-card-foreground rounded-bl-none')}>
                 <p>{msg.text}</p>
               </div>
             </div>
@@ -65,7 +65,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
                   <AvatarImage src="https://placehold.co/100x100.png" alt="Raven" data-ai-hint="beautiful dark hair woman" />
                   <AvatarFallback>R</AvatarFallback>
                 </Avatar>
-                <div className="max-w-sm md:max-w-md lg:max-w-lg p-3 px-4 rounded-2xl bg-card text-card-foreground rounded-bl-none shadow-sm">
+                <div className="max-w-sm md:max-w-md lg:max-w-lg p-3 px-4 rounded-2xl bg-card/80 text-card-foreground rounded-bl-none shadow-lg border border-white/5">
                   <div className="flex items-center space-x-2">
                     <span className="h-2 w-2 bg-muted-foreground rounded-full animate-pulse [animation-delay:-0.3s]"></span>
                     <span className="h-2 w-2 bg-muted-foreground rounded-full animate-pulse [animation-delay:-0.15s]"></span>
@@ -90,7 +90,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
             <div className="flex flex-wrap gap-2 items-center justify-center">
                <Sparkles className="h-5 w-5 text-primary/80 flex-shrink-0" />
                {icebreakers.slice(0, 3).map((ice, index) => (
-                  <Button key={index} variant="secondary" size="sm" className="rounded-full" onClick={() => handleIcebreakerClick(ice)}>
+                  <Button key={index} variant="secondary" size="sm" className="rounded-full bg-secondary/80 backdrop-blur-sm" onClick={() => handleIcebreakerClick(ice)}>
                      {ice}
                   </Button>
                ))}
@@ -101,16 +101,16 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
 
       {!isAiResponding && messages.length > 1 && (
         <div className="px-1 py-2 flex justify-center items-center gap-2 flex-wrap">
-            <Button variant="secondary" size="sm" className="rounded-full">
+            <Button variant="outline" size="sm" className="rounded-full border-primary/30 hover:bg-primary/10 hover:border-primary/70 text-primary/80 hover:text-primary transition-colors">
                 <Drama className="mr-2 h-4 w-4" /> Role Play
             </Button>
-            <Button variant="default" size="sm" className="rounded-full bg-gradient-to-r from-primary to-fuchsia-600 text-primary-foreground">
+            <Button variant="default" size="sm" className="rounded-full bg-gradient-to-r from-primary to-fuchsia-600 text-primary-foreground shadow-lg shadow-primary/20 hover:opacity-90 transition-opacity">
                 <Flame className="mr-2 h-4 w-4" /> Get Intimate
             </Button>
         </div>
       )}
       
-      <div className="flex items-center gap-2 border rounded-full p-1.5 bg-input mt-auto">
+      <div className="flex items-center gap-2 border rounded-full p-1.5 bg-input/80 backdrop-blur-sm border-white/10 mt-auto">
         <Textarea
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
