@@ -75,7 +75,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
             >
               {msg.sender === 'ai' && (
                 <Avatar className="h-10 w-10 border-2 border-primary/50">
-                  <AvatarImage src={msg.avatar} alt="Raven" data-ai-hint="beautiful dark hair woman" />
+                  <AvatarImage src={msg.avatar} alt="Raven" data-ai-hint="beautiful dark hair woman" className="object-cover object-top" />
                   <AvatarFallback>R</AvatarFallback>
                 </Avatar>
               )}
@@ -103,7 +103,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
           {isAiResponding && (
              <div className="flex items-start gap-4 justify-start animate-message-in">
                <Avatar className="h-10 w-10 border-2 border-primary/50">
-                  <AvatarImage src={characterImage || "https://placehold.co/100x100.png"} alt="Raven" data-ai-hint="beautiful dark hair woman" />
+                  <AvatarImage src={characterImage || "https://placehold.co/100x100.png"} alt="Raven" data-ai-hint="beautiful dark hair woman" className="object-cover object-top" />
                   <AvatarFallback>R</AvatarFallback>
                 </Avatar>
                 <div className="max-w-sm p-3 px-4 rounded-2xl rounded-bl-lg bg-card text-card-foreground">
