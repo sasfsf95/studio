@@ -58,9 +58,8 @@ export function LandingPage({ onContinue, characterImage }: LandingPageProps) {
               src={characterImage || "https://firebasestudio.ai/gallery/Elysium/3.png"}
               alt="AI Girlfriend"
               data-ai-hint="beautiful brunette woman"
-              width={400}
-              height={600}
-              className="relative z-10 object-contain"
+              fill
+              className="z-10 object-contain"
               style={{ maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)' }}
               priority
             />
