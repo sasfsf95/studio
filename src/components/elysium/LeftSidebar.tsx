@@ -7,7 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Crown, Sparkles, MessageSquare, Heart, Camera, Flame, WandSparkles, Users, Moon } from 'lucide-react';
+import { Crown, Sparkles, MessageSquare, Heart, Camera, Flame, WandSparkles, Users, Moon, Eclipse } from 'lucide-react';
 import { useRef, type ChangeEvent } from 'react';
 import { cn } from '@/lib/utils';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -182,6 +182,11 @@ export function LeftSidebar({ characterImage, setCharacterImage }: LeftSidebarPr
                             <SelectItem value="golden-luxe">
                               <div className="flex items-center gap-2">
                                 <Crown className="h-4 w-4" style={{ color: '#f59e0b' }}/> Golden Luxe
+                              </div>
+                            </SelectItem>
+                            <SelectItem value="sultry-black">
+                              <div className="flex items-center gap-2">
+                                <Eclipse className="h-4 w-4" style={{ color: '#9ca3af' }}/> Sultry Black
                               </div>
                             </SelectItem>
                           </SelectContent>
