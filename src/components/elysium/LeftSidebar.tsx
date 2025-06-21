@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from 'next/image';
@@ -57,7 +58,7 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
             <Image
               src={characterImage || "https://firebasestudio.ai/gallery/Elysium/3.png"}
               alt="Raven AI Companion"
-              data-ai-hint="beautiful brunette woman"
+              data-ai-hint="beautiful woman"
               fill
               className="object-cover"
               priority

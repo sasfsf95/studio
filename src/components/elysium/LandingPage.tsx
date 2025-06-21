@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from 'next/image';
@@ -57,7 +58,7 @@ export function LandingPage({ onContinue, characterImage }: LandingPageProps) {
             <Image
               src={characterImage || "https://firebasestudio.ai/gallery/Elysium/3.png"}
               alt="AI Girlfriend"
-              data-ai-hint="beautiful brunette woman"
+              data-ai-hint="beautiful woman"
               fill
               className="z-10 object-cover"
               priority

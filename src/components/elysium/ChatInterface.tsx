@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState, useRef, useEffect } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -78,7 +79,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
             >
               {msg.sender === 'ai' && (
                 <Avatar className="h-10 w-10 border-2 border-primary/50">
-                  <AvatarImage src={msg.avatar} alt={companionName} data-ai-hint="beautiful brunette woman" className="object-cover object-top" />
+                  <AvatarImage src={msg.avatar} alt={companionName} data-ai-hint="beautiful woman" className="object-cover object-top" />
                   <AvatarFallback>{companionName.charAt(0).toUpperCase()}</AvatarFallback>
                 </Avatar>
               )}
@@ -106,7 +107,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
           {isAiResponding && (
              <div className="flex items-start gap-4 justify-start animate-message-in">
                <Avatar className="h-10 w-10 border-2 border-primary/50">
-                  <AvatarImage src={characterImage || "https://placehold.co/100x100.png"} alt={companionName} data-ai-hint="beautiful brunette woman" className="object-cover object-top" />
+                  <AvatarImage src={characterImage || "https://placehold.co/100x100.png"} alt={companionName} data-ai-hint="beautiful woman" className="object-cover object-top" />
                   <AvatarFallback>{companionName.charAt(0).toUpperCase()}</AvatarFallback>
                 </Avatar>
                 <div className="max-w-sm p-3 px-4 rounded-2xl rounded-bl-lg bg-card text-card-foreground">
