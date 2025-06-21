@@ -7,7 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Crown, Sparkles, MessageSquare, Heart, Camera, Flame, WandSparkles, Users } from 'lucide-react';
+import { Crown, Sparkles, MessageSquare, Heart, Camera, Flame, WandSparkles, Users, Moon } from 'lucide-react';
 import { useRef, type ChangeEvent } from 'react';
 import { cn } from '@/lib/utils';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -167,6 +167,21 @@ export function LeftSidebar({ characterImage, setCharacterImage }: LeftSidebarPr
                              <SelectItem value="seductive-red">
                               <div className="flex items-center gap-2">
                                 <Flame className="h-4 w-4" style={{ color: '#ef4444' }}/> Seductive Red
+                              </div>
+                            </SelectItem>
+                            <SelectItem value="mystic-purple">
+                              <div className="flex items-center gap-2">
+                                <WandSparkles className="h-4 w-4" style={{ color: '#a855f7' }}/> Mystic Purple
+                              </div>
+                            </SelectItem>
+                            <SelectItem value="midnight-blue">
+                              <div className="flex items-center gap-2">
+                                <Moon className="h-4 w-4" style={{ color: '#3b82f6' }}/> Midnight Blue
+                              </div>
+                            </SelectItem>
+                            <SelectItem value="golden-luxe">
+                              <div className="flex items-center gap-2">
+                                <Crown className="h-4 w-4" style={{ color: '#f59e0b' }}/> Golden Luxe
                               </div>
                             </SelectItem>
                           </SelectContent>
