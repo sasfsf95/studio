@@ -4,8 +4,11 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Crown, Sparkles, MessageSquare, Heart, Camera, Palette } from 'lucide-react';
-import { useRef, useState, type ChangeEvent } from 'react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Crown, Sparkles, MessageSquare, Heart, Camera, Flame } from 'lucide-react';
+import { useRef, type ChangeEvent } from 'react';
 import { cn } from '@/lib/utils';
 
 interface LeftSidebarProps {
@@ -15,8 +18,6 @@ interface LeftSidebarProps {
 
 export function LeftSidebar({ characterImage, setCharacterImage }: LeftSidebarProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [activeTheme, setActiveTheme] = useState('default');
-
 
   const handleCameraClick = () => {
     fileInputRef.current?.click();
@@ -33,15 +34,8 @@ export function LeftSidebar({ characterImage, setCharacterImage }: LeftSidebarPr
     }
   };
   
-  const themes = [
-    { name: 'default', color: 'bg-primary' },
-    { name: 'sunset', color: 'bg-gradient-to-br from-orange-400 to-rose-500' },
-    { name: 'forest', color: 'bg-gradient-to-br from-green-400 to-teal-600' },
-    { name: 'ocean', color: 'bg-gradient-to-br from-blue-400 to-indigo-600' }
-  ];
-
   return (
-    <aside className="w-[360px] bg-black/30 p-4 flex flex-col space-y-6 border-r border-white/5">
+    <aside className="w-[360px] bg-black/30 p-4 flex flex-col space-y-6 border-r border-white/5 overflow-y-auto">
       <header className="flex justify-between items-center">
         <div className="flex items-center gap-2">
           <Crown className="h-6 w-6 text-yellow-400" />
@@ -84,7 +78,7 @@ export function LeftSidebar({ characterImage, setCharacterImage }: LeftSidebarPr
 
         <div className="text-center">
             <h2 className="text-3xl font-bold flex items-center gap-2">
-                Raven <Sparkles className="h-6 w-6 text-primary" />
+                Aria <Sparkles className="h-6 w-6 text-primary" />
             </h2>
             <p className="text-muted-foreground">Your Intimate AI Companion</p>
             <div className="flex items-center justify-center gap-2 mt-2 text-green-400">
@@ -97,6 +91,75 @@ export function LeftSidebar({ characterImage, setCharacterImage }: LeftSidebarPr
         </div>
       </div>
       
+      <Card className="bg-card/80 border-white/10">
+        <CardHeader>
+          <CardTitle className="text-lg flex items-center gap-2">
+            <Heart className="h-5 w-5 text-primary/80" /> AI Companion Settings
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4 text-sm">
+          <div>
+            <Label htmlFor="companion-name" className="text-muted-foreground text-xs font-medium">Name</Label>
+            <Input id="companion-name" defaultValue="Aria" className="mt-1 bg-black/40 border-white/10 h-9" />
+          </div>
+          <div>
+            <Label htmlFor="personality" className="text-muted-foreground text-xs font-medium">Personality</Label>
+            <Select defaultValue="romantic-pink">
+              <SelectTrigger id="personality" className="mt-1 bg-black/40 border-white/10 h-9">
+                <SelectValue placeholder="Select a personality" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="romantic-pink">
+                  <div className="flex items-center gap-2">
+                    <Heart className="h-4 w-4" style={{ color: '#f472b6' }}/> Romantic Pink
+                  </div>
+                </SelectItem>
+                <SelectItem value="seductive-red">
+                  <div className="flex items-center gap-2">
+                    <Flame className="h-4 w-4" style={{ color: '#ef4444' }}/> Seductive Red
+                  </div>
+                </SelectItem>
+                <SelectItem value="dreamy-purple">
+                  <div className="flex items-center gap-2">
+                    <Heart className="h-4 w-4" style={{ color: '#a855f7' }}/> Dreamy Purple
+                  </div>
+                </SelectItem>
+                <SelectItem value="elegant-dark">
+                  <div className="flex items-center gap-2">
+                    <Heart className="h-4 w-4" style={{ color: '#9ca3af' }}/> Elegant Dark
+                  </div>
+                </SelectItem>
+                <SelectItem value="fantasy-gold">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="h-4 w-4" style={{ color: '#eab308' }}/> Fantasy Gold
+                  </div>
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+           <div>
+            <Label htmlFor="visual-theme" className="text-muted-foreground text-xs font-medium">Visual Theme</Label>
+            <Select defaultValue="romantic-pink">
+              <SelectTrigger id="visual-theme" className="mt-1 bg-black/40 border-white/10 h-9">
+                <SelectValue placeholder="Select a theme" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="romantic-pink">
+                  <div className="flex items-center gap-2">
+                    <Heart className="h-4 w-4" style={{ color: '#f472b6' }}/> Romantic Pink
+                  </div>
+                </SelectItem>
+                 <SelectItem value="seductive-red">
+                  <div className="flex items-center gap-2">
+                    <Flame className="h-4 w-4" style={{ color: '#ef4444' }}/> Seductive Red
+                  </div>
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </CardContent>
+      </Card>
+
       <Card className="bg-card/80 border-white/10">
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2"><Heart className="h-5 w-5 text-primary/80"/> Relationship Stats</CardTitle>
@@ -112,28 +175,6 @@ export function LeftSidebar({ characterImage, setCharacterImage }: LeftSidebarPr
                   <p className="font-semibold">45%</p>
               </div>
               <Progress value={45} className="h-2 bg-secondary" />
-            </div>
-
-            <div className="border-t border-border/50 my-4" />
-
-            <div>
-              <p className="flex items-center gap-2 text-muted-foreground mb-3"><Palette className="h-4 w-4" /> Themes</p>
-              <div className="flex items-center gap-3">
-                {themes.map((theme) => (
-                  <button
-                    key={theme.name}
-                    onClick={() => setActiveTheme(theme.name)}
-                    className={cn(
-                      "h-8 w-8 rounded-full transition-all p-0.5",
-                      "focus:outline-none ring-offset-background ring-offset-black/50 ring-offset-2 focus-visible:ring-2",
-                      activeTheme === theme.name ? 'ring-2 ring-primary scale-110' : 'ring-0'
-                    )}
-                    aria-label={`Select ${theme.name} theme`}
-                  >
-                    <div className={cn("h-full w-full rounded-full", theme.color)} />
-                  </button>
-                ))}
-              </div>
             </div>
         </CardContent>
       </Card>
