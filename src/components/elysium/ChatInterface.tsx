@@ -84,10 +84,10 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
                 msg.sender === 'user' ? 'items-end' : 'items-start'
               )}>
                   <div className={cn(
-                    'max-w-md p-3 px-4 rounded-2xl text-base leading-relaxed shadow-lg', 
+                    'max-w-md p-3 px-4 rounded-2xl text-base leading-relaxed', 
                     msg.sender === 'user' 
                       ? 'bg-gradient-to-br from-primary to-fuchsia-600 text-primary-foreground rounded-br-lg' 
-                      : 'bg-secondary text-card-foreground rounded-bl-lg'
+                      : 'bg-card text-card-foreground rounded-bl-lg'
                   )}>
                     <p>{msg.text}</p>
                   </div>
@@ -106,7 +106,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
                   <AvatarImage src={characterImage || "https://placehold.co/100x100.png"} alt="Raven" data-ai-hint="beautiful dark hair woman" />
                   <AvatarFallback>R</AvatarFallback>
                 </Avatar>
-                <div className="max-w-sm p-3 px-4 rounded-2xl rounded-bl-lg bg-secondary text-card-foreground shadow-lg">
+                <div className="max-w-sm p-3 px-4 rounded-2xl rounded-bl-lg bg-card text-card-foreground">
                   <div className="flex items-center justify-center space-x-2 h-6">
                     <span className="h-2 w-2 bg-muted-foreground rounded-full animate-pulse [animation-delay:-0.3s]"></span>
                     <span className="h-2 w-2 bg-muted-foreground rounded-full animate-pulse [animation-delay:-0.15s]"></span>
