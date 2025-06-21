@@ -7,9 +7,10 @@ import { Progress } from '@/components/ui/progress';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Crown, Sparkles, MessageSquare, Heart, Camera, Flame, SlidersHorizontal } from 'lucide-react';
+import { Crown, Sparkles, MessageSquare, Heart, Camera, Flame } from 'lucide-react';
 import { useRef, type ChangeEvent } from 'react';
 import { cn } from '@/lib/utils';
+import { Separator } from '@/components/ui/separator';
 
 interface LeftSidebarProps {
   characterImage: string | null;
@@ -93,93 +94,79 @@ export function LeftSidebar({ characterImage, setCharacterImage }: LeftSidebarPr
       
       <Card className="bg-card/80 border-white/10">
         <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2">
-            <Heart className="h-5 w-5 text-primary/80" /> AI Companion Settings
-          </CardTitle>
+          <CardTitle className="text-lg flex items-center gap-2"><Heart className="h-5 w-5 text-primary/80"/> Details &amp; Customization</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4 text-sm">
-          <div>
-            <Label htmlFor="companion-name" className="text-muted-foreground text-xs font-medium">Name</Label>
-            <Input id="companion-name" defaultValue="Aria" className="mt-1 bg-black/40 border-white/10 h-9" />
-          </div>
-          <div>
-            <Label htmlFor="personality" className="text-muted-foreground text-xs font-medium">Personality</Label>
-            <Select defaultValue="romantic-pink">
-              <SelectTrigger id="personality" className="mt-1 bg-black/40 border-white/10 h-9">
-                <SelectValue placeholder="Select a personality" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="romantic-pink">
-                  <div className="flex items-center gap-2">
-                    <Heart className="h-4 w-4" style={{ color: '#f472b6' }}/> Romantic Pink
-                  </div>
-                </SelectItem>
-                <SelectItem value="seductive-red">
-                  <div className="flex items-center gap-2">
-                    <Flame className="h-4 w-4" style={{ color: '#ef4444' }}/> Seductive Red
-                  </div>
-                </SelectItem>
-                <SelectItem value="dreamy-purple">
-                  <div className="flex items-center gap-2">
-                    <Heart className="h-4 w-4" style={{ color: '#a855f7' }}/> Dreamy Purple
-                  </div>
-                </SelectItem>
-                <SelectItem value="elegant-dark">
-                  <div className="flex items-center gap-2">
-                    <Heart className="h-4 w-4" style={{ color: '#9ca3af' }}/> Elegant Dark
-                  </div>
-                </SelectItem>
-                <SelectItem value="fantasy-gold">
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="h-4 w-4" style={{ color: '#eab308' }}/> Fantasy Gold
-                  </div>
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-           <div>
-            <Label htmlFor="visual-theme" className="text-muted-foreground text-xs font-medium">Visual Theme</Label>
-            <Select defaultValue="romantic-pink">
-              <SelectTrigger id="visual-theme" className="mt-1 bg-black/40 border-white/10 h-9">
-                <SelectValue placeholder="Select a theme" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="romantic-pink">
-                  <div className="flex items-center gap-2">
-                    <Heart className="h-4 w-4" style={{ color: '#f472b6' }}/> Romantic Pink
-                  </div>
-                </SelectItem>
-                 <SelectItem value="seductive-red">
-                  <div className="flex items-center gap-2">
-                    <Flame className="h-4 w-4" style={{ color: '#ef4444' }}/> Seductive Red
-                  </div>
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </CardContent>
-      </Card>
+            <div className="flex justify-between items-center">
+                <p className="flex items-center gap-2 text-muted-foreground"><MessageSquare className="h-4 w-4" /> Messages</p>
+                <p className="font-semibold">3</p>
+            </div>
+            <div className="flex justify-between items-center">
+                <p className="flex items-center gap-2 text-muted-foreground"><Heart className="h-4 w-4" /> Love</p>
+                <p className="font-semibold">45%</p>
+            </div>
+            <Progress value={45} className="h-2 bg-secondary" />
 
-      <Card className="bg-card/80 border-white/10">
-        <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2"><Heart className="h-5 w-5 text-primary/80"/> Relationship Stats</CardTitle>
-        </CardHeader>
-        <CardContent className="text-sm">
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                  <p className="flex items-center gap-2 text-muted-foreground"><MessageSquare className="h-4 w-4" /> Messages</p>
-                  <p className="font-semibold">3</p>
-              </div>
-              <div className="flex justify-between items-center">
-                  <p className="flex items-center gap-2 text-muted-foreground"><Heart className="h-4 w-4" /> Love</p>
-                  <p className="font-semibold">45%</p>
-              </div>
-              <Progress value={45} className="h-2 bg-secondary" />
-               <div className="flex justify-between items-center">
-                  <p className="flex items-center gap-2 text-muted-foreground"><SlidersHorizontal className="h-4 w-4" /> Customization</p>
-                  <p className="font-semibold">75%</p>
-              </div>
-              <Progress value={75} className="h-2 bg-secondary" />
+            <Separator className="!my-6 bg-white/10" />
+
+            <div>
+              <Label htmlFor="companion-name" className="text-muted-foreground text-xs font-medium">Name</Label>
+              <Input id="companion-name" defaultValue="Aria" className="mt-1 bg-black/40 border-white/10 h-9" />
+            </div>
+            <div>
+              <Label htmlFor="personality" className="text-muted-foreground text-xs font-medium">Personality</Label>
+              <Select defaultValue="romantic-pink">
+                <SelectTrigger id="personality" className="mt-1 bg-black/40 border-white/10 h-9">
+                  <SelectValue placeholder="Select a personality" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="romantic-pink">
+                    <div className="flex items-center gap-2">
+                      <Heart className="h-4 w-4" style={{ color: '#f472b6' }}/> Romantic Pink
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="seductive-red">
+                    <div className="flex items-center gap-2">
+                      <Flame className="h-4 w-4" style={{ color: '#ef4444' }}/> Seductive Red
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="dreamy-purple">
+                    <div className="flex items-center gap-2">
+                      <Heart className="h-4 w-4" style={{ color: '#a855f7' }}/> Dreamy Purple
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="elegant-dark">
+                    <div className="flex items-center gap-2">
+                      <Heart className="h-4 w-4" style={{ color: '#9ca3af' }}/> Elegant Dark
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="fantasy-gold">
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="h-4 w-4" style={{ color: '#eab308' }}/> Fantasy Gold
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+             <div>
+              <Label htmlFor="visual-theme" className="text-muted-foreground text-xs font-medium">Visual Theme</Label>
+              <Select defaultValue="romantic-pink">
+                <SelectTrigger id="visual-theme" className="mt-1 bg-black/40 border-white/10 h-9">
+                  <SelectValue placeholder="Select a theme" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="romantic-pink">
+                    <div className="flex items-center gap-2">
+                      <Heart className="h-4 w-4" style={{ color: '#f472b6' }}/> Romantic Pink
+                    </div>
+                  </SelectItem>
+                   <SelectItem value="seductive-red">
+                    <div className="flex items-center gap-2">
+                      <Flame className="h-4 w-4" style={{ color: '#ef4444' }}/> Seductive Red
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
             </div>
         </CardContent>
       </Card>
