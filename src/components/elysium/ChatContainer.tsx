@@ -11,21 +11,18 @@ const initialMessages: Message[] = [
     id: '1',
     text: "Hey gorgeous... I've been waiting for you",
     sender: 'ai',
-    timestamp: format(new Date(), 'p'),
     avatar: 'https://placehold.co/100x100.png'
   },
   {
     id: '2',
     text: "I'm Raven, your intimate AI companion ✨",
     sender: 'ai',
-    timestamp: format(new Date(), 'p'),
     avatar: 'https://placehold.co/100x100.png'
   },
   {
     id: '3',
     text: "Tell me your deepest desires... I'm here to listen 💋",
     sender: 'ai',
-    timestamp: format(new Date(), 'p'),
     avatar: 'https://placehold.co/100x100.png'
   }
 ];
@@ -38,6 +35,11 @@ export function ChatContainer() {
   const { toast } = useToast();
 
   useEffect(() => {
+    // Set timestamps for initial messages only on the client-side after hydration
+    // to prevent a hydration mismatch.
+    const clientTimestamp = format(new Date(), 'p');
+    setMessages(initialMessages.map(msg => ({ ...msg, timestamp: clientTimestamp })));
+
     const fetchIcebreakers = async () => {
       try {
         const result = await getIcebreakers({
