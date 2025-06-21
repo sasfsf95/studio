@@ -15,9 +15,11 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 interface LeftSidebarProps {
   characterImage: string | null;
   setCharacterImage: (image: string | null) => void;
+  theme: string;
+  setTheme: (theme: string) => void;
 }
 
-export function LeftSidebar({ characterImage, setCharacterImage }: LeftSidebarProps) {
+export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme }: LeftSidebarProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleCameraClick = () => {
@@ -154,7 +156,7 @@ export function LeftSidebar({ characterImage, setCharacterImage }: LeftSidebarPr
                       </div>
                       <div>
                         <Label htmlFor="visual-theme" className="text-muted-foreground text-xs font-medium">Visual Theme</Label>
-                        <Select defaultValue="romantic-pink">
+                        <Select value={theme} onValueChange={setTheme}>
                           <SelectTrigger id="visual-theme" className="mt-1 bg-black/40 border-white/10 h-9">
                             <SelectValue placeholder="Select a theme" />
                           </SelectTrigger>

@@ -60,3 +60,36 @@
                       radial-gradient(ellipse at bottom, hsl(320 50% 15% / 0.2), transparent 70%);
   }
 }
+
+@layer base {
+  .theme-romantic-pink {
+    --primary: 320 90% 65%;
+    --accent: 320 90% 65%;
+    --ring: 320 90% 70%;
+  }
+  .theme-seductive-red {
+    --primary: 0 85% 60%;
+    --accent: 0 85% 60%;
+    --ring: 0 85% 65%;
+  }
+  .theme-mystic-purple {
+    --primary: 270 90% 65%;
+    --accent: 270 90% 65%;
+    --ring: 270 90% 70%;
+  }
+  .theme-midnight-blue {
+    --primary: 220 90% 60%;
+    --accent: 220 90% 60%;
+    --ring: 220 90% 65%;
+  }
+  .theme-golden-luxe {
+    --primary: 45 90% 55%;
+    --accent: 45 90% 55%;
+    --ring: 45 90% 60%;
+  }
+  .theme-sultry-black {
+    --primary: 300 10% 80%;
+    --accent: 300 10% 80%;
+    --ring: 300 10% 85%;
+  }
+}
