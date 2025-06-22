@@ -99,13 +99,12 @@ export function LandingPage() {
               <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-blue-500/10 rounded-full blur-xl animate-pulse-gentle"></div>
               <div className="absolute inset-4 bg-gradient-to-r from-purple-500/15 to-pink-500/15 rounded-full blur-lg animate-float-gentle"></div>
               
-              <div className="relative z-10 p-4 animate-fade-in">
+              <div className="relative z-10 w-72 h-72 animate-fade-in">
                 <Image 
                   src="https://firebasestudio.ai/gallery/Elysium/4.png" 
                   alt="AI Girlfriend"
                   data-ai-hint="beautiful woman"
-                  width={288}
-                  height={288}
+                  fill
                   className="object-contain hover:scale-105 transition-transform duration-300"
                   style={{
                     filter: 'drop-shadow(0 0 15px rgba(255, 107, 157, 0.2)) drop-shadow(0 0 30px rgba(196, 75, 212, 0.1))'
