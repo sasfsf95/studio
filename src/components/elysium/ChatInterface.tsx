@@ -74,7 +74,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
           alt="Chat Background"
           fill
           className="object-cover object-top opacity-[0.08]"
-          data-ai-hint="beautiful woman"
+          data-ai-hint="beautiful woman pink hair"
         />
       )}
       <div className="relative z-10 flex flex-col h-full p-4 space-y-4">
@@ -90,7 +90,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
               >
                 {msg.sender === 'ai' && (
                   <Avatar className="h-10 w-10 border-2 border-primary/50">
-                    <AvatarImage src={msg.avatar} alt={companionName} data-ai-hint="beautiful woman" className="object-cover object-top" />
+                    <AvatarImage src={msg.avatar} alt={companionName} data-ai-hint="beautiful woman pink hair" className="object-cover object-top" />
                     <AvatarFallback>{companionName.charAt(0).toUpperCase()}</AvatarFallback>
                   </Avatar>
                 )}
@@ -118,7 +118,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
             {isAiResponding && (
                <div className="flex items-start gap-4 justify-start animate-message-in">
                  <Avatar className="h-10 w-10 border-2 border-primary/50">
-                    <AvatarImage src={characterImage || "https://firebasestudio.ai/yuki-ai--yuki-ai/1hF9aY.png"} alt={companionName} data-ai-hint="beautiful woman" className="object-cover object-top" />
+                    <AvatarImage src={characterImage || "https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png"} alt={companionName} data-ai-hint="beautiful woman pink hair" className="object-cover object-top" />
                     <AvatarFallback>{companionName.charAt(0).toUpperCase()}</AvatarFallback>
                   </Avatar>
                   <div className="max-w-sm p-3 px-4 rounded-2xl rounded-bl-lg bg-card text-card-foreground">

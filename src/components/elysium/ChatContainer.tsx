@@ -19,7 +19,7 @@ export function ChatContainer({ characterImage, companionName }: ChatContainerPr
   const [isAiResponding, startAiTransition] = useTransition();
   const { toast } = useToast();
   
-  const placeholderAvatar = 'https://firebasestudio.ai/yuki-ai--yuki-ai/1hF9aY.png';
+  const placeholderAvatar = 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png';
 
   useEffect(() => {
     const getInitialMessages = (name: string): Omit<Message, 'id' | 'timestamp' | 'avatar'>[] => [

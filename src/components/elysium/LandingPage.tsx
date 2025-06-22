@@ -29,8 +29,8 @@ const characters = [
     {
     id: 'aria',
     name: 'Aria',
-    image: 'https://firebasestudio.ai/yuki-ai--yuki-ai/1hF9aY.png',
-    hint: 'beautiful woman',
+    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png',
+    hint: 'beautiful woman pink hair',
     theme: 'romantic-pink',
     likes: '38K',
     views: '3K',
@@ -40,8 +40,8 @@ const characters = [
   {
     id: 'ivana',
     name: 'Ivana',
-    image: 'https://firebasestudio.ai/yuki-ai--yuki-ai/1hF9aY.png',
-    hint: 'beautiful woman',
+    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png',
+    hint: 'beautiful woman pink hair',
     theme: 'mystic-purple',
     likes: '52K',
     views: '2m',
@@ -50,8 +50,8 @@ const characters = [
   {
     id: 'chloe',
     name: 'Chloe',
-    image: 'https://firebasestudio.ai/yuki-ai--yuki-ai/1hF9aY.png',
-    hint: 'playful woman glasses',
+    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png',
+    hint: 'beautiful woman pink hair',
     theme: 'golden-luxe',
     likes: '39K',
     views: '2m',
@@ -60,8 +60,8 @@ const characters = [
   {
     id: 'seraphina',
     name: 'Seraphina',
-    image: 'https://firebasestudio.ai/yuki-ai--yuki-ai/1hF9aY.png',
-    hint: 'elegant woman lingerie',
+    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png',
+    hint: 'beautiful woman pink hair',
     theme: 'seductive-red',
     likes: '44K',
     views: '3m',
@@ -70,8 +70,8 @@ const characters = [
   {
     id: 'lila',
     name: 'Lila',
-    image: 'https://firebasestudio.ai/yuki-ai--yuki-ai/1hF9aY.png',
-    hint: 'sweet woman',
+    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png',
+    hint: 'beautiful woman pink hair',
     theme: 'romantic-pink',
     likes: '25K',
     views: '5m',
@@ -80,8 +80,8 @@ const characters = [
   {
     id: 'zara',
     name: 'Zara',
-    image: 'https://firebasestudio.ai/yuki-ai--yuki-ai/1hF9aY.png',
-    hint: 'adventurous woman',
+    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png',
+    hint: 'beautiful woman pink hair',
     theme: 'golden-luxe',
     likes: '61K',
     views: '1m',
@@ -90,8 +90,8 @@ const characters = [
   {
     id: 'mia',
     name: 'Mia',
-    image: 'https://firebasestudio.ai/yuki-ai--yuki-ai/1hF9aY.png',
-    hint: 'artistic woman',
+    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png',
+    hint: 'beautiful woman pink hair',
     theme: 'mystic-purple',
     likes: '33K',
     views: '4m',
@@ -100,8 +100,8 @@ const characters = [
   {
     id: 'nova',
     name: 'Nova',
-    image: 'https://firebasestudio.ai/yuki-ai--yuki-ai/1hF9aY.png',
-    hint: 'futuristic woman',
+    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png',
+    hint: 'beautiful woman pink hair',
     theme: 'seductive-red',
     likes: '72K',
     views: '30m',
@@ -137,7 +137,7 @@ export function LandingPage() {
                         <AccordionTrigger className="text-base font-normal hover:no-underline py-2 px-4 hover:bg-accent rounded-md data-[state=open]:bg-accent data-[state=open]:text-white text-gray-300"><MessageSquare className="mr-3" /> My Chats</AccordionTrigger>
                         <AccordionContent className="pl-8 pt-2 space-y-2">
                             <div className="flex items-center gap-3 cursor-pointer p-2 rounded-md hover:bg-accent/50">
-                                <Image src="https://firebasestudio.ai/yuki-ai--yuki-ai/1hF9aY.png" alt="Trisha" width={40} height={40} className="rounded-full" data-ai-hint="woman" />
+                                <Image src="https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png" alt="Trisha" width={40} height={40} className="rounded-full" data-ai-hint="beautiful woman pink hair" />
                                 <div>
                                     <p className="font-semibold text-white">Trisha</p>
                                     <p className="text-xs text-muted-foreground">Trisha sent you a pic...</p>

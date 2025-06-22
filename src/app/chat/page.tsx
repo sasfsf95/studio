@@ -21,7 +21,7 @@ export default function ChatPage() {
       const storedCharacter = localStorage.getItem('selectedCharacter');
       if (storedCharacter) {
         const character = JSON.parse(storedCharacter);
-        setCharacterImage(character.image || 'https://firebasestudio.ai/yuki-ai--yuki-ai/1hF9aY.png');
+        setCharacterImage(character.image || 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png');
         setTheme(character.theme || 'romantic-pink');
         setCompanionName(character.name || 'Aria');
       } else {
