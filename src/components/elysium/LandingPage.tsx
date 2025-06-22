@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useRouter } from 'next/navigation';
@@ -38,8 +39,8 @@ const characters = [
   {
     id: 'ivana',
     name: 'Ivana',
-    image: 'https://placehold.co/400x600.png',
-    hint: 'mysterious woman bondage',
+    image: 'https://firebasestudio.ai/yuki-ai--yuki-ai/4n371n.png',
+    hint: 'beautiful woman',
     theme: 'mystic-purple',
     likes: '52K',
     views: '2m',
@@ -147,7 +148,6 @@ export function LandingPage() {
             </div>
         </nav>
         <div className="mt-auto space-y-2">
-            <Button variant="secondary" className="w-full justify-between bg-yellow-500/10 text-yellow-500 hover:bg-yellow-500/20 text-base font-bold">Become Premium <Badge variant="destructive" className="bg-destructive/80 text-white">-75% OFF</Badge></Button>
             <Button variant="ghost" className="w-full justify-start text-base text-gray-300 hover:text-white hover:bg-accent"><Share2 className="mr-3" /> Affiliate Program</Button>
             <div className="flex items-center justify-between text-xs text-muted-foreground pt-4">
                  <Button variant="ghost" size="sm" className="text-xs text-gray-400 hover:text-white"><HelpCircle className="mr-2 h-4 w-4" /> Feedback</Button>
