@@ -11,7 +11,7 @@ const characters = [
     id: 'aria',
     name: 'Aria',
     description: 'Your intimate and seductive AI companion.',
-    image: 'https://firebasestudio.ai/gallery/Elysium/4.png',
+    image: '/lovable-uploads/492c10b7-f04b-4b13-8d6e-986c750b32e6.png',
     theme: 'romantic-pink',
   },
   {
