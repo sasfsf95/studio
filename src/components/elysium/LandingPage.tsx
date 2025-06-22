@@ -41,7 +41,7 @@ export function LandingPage() {
         </div>
 
         <header className="relative z-10 flex justify-between items-center p-6">
-          <div className="text-xl font-bold">myanima.ai</div>
+          <div className="text-xl font-bold">yuki.ai</div>
           <Button 
             variant="outline" 
             className="bg-black/50 border-white/20 text-white hover:bg-white/10"
@@ -79,7 +79,7 @@ export function LandingPage() {
       </div>
 
       <header className="relative z-50 flex justify-between items-center p-6 animate-fade-in">
-        <div className="text-xl font-bold animate-bounce-gentle">myanima.ai</div>
+        <div className="text-xl font-bold animate-bounce-gentle">yuki.ai</div>
         <div className="flex gap-3">
           <Button variant="outline" className="bg-black/50 border-white/20 text-white hover:bg-white/10 flex items-center gap-2 transition-all duration-300 hover:scale-105 animate-slide-in-right">
             <Smartphone className="w-4 h-4" />
@@ -99,9 +99,9 @@ export function LandingPage() {
               <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-blue-500/10 rounded-full blur-xl animate-pulse-gentle"></div>
               <div className="absolute inset-4 bg-gradient-to-r from-purple-500/15 to-pink-500/15 rounded-full blur-lg animate-float-gentle"></div>
               
-              <div className="relative z-10 w-72 h-72 animate-fade-in">
+              <div className="relative z-10 w-72 h-72 animate-fade-in object-contain">
                 <Image 
-                  src="/lovable-uploads/492c10b7-f04b-4b13-8d6e-986c750b32e6.png" 
+                  src="/lovable-uploads/e06b74e6-429a-4c9f-85d8-55444a73229b.png" 
                   alt="AI Girlfriend"
                   data-ai-hint="beautiful woman"
                   fill
@@ -129,7 +129,7 @@ export function LandingPage() {
             <div className="relative animate-fade-in-up">
               <div className="absolute inset-0 bg-black/20 backdrop-blur-sm rounded-lg -z-10 transform scale-110"></div>
               <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-pink-200 to-purple-200 bg-clip-text text-transparent animate-glow p-4">
-                <span className="relative">Anima: Virtual AI Girlfriend</span>
+                <span className="relative">Yuki: Virtual AI Companion</span>
               </h1>
             </div>
 
