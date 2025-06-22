@@ -11,7 +11,7 @@ const characters = [
     id: 'aria',
     name: 'Aria',
     description: 'Your intimate and seductive AI companion.',
-    image: '/lovable-uploads/492c10b7-f04b-4b13-8d6e-986c750b32e6.png',
+    image: '/lovable-uploads/e06b74e6-429a-4c9f-85d8-55444a73229b.png',
     theme: 'romantic-pink',
   },
   {

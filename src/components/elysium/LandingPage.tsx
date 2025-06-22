@@ -99,7 +99,7 @@ export function LandingPage() {
               <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-blue-500/10 rounded-full blur-xl animate-pulse-gentle"></div>
               <div className="absolute inset-4 bg-gradient-to-r from-purple-500/15 to-pink-500/15 rounded-full blur-lg animate-float-gentle"></div>
               
-              <div className="relative z-10 w-72 h-72 animate-fade-in object-contain">
+              <div className="relative z-10 w-72 h-72 animate-fade-in">
                 <Image 
                   src="/lovable-uploads/e06b74e6-429a-4c9f-85d8-55444a73229b.png" 
                   alt="AI Girlfriend"
