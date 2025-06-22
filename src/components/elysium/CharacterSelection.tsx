@@ -11,7 +11,7 @@ const characters = [
     id: 'aria',
     name: 'Aria',
     description: 'Your intimate and seductive AI companion.',
-    image: 'https://placehold.co/600x800.png',
+    image: 'https://firebasestudio.ai/yuki-ai--yuki-ai/yv214d.png',
     hint: 'beautiful woman',
     theme: 'romantic-pink',
   },

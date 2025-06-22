@@ -56,7 +56,7 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
         <div className="relative p-1 rounded-3xl bg-gradient-to-tr from-primary to-fuchsia-800 shadow-2xl shadow-primary/30">
            <div className="relative h-[320px] w-[240px] rounded-2xl overflow-hidden">
             <Image
-              src={characterImage || "https://placehold.co/600x800.png"}
+              src={characterImage || "https://firebasestudio.ai/yuki-ai--yuki-ai/yv214d.png"}
               alt="Raven AI Companion"
               data-ai-hint="beautiful woman"
               fill

@@ -82,7 +82,7 @@ export function LandingPage() {
         <div className="relative w-full h-[60vh] max-h-[700px] animate-fade-in" style={{ animationDelay: '0.2s'}}>
             <div className="absolute inset-0 bg-primary/20 rounded-full blur-3xl animate-pulse"></div>
             <Image
-              src="https://placehold.co/800x1200.png"
+              src="https://firebasestudio.ai/yuki-ai--yuki-ai/yv214d.png"
               alt="AI Companion"
               data-ai-hint="beautiful woman"
               fill

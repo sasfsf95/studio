@@ -118,7 +118,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
             {isAiResponding && (
                <div className="flex items-start gap-4 justify-start animate-message-in">
                  <Avatar className="h-10 w-10 border-2 border-primary/50">
-                    <AvatarImage src={characterImage || "https://placehold.co/100x100.png"} alt={companionName} data-ai-hint="beautiful woman" className="object-cover object-top" />
+                    <AvatarImage src={characterImage || "https://firebasestudio.ai/yuki-ai--yuki-ai/yv214d.png"} alt={companionName} data-ai-hint="beautiful woman" className="object-cover object-top" />
                     <AvatarFallback>{companionName.charAt(0).toUpperCase()}</AvatarFallback>
                   </Avatar>
                   <div className="max-w-sm p-3 px-4 rounded-2xl rounded-bl-lg bg-card text-card-foreground">
