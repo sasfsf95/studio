@@ -100,7 +100,7 @@ export function LandingPage() {
               
               <div className="relative z-10 w-72 h-72 animate-fade-in">
                 <Image 
-                  src="https://firebasestudio.ai/gallery/Elysium/1.png"
+                  src="https://firebasestudio.ai/gallery/Elysium/4.png"
                   alt="AI Girlfriend"
                   data-ai-hint="beautiful woman"
                   fill
