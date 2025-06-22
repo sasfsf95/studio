@@ -1,3 +1,4 @@
+
 "use client";
 import React from 'react';
 import Image from 'next/image';
@@ -10,28 +11,32 @@ const characters = [
     id: 'aria',
     name: 'Aria',
     description: 'Your intimate and seductive AI companion.',
-    image: 'https://firebasestudio.ai/gallery/Elysium/1.png',
+    image: 'https://placehold.co/600x800.png',
+    hint: 'beautiful woman',
     theme: 'romantic-pink',
   },
   {
     id: 'raven',
     name: 'Raven',
     description: 'A mysterious and alluring confidante.',
-    image: 'https://firebasestudio.ai/gallery/Elysium/2.png',
+    image: 'https://placehold.co/600x800.png',
+    hint: 'mysterious woman',
     theme: 'mystic-purple',
   },
   {
     id: 'chloe',
     name: 'Chloe',
     description: 'A playful and fun-loving partner.',
-    image: 'https://firebasestudio.ai/gallery/Elysium/3.png',
+    image: 'https://placehold.co/600x800.png',
+    hint: 'playful woman',
     theme: 'golden-luxe',
   },
   {
     id: 'seraphina',
     name: 'Seraphina',
     description: 'An elegant and sophisticated soulmate.',
-    image: 'https://firebasestudio.ai/gallery/Elysium/4.png',
+    image: 'https://placehold.co/600x800.png',
+    hint: 'elegant woman',
     theme: 'seductive-red',
   },
 ];
@@ -57,6 +62,7 @@ const CharacterSelection: React.FC<CharacterSelectionProps> = ({ onCharacterSele
                 <Image
                   src={character.image}
                   alt={character.name}
+                  data-ai-hint={character.hint}
                   fill
                   className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
                 />
