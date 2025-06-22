@@ -20,7 +20,7 @@ export default function ChatPage() {
       const storedCharacter = localStorage.getItem('selectedCharacter');
       if (storedCharacter) {
         const character = JSON.parse(storedCharacter);
-        setCharacterImage(character.image || 'https://firebasestudio.ai/gallery/Elysium/4.png');
+        setCharacterImage(character.image || 'https://firebasestudio.ai/gallery/Elysium/1.png');
         setTheme(character.theme || 'romantic-pink');
         setCompanionName(character.name || 'Aria');
       } else {
