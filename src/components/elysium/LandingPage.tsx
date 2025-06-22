@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from 'react';
-import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Smartphone, Apple, Heart, Sparkles } from 'lucide-react';
 import CharacterSelection from './CharacterSelection';
@@ -99,16 +98,14 @@ export function LandingPage() {
               <div className="absolute inset-4 bg-gradient-to-r from-purple-500/15 to-pink-500/15 rounded-full blur-lg animate-float-gentle"></div>
               
               <div className="relative z-10 w-72 h-72 animate-fade-in">
-                <Image 
+                <img 
                   src="https://firebasestudio.ai/gallery/Elysium/4.png"
                   alt="AI Girlfriend"
                   data-ai-hint="beautiful woman"
-                  fill
-                  className="object-contain hover:scale-105 transition-transform duration-300"
+                  className="w-full h-full object-contain hover:scale-105 transition-transform duration-300"
                   style={{
                     filter: 'drop-shadow(0 0 15px rgba(255, 107, 157, 0.2)) drop-shadow(0 0 30px rgba(196, 75, 212, 0.1))'
                   }}
-                  priority
                 />
               </div>
               
