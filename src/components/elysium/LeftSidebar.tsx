@@ -56,9 +56,9 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
         <div className="relative p-1 rounded-3xl bg-gradient-to-tr from-primary to-fuchsia-800 shadow-2xl shadow-primary/30">
            <div className="relative h-[320px] w-[240px] rounded-2xl overflow-hidden">
             <Image
-              src={characterImage || "https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png"}
+              src={characterImage || "https://placehold.co/400x600.png"}
               alt="Raven AI Companion"
-              data-ai-hint="beautiful woman pink hair"
+              data-ai-hint="beautiful woman"
               fill
               className="object-cover object-top"
               priority
