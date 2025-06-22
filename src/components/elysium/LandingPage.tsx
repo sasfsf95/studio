@@ -176,16 +176,6 @@ export function LandingPage() {
           </header>
 
           <div className="p-4 md:p-6">
-            <div className="bg-zinc-900/50 border border-border p-4 rounded-lg mb-6 flex flex-col md:flex-row items-center justify-between gap-4">
-                <div className="flex items-center gap-4">
-                    <Image src="https://placehold.co/150x150.png" width={100} height={100} alt="Indian Webcam" className="rounded-lg object-cover hidden sm:block" data-ai-hint="indian woman"/>
-                    <div>
-                        <h2 className="text-xl font-bold flex items-center gap-2">Hot Indian Webcams – 24x7 LIVE <Badge className="bg-orange-500 border-none text-white">hot</Badge></h2>
-                        <p className="text-muted-foreground">100% Real देसी गर्ल्स CAM Chat ke liye online hain.</p>
-                    </div>
-                </div>
-                <Button className="bg-orange-500 hover:bg-orange-600 text-white font-bold w-full md:w-auto shadow-lg shadow-orange-500/20">Chat Shuru Karo!</Button>
-            </div>
             
             <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">Chat with Your Dream AI Girlfriend – Anytime, Anywhere</h2>
             <div className="flex items-center justify-center gap-3 mb-6">
