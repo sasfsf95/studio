@@ -23,12 +23,13 @@ import {
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Switch } from '@/components/ui/switch';
 
 const characters = [
     {
     id: 'aria',
     name: 'Aria',
-    image: 'https://firebasestudio.ai/yuki-ai--yuki-ai/yv214d.png',
+    image: 'https://placehold.co/400x600.png',
     hint: 'beautiful woman',
     theme: 'romantic-pink',
     likes: '38K',
@@ -39,7 +40,7 @@ const characters = [
   {
     id: 'ivana',
     name: 'Ivana',
-    image: 'https://firebasestudio.ai/yuki-ai--yuki-ai/4n371n.png',
+    image: 'https://placehold.co/400x600.png',
     hint: 'beautiful woman',
     theme: 'mystic-purple',
     likes: '52K',
@@ -59,7 +60,7 @@ const characters = [
   {
     id: 'seraphina',
     name: 'Seraphina',
-    image: 'https://firebasestudio.ai/yuki-ai--yuki-ai/7w731n.png',
+    image: 'https://placehold.co/400x600.png',
     hint: 'elegant woman lingerie',
     theme: 'seductive-red',
     likes: '44K',
@@ -176,15 +177,11 @@ export function LandingPage() {
 
           <div className="p-4 md:p-6">
             
-            <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">Chat with Your Dream AI Girlfriend – Anytime, Anywhere</h2>
             <div className="flex items-center justify-center gap-3 mb-6">
                 <Sparkles className="text-pink-400 w-5 h-5" />
-                <Sparkles className="text-pink-500 w-5 h-5" />
+                <p className="font-semibold text-lg">Show online only</p>
+                <Switch defaultChecked />
                 <Sparkles className="text-pink-400 w-5 h-5" />
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" value="" className="sr-only peer" defaultChecked/>
-                  <div className="w-11 h-6 bg-gray-600 rounded-full peer peer-focus:ring-2 peer-focus:ring-pink-800/50 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-                </label>
             </div>
 
             <div className="mb-6">
@@ -219,6 +216,9 @@ export function LandingPage() {
                            <div className="flex items-center gap-1 bg-black/50 backdrop-blur-sm py-0.5 px-1.5 rounded-md"><Heart className="h-3 w-3 text-red-400"/> {character.likes}</div>
                            <div className="flex items-center gap-1 bg-black/50 backdrop-blur-sm py-0.5 px-1.5 rounded-md"><Eye className="h-3 w-3 text-blue-300"/> {character.views}</div>
                        </div>
+                    </div>
+                    <div className="p-3 bg-card">
+                      <h3 className="font-semibold text-white">{character.name}</h3>
                     </div>
                   </CardContent>
                 </Card>
