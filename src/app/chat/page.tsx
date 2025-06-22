@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -21,7 +20,7 @@ export default function ChatPage() {
       const storedCharacter = localStorage.getItem('selectedCharacter');
       if (storedCharacter) {
         const character = JSON.parse(storedCharacter);
-        setCharacterImage(character.image || '/lovable-uploads/e06b74e6-429a-4c9f-85d8-55444a73229b.png');
+        setCharacterImage(character.image || '/lovable-uploads/a7e9c2b3-d4e5-4f6a-7b8c-9d0e1f2a3b4c.png');
         setTheme(character.theme || 'romantic-pink');
         setCompanionName(character.name || 'Aria');
       } else {

@@ -1,4 +1,3 @@
-
 "use client";
 import React from 'react';
 import Image from 'next/image';
@@ -11,7 +10,7 @@ const characters = [
     id: 'aria',
     name: 'Aria',
     description: 'Your intimate and seductive AI companion.',
-    image: '/lovable-uploads/e06b74e6-429a-4c9f-85d8-55444a73229b.png',
+    image: '/lovable-uploads/a7e9c2b3-d4e5-4f6a-7b8c-9d0e1f2a3b4c.png',
     theme: 'romantic-pink',
   },
   {

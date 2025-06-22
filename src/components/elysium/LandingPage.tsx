@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState } from 'react';
@@ -101,7 +100,7 @@ export function LandingPage() {
               
               <div className="relative z-10 w-72 h-72 animate-fade-in">
                 <Image 
-                  src="/lovable-uploads/e06b74e6-429a-4c9f-85d8-55444a73229b.png" 
+                  src="/lovable-uploads/a7e9c2b3-d4e5-4f6a-7b8c-9d0e1f2a3b4c.png" 
                   alt="AI Girlfriend"
                   data-ai-hint="beautiful woman"
                   fill
