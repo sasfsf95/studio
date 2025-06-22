@@ -59,7 +59,7 @@ const characters = [
   {
     id: 'seraphina',
     name: 'Seraphina',
-    image: 'https://placehold.co/400x600.png',
+    image: 'https://firebasestudio.ai/yuki-ai--yuki-ai/7w731n.png',
     hint: 'elegant woman lingerie',
     theme: 'seductive-red',
     likes: '44K',
@@ -170,7 +170,6 @@ export function LandingPage() {
              <div className="flex items-center gap-6 text-base font-semibold">
                  <Button variant="ghost" className="text-primary border-b-2 border-primary rounded-none px-1 py-0 h-auto hover:text-primary">Girls</Button>
                  <Button variant="ghost" className="text-muted-foreground hover:text-white px-1 py-0 h-auto">Anime</Button>
-                 <Button variant="ghost" className="text-muted-foreground hover:text-white px-1 py-0 h-auto">Guys</Button>
              </div>
              <Button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold hover:opacity-90"><Crown className="mr-2" /> Become Premium</Button>
           </header>
