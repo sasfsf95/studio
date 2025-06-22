@@ -55,7 +55,7 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
         <div className="relative p-1 rounded-3xl bg-gradient-to-tr from-primary to-fuchsia-800 shadow-2xl shadow-primary/30">
            <div className="relative h-[320px] w-[240px] rounded-2xl overflow-hidden">
             <Image
-              src={characterImage || "/lovable-uploads/a7e9c2b3-d4e5-4f6a-7b8c-9d0e1f2a3b4c.png"}
+              src={characterImage || "https://firebasestudio.ai/gallery/Elysium/1.png"}
               alt="Raven AI Companion"
               data-ai-hint="beautiful woman"
               fill

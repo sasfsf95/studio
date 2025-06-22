@@ -100,11 +100,11 @@ export function LandingPage() {
               
               <div className="relative z-10 w-72 h-72 animate-fade-in">
                 <Image 
-                  src="/lovable-uploads/a7e9c2b3-d4e5-4f6a-7b8c-9d0e1f2a3b4c.png" 
+                  src="https://firebasestudio.ai/gallery/Elysium/1.png"
                   alt="AI Girlfriend"
                   data-ai-hint="beautiful woman"
                   fill
-                  className="object-contain hover:scale-105 transition-transform duration-300 object-top"
+                  className="object-contain hover:scale-105 transition-transform duration-300"
                   style={{
                     filter: 'drop-shadow(0 0 15px rgba(255, 107, 157, 0.2)) drop-shadow(0 0 30px rgba(196, 75, 212, 0.1))'
                   }}
