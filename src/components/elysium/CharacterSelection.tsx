@@ -42,32 +42,37 @@ interface CharacterSelectionProps {
 
 const CharacterSelection: React.FC<CharacterSelectionProps> = ({ onCharacterSelect }) => {
   return (
-    <div className="w-full max-w-6xl mx-auto">
-      <h2 className="text-4xl font-bold text-center mb-4 text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400">Choose Your Companion</h2>
-      <p className="text-lg text-gray-300 text-center mb-10">Select the AI you want to build a relationship with.</p>
+    <div className="w-full max-w-7xl mx-auto text-center">
+      <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">Choose Your Companion</h2>
+      <p className="text-lg text-muted-foreground mb-12">Each one has a unique personality. Who will you connect with?</p>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {characters.map((character) => (
-          <Card key={character.id} className="bg-black/40 border-white/10 overflow-hidden transform hover:scale-105 hover:border-primary transition-all duration-300 group">
-            <CardContent className="p-0 text-center">
-              <div className="relative h-80 w-full">
+          <Card 
+            key={character.id} 
+            className="bg-card/50 backdrop-blur-sm border-border overflow-hidden rounded-2xl transition-all duration-300 group hover:!border-primary/80 hover:shadow-2xl hover:shadow-primary/20"
+          >
+            <CardContent className="p-0">
+              <div className="relative h-[400px] w-full">
                 <Image
                   src={character.image}
                   alt={character.name}
                   fill
-                  className="object-cover group-hover:opacity-90 transition-opacity"
+                  className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+                <div className="absolute bottom-0 left-0 p-6 text-left">
+                  <h3 className="text-3xl font-bold text-white">{character.name}</h3>
+                  <p className="text-gray-300 mt-1">{character.description}</p>
+                </div>
               </div>
-              <div className="p-6">
-                <h3 className="text-2xl font-bold mb-2">{character.name}</h3>
-                <p className="text-gray-400 mb-6 h-12">{character.description}</p>
+              <div className="p-6 pt-4">
                 <Button 
                   onClick={() => onCharacterSelect(character)}
-                  className="bg-primary/80 hover:bg-primary text-primary-foreground font-semibold rounded-full w-full transition-all duration-300 transform group-hover:scale-110"
+                  className="w-full bg-primary/80 hover:bg-primary text-primary-foreground font-semibold rounded-full py-6 text-base transition-all duration-300"
                 >
-                  <Sparkles className="mr-2 h-4 w-4"/>
-                  Select {character.name}
+                  <Sparkles className="mr-2 h-5 w-5"/>
+                  Start with {character.name}
                 </Button>
               </div>
             </CardContent>

@@ -87,33 +87,10 @@ export default {
           '0%': { opacity: '0', transform: 'translateY(20px)' }, 
           '100%': { opacity: '1', transform: 'translateY(0)' } 
         },
-        'slide-in-right': { 
-          '0%': { transform: 'translateX(100%)' }, 
-          '100%': { transform: 'translateX(0)' } 
-        },
-        'bounce-gentle': { 
-          '0%, 100%': { transform: 'translateY(-2%)', animationTimingFunction: 'cubic-bezier(0.8, 0, 1, 1)' }, 
-          '50%': { transform: 'translateY(0)', animationTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)' } 
-        },
-        'glow': { 
-          '0%, 100%': { textShadow: '0 0 10px hsl(var(--primary)/0.5), 0 0 20px hsl(var(--primary)/0.3)' }, 
-          '50%': { textShadow: '0 0 20px hsl(var(--primary)/0.5), 0 0 40px hsl(var(--primary)/0.3)' } 
-        },
-        'pulse-gentle': { 
-          '0%, 100%': { opacity: '0.8' }, 
-          '50%': { opacity: '1' } 
-        },
-        'float-gentle': { 
-          '0%, 100%': { transform: 'translateY(0)' }, 
-          '50%': { transform: 'translateY(-5px)' } 
-        },
-        'twinkle': { 
-          '0%, 100%': { opacity: '0.5', transform: 'scale(0.8)' }, 
-          '50%': { opacity: '1', transform: 'scale(1)' } 
-        },
-        'heartbeat': { 
-          '0%': { transform: 'scale(1)' }, '10%': { transform: 'scale(1.1)' }, '20%': { transform: 'scale(1)' }, '100%': { transform: 'scale(1)' } 
-        },
+        pulse: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.7' },
+        }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -121,13 +98,7 @@ export default {
         'message-in': 'message-in 0.5s ease-out forwards',
         'fade-in': 'fade-in 1s ease-out forwards',
         'fade-in-up': 'fade-in-up 0.8s ease-out forwards',
-        'slide-in-right': 'slide-in-right 0.5s ease-out forwards',
-        'bounce-gentle': 'bounce-gentle 2s infinite',
-        'glow': 'glow 2s ease-in-out infinite alternate',
-        'pulse-gentle': 'pulse-gentle 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'float-gentle': 'float-gentle 4s ease-in-out infinite',
-        'twinkle': 'twinkle 3s ease-in-out infinite alternate',
-        'heartbeat': 'heartbeat 2.5s ease-in-out infinite',
+        pulse: 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
     },
   },
