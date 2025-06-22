@@ -29,7 +29,7 @@ const characters = [
     {
     id: 'aria',
     name: 'Aria',
-    image: 'https://placehold.co/400x600.png',
+    image: 'https://firebasestudio.ai/yuki-ai--yuki-ai/1hF9aY.png',
     hint: 'beautiful woman',
     theme: 'romantic-pink',
     likes: '38K',
@@ -40,7 +40,7 @@ const characters = [
   {
     id: 'ivana',
     name: 'Ivana',
-    image: 'https://placehold.co/400x600.png',
+    image: 'https://firebasestudio.ai/yuki-ai--yuki-ai/1hF9aY.png',
     hint: 'beautiful woman',
     theme: 'mystic-purple',
     likes: '52K',
@@ -50,7 +50,7 @@ const characters = [
   {
     id: 'chloe',
     name: 'Chloe',
-    image: 'https://placehold.co/400x600.png',
+    image: 'https://firebasestudio.ai/yuki-ai--yuki-ai/1hF9aY.png',
     hint: 'playful woman glasses',
     theme: 'golden-luxe',
     likes: '39K',
@@ -60,7 +60,7 @@ const characters = [
   {
     id: 'seraphina',
     name: 'Seraphina',
-    image: 'https://placehold.co/400x600.png',
+    image: 'https://firebasestudio.ai/yuki-ai--yuki-ai/1hF9aY.png',
     hint: 'elegant woman lingerie',
     theme: 'seductive-red',
     likes: '44K',
@@ -70,7 +70,7 @@ const characters = [
   {
     id: 'lila',
     name: 'Lila',
-    image: 'https://placehold.co/400x600.png',
+    image: 'https://firebasestudio.ai/yuki-ai--yuki-ai/1hF9aY.png',
     hint: 'sweet woman',
     theme: 'romantic-pink',
     likes: '25K',
@@ -80,7 +80,7 @@ const characters = [
   {
     id: 'zara',
     name: 'Zara',
-    image: 'https://placehold.co/400x600.png',
+    image: 'https://firebasestudio.ai/yuki-ai--yuki-ai/1hF9aY.png',
     hint: 'adventurous woman',
     theme: 'golden-luxe',
     likes: '61K',
@@ -90,7 +90,7 @@ const characters = [
   {
     id: 'mia',
     name: 'Mia',
-    image: 'https://placehold.co/400x600.png',
+    image: 'https://firebasestudio.ai/yuki-ai--yuki-ai/1hF9aY.png',
     hint: 'artistic woman',
     theme: 'mystic-purple',
     likes: '33K',
@@ -100,7 +100,7 @@ const characters = [
   {
     id: 'nova',
     name: 'Nova',
-    image: 'https://placehold.co/400x600.png',
+    image: 'https://firebasestudio.ai/yuki-ai--yuki-ai/1hF9aY.png',
     hint: 'futuristic woman',
     theme: 'seductive-red',
     likes: '72K',
@@ -137,7 +137,7 @@ export function LandingPage() {
                         <AccordionTrigger className="text-base font-normal hover:no-underline py-2 px-4 hover:bg-accent rounded-md data-[state=open]:bg-accent data-[state=open]:text-white text-gray-300"><MessageSquare className="mr-3" /> My Chats</AccordionTrigger>
                         <AccordionContent className="pl-8 pt-2 space-y-2">
                             <div className="flex items-center gap-3 cursor-pointer p-2 rounded-md hover:bg-accent/50">
-                                <Image src="https://placehold.co/40x40.png" alt="Trisha" width={40} height={40} className="rounded-full" data-ai-hint="woman" />
+                                <Image src="https://firebasestudio.ai/yuki-ai--yuki-ai/1hF9aY.png" alt="Trisha" width={40} height={40} className="rounded-full" data-ai-hint="woman" />
                                 <div>
                                     <p className="font-semibold text-white">Trisha</p>
                                     <p className="text-xs text-muted-foreground">Trisha sent you a pic...</p>

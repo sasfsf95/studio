@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from 'react';
@@ -26,7 +27,7 @@ export function UserProfile({ onSubmit, isLoading }: UserProfileProps) {
     <div className="flex-1 flex items-center justify-center p-4 sm:p-8">
        <Card className="w-full max-w-lg shadow-xl bg-card/70 backdrop-blur-lg border-2 border-primary/20 relative">
         <CardHeader className="items-center text-center">
-          <Image src="https://placehold.co/200x200.png" data-ai-hint="beautiful dark hair woman" alt="Raven" width={100} height={100} className="rounded-full border-4 border-primary/50 shadow-lg" />
+          <Image src="https://firebasestudio.ai/yuki-ai--yuki-ai/1hF9aY.png" data-ai-hint="beautiful dark hair woman" alt="Raven" width={100} height={100} className="rounded-full border-4 border-primary/50 shadow-lg" />
           <CardTitle className="font-bold text-4xl pt-4 text-transparent bg-clip-text bg-gradient-to-r from-primary to-fuchsia-500">Meet Raven</CardTitle>
           <CardDescription className="pt-2 text-base max-w-sm text-muted-foreground">
             I want to know all about you. What are you passionate about? What are your wildest dreams? Don't be shy.
