@@ -20,7 +20,7 @@ import {
   Sparkles,
   Upload,
 } from 'lucide-react';
-import React, { useState, type ChangeEvent } from 'react';
+import React, { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Switch } from '@/components/ui/switch';
@@ -29,7 +29,7 @@ const initialCharacters = [
     {
     id: 'aria',
     name: 'Aria',
-    image: 'https://placehold.co/400x600.png',
+    image: '/character.png',
     hint: 'beautiful woman',
     theme: 'romantic-pink',
     likes: '38K',
@@ -40,7 +40,7 @@ const initialCharacters = [
   {
     id: 'ivana',
     name: 'Ivana',
-    image: 'https://placehold.co/400x600.png',
+    image: '/character.png',
     hint: 'beautiful woman',
     theme: 'mystic-purple',
     likes: '52K',
@@ -50,7 +50,7 @@ const initialCharacters = [
   {
     id: 'chloe',
     name: 'Chloe',
-    image: 'https://placehold.co/400x600.png',
+    image: '/character.png',
     hint: 'beautiful woman',
     theme: 'golden-luxe',
     likes: '39K',
@@ -60,7 +60,7 @@ const initialCharacters = [
   {
     id: 'seraphina',
     name: 'Seraphina',
-    image: 'https://placehold.co/400x600.png',
+    image: '/character.png',
     hint: 'beautiful woman',
     theme: 'seductive-red',
     likes: '44K',
@@ -70,7 +70,7 @@ const initialCharacters = [
   {
     id: 'lila',
     name: 'Lila',
-    image: 'https://placehold.co/400x600.png',
+    image: '/character.png',
     hint: 'beautiful woman',
     theme: 'romantic-pink',
     likes: '25K',
@@ -80,7 +80,7 @@ const initialCharacters = [
   {
     id: 'zara',
     name: 'Zara',
-    image: 'https://placehold.co/400x600.png',
+    image: '/character.png',
     hint: 'beautiful woman',
     theme: 'golden-luxe',
     likes: '61K',
@@ -90,7 +90,7 @@ const initialCharacters = [
   {
     id: 'mia',
     name: 'Mia',
-    image: 'https://placehold.co/400x600.png',
+    image: '/character.png',
     hint: 'beautiful woman',
     theme: 'mystic-purple',
     likes: '33K',
@@ -100,7 +100,7 @@ const initialCharacters = [
   {
     id: 'nova',
     name: 'Nova',
-    image: 'https://placehold.co/400x600.png',
+    image: '/character.png',
     hint: 'beautiful woman',
     theme: 'seductive-red',
     likes: '72K',
@@ -113,7 +113,6 @@ const tags = ['Asian', 'Redhead', 'Latina', 'Athletic', 'Gothic', 'Brunette', 'S
 
 export function LandingPage() {
   const router = useRouter();
-  const [characters, setCharacters] = useState(initialCharacters);
 
   const handleCharacterSelect = (character: any) => {
     if (typeof window !== 'undefined') {
@@ -121,23 +120,6 @@ export function LandingPage() {
     }
     router.push('/chat');
   };
-
-  const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (loadEvent) => {
-        const imageDataUrl = loadEvent.target?.result as string;
-        const updatedCharacters = characters.map((char) => ({
-          ...char,
-          image: imageDataUrl,
-        }));
-        setCharacters(updatedCharacters);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
 
   const SidebarNav = () => (
     <div className="flex flex-col h-full text-sm">
@@ -155,7 +137,7 @@ export function LandingPage() {
                         <AccordionTrigger className="text-base font-normal hover:no-underline py-2 px-4 hover:bg-accent rounded-md data-[state=open]:bg-accent data-[state=open]:text-white text-gray-300"><MessageSquare className="mr-3" /> My Chats</AccordionTrigger>
                         <AccordionContent className="pl-8 pt-2 space-y-2">
                             <div className="flex items-center gap-3 cursor-pointer p-2 rounded-md hover:bg-accent/50">
-                                <img src="https://placehold.co/40x40.png" alt="Trisha" width={40} height={40} className="rounded-full object-cover" data-ai-hint="beautiful woman" />
+                                <img src="/character.png" alt="Trisha" width={40} height={40} className="rounded-full object-cover" data-ai-hint="beautiful woman" />
                                 <div>
                                     <p className="font-semibold text-white">Trisha</p>
                                     <p className="text-xs text-muted-foreground">Trisha sent you a pic...</p>
@@ -201,14 +183,6 @@ export function LandingPage() {
                     <Switch defaultChecked />
                     <Sparkles className="text-pink-400 w-5 h-5" />
                 </div>
-                 <div>
-                    <Button asChild className="cursor-pointer">
-                        <label htmlFor="image-upload">
-                            <Upload className="mr-2 h-4 w-4" /> Upload Custom Image
-                        </label>
-                    </Button>
-                    <input type="file" id="image-upload" accept="image/*" className="hidden" onChange={handleImageUpload} />
-                </div>
             </div>
 
             <div className="mb-6">
@@ -222,7 +196,7 @@ export function LandingPage() {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-              {characters.map(character => (
+              {initialCharacters.map(character => (
                 <Card key={character.id} className="bg-card border-border overflow-hidden rounded-lg group cursor-pointer shadow-lg hover:shadow-primary/20 hover:border-primary/50 transition-all duration-300" onClick={() => handleCharacterSelect(character)}>
                   <CardContent className="p-0">
                     <div className="relative h-[300px] w-full">

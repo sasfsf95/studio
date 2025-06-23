@@ -8,7 +8,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Crown, Sparkles, MessageSquare, Heart, Camera, Flame, WandSparkles, Users, Moon, Eclipse } from 'lucide-react';
-import { useRef, type ChangeEvent } from 'react';
 import { cn } from '@/lib/utils';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
@@ -22,23 +21,7 @@ interface LeftSidebarProps {
 }
 
 export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme, companionName, setCompanionName }: LeftSidebarProps) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleCameraClick = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (loadEvent) => {
-        setCharacterImage(loadEvent.target?.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-  
   return (
     <aside className="w-[360px] bg-black/30 p-4 flex flex-col space-y-6 border-r border-white/5 overflow-y-auto">
       <header className="flex justify-between items-center">
@@ -55,7 +38,7 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
         <div className="relative p-1 rounded-3xl bg-gradient-to-tr from-primary to-fuchsia-800 shadow-2xl shadow-primary/30">
            <div className="relative h-[320px] w-[240px] rounded-2xl overflow-hidden">
             <img
-              src={characterImage || "https://placehold.co/400x600.png"}
+              src={characterImage || "/character.png"}
               alt="Raven AI Companion"
               data-ai-hint="beautiful woman"
               className="absolute inset-0 h-full w-full object-cover object-top"
@@ -66,16 +49,6 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
                     PREMIUM
                 </div>
             </div>
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              className="hidden"
-              accept="image/*"
-            />
-            <Button onClick={handleCameraClick} size="icon" variant="secondary" className="absolute top-3 right-3 h-9 w-9 bg-black/50 backdrop-blur-sm rounded-full border border-white/10">
-                <Camera className="h-5 w-5" />
-            </Button>
            </div>
         </div>
 
@@ -202,5 +175,3 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
     </aside>
   );
 }
-
-    
