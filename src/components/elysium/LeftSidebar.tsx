@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Button } from '@/components/ui/button';
@@ -7,8 +6,9 @@ import { Progress } from '@/components/ui/progress';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Crown, Sparkles, MessageSquare, Heart, Camera, Flame, WandSparkles, Users, Moon, Eclipse } from 'lucide-react';
+import { Crown, Sparkles, MessageSquare, Heart, Flame, WandSparkles, Users, Moon, Eclipse, Upload } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useRef } from 'react';
 
 interface LeftSidebarProps {
   characterImage: string | null;
@@ -20,6 +20,23 @@ interface LeftSidebarProps {
 }
 
 export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme, companionName, setCompanionName }: LeftSidebarProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const newImageUrl = e.target?.result as string;
+        setCharacterImage(newImageUrl);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   return (
     <aside className="w-[360px] bg-black/30 p-4 flex flex-col space-y-6 border-r border-white/5 overflow-y-auto">
@@ -94,8 +111,18 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
             <Input id="companion-name" value={companionName} onChange={(e) => setCompanionName(e.target.value)} className="mt-1 bg-black/40 border-white/10 h-9" />
           </div>
           <div>
-            <Label htmlFor="image-url" className="text-muted-foreground text-xs font-medium">Image URL</Label>
-            <Input id="image-url" value={characterImage || ''} onChange={(e) => setCharacterImage(e.target.value)} className="mt-1 bg-black/40 border-white/10 h-9" placeholder="Enter image URL..." />
+            <Label className="text-muted-foreground text-xs font-medium block mb-1">Character Image</Label>
+            <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                className="hidden"
+                accept="image/*"
+            />
+            <Button onClick={handleImageUploadClick} variant="outline" className="w-full bg-black/40 border-white/10 h-9">
+                <Upload className="mr-2 h-4 w-4" />
+                Upload New Image
+            </Button>
           </div>
           <div>
             <Label htmlFor="personality" className="text-muted-foreground text-xs font-medium">Personality</Label>
