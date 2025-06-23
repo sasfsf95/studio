@@ -5,7 +5,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Send, Mic, Heart, Sparkles, Sun, Camera, Gift, Drama, Flame, Loader2 } from 'lucide-react';
+import { Send, Mic, Heart, Sparkles, Sun, Camera, Gift, Drama, Flame, Loader2, Paperclip } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export interface Message {
@@ -14,12 +14,13 @@ export interface Message {
   sender: 'user' | 'ai';
   timestamp?: string;
   avatar?: string;
+  imageUrl?: string;
 }
 
 interface ChatInterfaceProps {
   messages: Message[];
   icebreakers: string[];
-  onSendMessage: (text: string) => void;
+  onSendMessage: (text: string, imageUrl?: string) => void;
   isLoadingIcebreakers: boolean;
   isAiResponding: boolean;
   characterImage: string | null;
@@ -38,6 +39,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -52,16 +54,37 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
 
   const handleSend = () => {
     if (inputValue.trim() && !isAiResponding) {
-      onSendMessage(inputValue.trim());
+      onSendMessage(inputValue.trim(), undefined);
       setInputValue('');
     }
   };
 
   const handleIcebreakerClick = (text: string) => {
     if (!isAiResponding) {
-      onSendMessage(text);
+      onSendMessage(text, undefined);
     }
   };
+
+  const handleAttachmentClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file && !isAiResponding) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const imageUrl = e.target?.result as string;
+        onSendMessage(inputValue, imageUrl);
+        setInputValue('');
+      };
+      reader.readAsDataURL(file);
+    }
+    if (event.target) {
+      event.target.value = '';
+    }
+  };
+
 
   const conversationStarted = messages.some((msg) => msg.sender === 'user');
 
@@ -102,7 +125,10 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
                         ? 'bg-gradient-to-br from-primary to-fuchsia-600 text-primary-foreground rounded-br-lg shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30'
                         : 'bg-card text-card-foreground rounded-bl-lg shadow-xl shadow-primary/20 hover:shadow-2xl hover:shadow-primary/30'
                     )}>
-                      <p>{msg.text}</p>
+                      {msg.imageUrl && (
+                        <img src={msg.imageUrl} alt="Uploaded content" className="rounded-lg mb-2 max-w-full h-auto" data-ai-hint="photo message"/>
+                      )}
+                      {msg.text && <p>{msg.text}</p>}
                     </div>
                     {msg.timestamp && <p className="text-xs text-muted-foreground px-1">{msg.timestamp}</p>}
                 </div>
@@ -160,6 +186,10 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
           </div>
         
           <div className="flex items-end gap-2 border rounded-xl p-2 bg-black/40 border-white/10">
+            <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept="image/*" />
+            <Button size="icon" variant="ghost" onClick={handleAttachmentClick} disabled={isAiResponding} className="flex-shrink-0 h-10 w-10 rounded-full hover:bg-primary/20">
+                <Paperclip className="h-5 w-5 text-primary" />
+            </Button>
             <Textarea
               ref={textareaRef}
               value={inputValue}

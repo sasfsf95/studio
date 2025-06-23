@@ -73,18 +73,26 @@ export function ChatContainer({ characterImage, companionName }: ChatContainerPr
     );
   }, [characterImage]);
   
-  const handleSendMessage = (text: string) => {
-    const newUserMessage: Message = { id: Date.now().toString(), text, sender: 'user', timestamp: format(new Date(), 'p') };
+  const handleSendMessage = (text: string, imageUrl?: string) => {
+    if (!text.trim() && !imageUrl) return;
+
+    const newUserMessage: Message = { id: Date.now().toString(), text, sender: 'user', timestamp: format(new Date(), 'p'), imageUrl };
     const updatedMessages = [...messages, newUserMessage];
     setMessages(updatedMessages);
     
     startAiTransition(async () => {
       try {
         const chatHistory = updatedMessages
-          .map(msg => `${msg.sender === 'user' ? 'User' : companionName}: ${msg.text}`)
+          .map(msg => {
+            let historyLine = `${msg.sender === 'user' ? 'User' : companionName}: ${msg.text}`;
+            if (msg.imageUrl) {
+                historyLine += " (sent an image)";
+            }
+            return historyLine;
+          })
           .join('\n');
 
-        const aiResponseText = await continueConversation({ message: text, chatHistory });
+        const aiResponseText = await continueConversation({ message: text, chatHistory, imageUrl });
 
         const aiResponse: Message = { id: (Date.now() + 1).toString(), text: aiResponseText, sender: 'ai', timestamp: format(new Date(), 'p'), avatar: characterImage || placeholderAvatar };
         setMessages(prev => [...prev, aiResponse]);

@@ -10,7 +10,7 @@ export async function getIcebreakers(input: GenerateIcebreakerMessagesInput) {
   return result;
 }
 
-export async function continueConversation({ message, chatHistory }: { message: string, chatHistory: string }): Promise<string> {
+export async function continueConversation({ message, chatHistory, imageUrl }: { message: string, chatHistory: string, imageUrl?: string }): Promise<string> {
   const webhookUrl = 'https://sasa2.app.n8n.cloud/webhook/yukiai';
 
   try {
@@ -19,7 +19,7 @@ export async function continueConversation({ message, chatHistory }: { message: 
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ message, chatHistory }),
+      body: JSON.stringify({ message, chatHistory, imageUrl }),
     });
 
     if (!response.ok) {
