@@ -18,17 +18,18 @@ import {
   Eye,
   PlusSquare,
   Sparkles,
+  Upload,
 } from 'lucide-react';
-import React from 'react';
+import React, { useState, type ChangeEvent } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Switch } from '@/components/ui/switch';
 
-const characters = [
+const initialCharacters = [
     {
     id: 'aria',
     name: 'Aria',
-    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/33534d0e-a20c-4828-912f-f463abe96b7f.png',
+    image: 'https://placehold.co/400x600.png',
     hint: 'beautiful woman',
     theme: 'romantic-pink',
     likes: '38K',
@@ -39,7 +40,7 @@ const characters = [
   {
     id: 'ivana',
     name: 'Ivana',
-    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/33534d0e-a20c-4828-912f-f463abe96b7f.png',
+    image: 'https://placehold.co/400x600.png',
     hint: 'beautiful woman',
     theme: 'mystic-purple',
     likes: '52K',
@@ -49,7 +50,7 @@ const characters = [
   {
     id: 'chloe',
     name: 'Chloe',
-    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/33534d0e-a20c-4828-912f-f463abe96b7f.png',
+    image: 'https://placehold.co/400x600.png',
     hint: 'beautiful woman',
     theme: 'golden-luxe',
     likes: '39K',
@@ -59,7 +60,7 @@ const characters = [
   {
     id: 'seraphina',
     name: 'Seraphina',
-    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/33534d0e-a20c-4828-912f-f463abe96b7f.png',
+    image: 'https://placehold.co/400x600.png',
     hint: 'beautiful woman',
     theme: 'seductive-red',
     likes: '44K',
@@ -69,7 +70,7 @@ const characters = [
   {
     id: 'lila',
     name: 'Lila',
-    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/33534d0e-a20c-4828-912f-f463abe96b7f.png',
+    image: 'https://placehold.co/400x600.png',
     hint: 'beautiful woman',
     theme: 'romantic-pink',
     likes: '25K',
@@ -79,7 +80,7 @@ const characters = [
   {
     id: 'zara',
     name: 'Zara',
-    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/33534d0e-a20c-4828-912f-f463abe96b7f.png',
+    image: 'https://placehold.co/400x600.png',
     hint: 'beautiful woman',
     theme: 'golden-luxe',
     likes: '61K',
@@ -89,7 +90,7 @@ const characters = [
   {
     id: 'mia',
     name: 'Mia',
-    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/33534d0e-a20c-4828-912f-f463abe96b7f.png',
+    image: 'https://placehold.co/400x600.png',
     hint: 'beautiful woman',
     theme: 'mystic-purple',
     likes: '33K',
@@ -99,7 +100,7 @@ const characters = [
   {
     id: 'nova',
     name: 'Nova',
-    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/33534d0e-a20c-4828-912f-f463abe96b7f.png',
+    image: 'https://placehold.co/400x600.png',
     hint: 'beautiful woman',
     theme: 'seductive-red',
     likes: '72K',
@@ -112,6 +113,7 @@ const tags = ['Asian', 'Redhead', 'Latina', 'Athletic', 'Gothic', 'Brunette', 'S
 
 export function LandingPage() {
   const router = useRouter();
+  const [characters, setCharacters] = useState(initialCharacters);
 
   const handleCharacterSelect = (character: any) => {
     if (typeof window !== 'undefined') {
@@ -119,6 +121,23 @@ export function LandingPage() {
     }
     router.push('/chat');
   };
+
+  const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (loadEvent) => {
+        const imageDataUrl = loadEvent.target?.result as string;
+        const updatedCharacters = characters.map((char) => ({
+          ...char,
+          image: imageDataUrl,
+        }));
+        setCharacters(updatedCharacters);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
 
   const SidebarNav = () => (
     <div className="flex flex-col h-full text-sm">
@@ -175,12 +194,21 @@ export function LandingPage() {
           </header>
 
           <div className="p-4 md:p-6">
-            
-            <div className="flex items-center justify-center gap-3 mb-6">
-                <Sparkles className="text-pink-400 w-5 h-5" />
-                <p className="font-semibold text-lg">Show online only</p>
-                <Switch defaultChecked />
-                <Sparkles className="text-pink-400 w-5 h-5" />
+            <div className="flex flex-col items-center justify-center gap-4 mb-6">
+                <div className="flex items-center gap-3">
+                    <Sparkles className="text-pink-400 w-5 h-5" />
+                    <p className="font-semibold text-lg">Show online only</p>
+                    <Switch defaultChecked />
+                    <Sparkles className="text-pink-400 w-5 h-5" />
+                </div>
+                 <div>
+                    <Button asChild className="cursor-pointer">
+                        <label htmlFor="image-upload">
+                            <Upload className="mr-2 h-4 w-4" /> Upload Custom Image
+                        </label>
+                    </Button>
+                    <input type="file" id="image-upload" accept="image/*" className="hidden" onChange={handleImageUpload} />
+                </div>
             </div>
 
             <div className="mb-6">
