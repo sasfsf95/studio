@@ -23,13 +23,12 @@ import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Switch } from '@/components/ui/switch';
-import Image from 'next/image';
 
 const characters = [
     {
     id: 'aria',
     name: 'Aria',
-    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png',
+    image: 'https://placehold.co/400x600.png',
     hint: 'beautiful woman',
     theme: 'romantic-pink',
     likes: '38K',
@@ -40,7 +39,7 @@ const characters = [
   {
     id: 'ivana',
     name: 'Ivana',
-    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png',
+    image: 'https://placehold.co/400x600.png',
     hint: 'beautiful woman',
     theme: 'mystic-purple',
     likes: '52K',
@@ -50,7 +49,7 @@ const characters = [
   {
     id: 'chloe',
     name: 'Chloe',
-    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png',
+    image: 'https://placehold.co/400x600.png',
     hint: 'beautiful woman',
     theme: 'golden-luxe',
     likes: '39K',
@@ -60,7 +59,7 @@ const characters = [
   {
     id: 'seraphina',
     name: 'Seraphina',
-    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png',
+    image: 'https://placehold.co/400x600.png',
     hint: 'beautiful woman',
     theme: 'seductive-red',
     likes: '44K',
@@ -70,7 +69,7 @@ const characters = [
   {
     id: 'lila',
     name: 'Lila',
-    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png',
+    image: 'https://placehold.co/400x600.png',
     hint: 'beautiful woman',
     theme: 'romantic-pink',
     likes: '25K',
@@ -80,7 +79,7 @@ const characters = [
   {
     id: 'zara',
     name: 'Zara',
-    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png',
+    image: 'https://placehold.co/400x600.png',
     hint: 'beautiful woman',
     theme: 'golden-luxe',
     likes: '61K',
@@ -90,7 +89,7 @@ const characters = [
   {
     id: 'mia',
     name: 'Mia',
-    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png',
+    image: 'https://placehold.co/400x600.png',
     hint: 'beautiful woman',
     theme: 'mystic-purple',
     likes: '33K',
@@ -100,7 +99,7 @@ const characters = [
   {
     id: 'nova',
     name: 'Nova',
-    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png',
+    image: 'https://placehold.co/400x600.png',
     hint: 'beautiful woman',
     theme: 'seductive-red',
     likes: '72K',
@@ -137,7 +136,7 @@ export function LandingPage() {
                         <AccordionTrigger className="text-base font-normal hover:no-underline py-2 px-4 hover:bg-accent rounded-md data-[state=open]:bg-accent data-[state=open]:text-white text-gray-300"><MessageSquare className="mr-3" /> My Chats</AccordionTrigger>
                         <AccordionContent className="pl-8 pt-2 space-y-2">
                             <div className="flex items-center gap-3 cursor-pointer p-2 rounded-md hover:bg-accent/50">
-                                <img src="https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png" alt="Trisha" width={40} height={40} className="rounded-full" data-ai-hint="beautiful woman" />
+                                <img src="https://placehold.co/400x600.png" alt="Trisha" width={40} height={40} className="rounded-full" data-ai-hint="beautiful woman" />
                                 <div>
                                     <p className="font-semibold text-white">Trisha</p>
                                     <p className="text-xs text-muted-foreground">Trisha sent you a pic...</p>
