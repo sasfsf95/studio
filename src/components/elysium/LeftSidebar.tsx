@@ -83,7 +83,7 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
             <Progress value={45} className="h-2 bg-secondary" />
         </CardContent>
 
-        <Accordion type="single" collapsible className="w-full">
+        <Accordion type="single" collapsible className="w-full" defaultValue="customization">
             <AccordionItem value="customization" className="border-none">
                 <AccordionTrigger className="px-6 py-3 hover:no-underline text-lg font-semibold flex items-center justify-between w-full [&[data-state=open]>svg]:text-primary">
                     <div className="flex items-center gap-2">
@@ -96,6 +96,10 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
                       <div>
                         <Label htmlFor="companion-name" className="text-muted-foreground text-xs font-medium">Name</Label>
                         <Input id="companion-name" value={companionName} onChange={(e) => setCompanionName(e.target.value)} className="mt-1 bg-black/40 border-white/10 h-9" />
+                      </div>
+                      <div>
+                        <Label htmlFor="image-url" className="text-muted-foreground text-xs font-medium">Image URL</Label>
+                        <Input id="image-url" value={characterImage || ''} onChange={(e) => setCharacterImage(e.target.value)} className="mt-1 bg-black/40 border-white/10 h-9" placeholder="Enter image URL..." />
                       </div>
                       <div>
                         <Label htmlFor="personality" className="text-muted-foreground text-xs font-medium">Personality</Label>

@@ -21,7 +21,7 @@ export default function ChatPage() {
       const storedCharacter = localStorage.getItem('selectedCharacter');
       if (storedCharacter) {
         const character = JSON.parse(storedCharacter);
-        setCharacterImage(character.image || 'https://placehold.co/400x600.png');
+        setCharacterImage(character.image || '/character.png');
         setTheme(character.theme || 'romantic-pink');
         setCompanionName(character.name || 'Aria');
       } else {
@@ -38,6 +38,28 @@ export default function ChatPage() {
     // Simulate a longer loading time for the new screen to be visible
     setTimeout(() => setIsReady(true), 1500);
   }, [router]);
+
+  useEffect(() => {
+    // Don't save to localStorage until the initial character has been loaded.
+    if (!isReady) return;
+
+    try {
+      const storedCharacter = localStorage.getItem('selectedCharacter');
+      // Parse existing data to preserve other properties like 'id'
+      const character = storedCharacter ? JSON.parse(storedCharacter) : {};
+      
+      const updatedCharacter = {
+        ...character,
+        name: companionName,
+        image: characterImage,
+        theme: theme,
+      };
+
+      localStorage.setItem('selectedCharacter', JSON.stringify(updatedCharacter));
+    } catch (error) {
+      console.error("Failed to save character to localStorage", error);
+    }
+  }, [characterImage, companionName, theme, isReady]);
 
   useEffect(() => {
     const root = document.documentElement;
