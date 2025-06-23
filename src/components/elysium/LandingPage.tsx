@@ -70,8 +70,8 @@ const characters = [
   {
     id: 'lila',
     name: 'Lila',
-    image: 'https://placehold.co/400x600.png',
-    hint: 'beautiful woman pink hair',
+    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png',
+    hint: 'beautiful woman',
     theme: 'romantic-pink',
     likes: '25K',
     views: '5m',
@@ -80,8 +80,8 @@ const characters = [
   {
     id: 'zara',
     name: 'Zara',
-    image: 'https://placehold.co/400x600.png',
-    hint: 'beautiful woman pink hair',
+    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png',
+    hint: 'beautiful woman',
     theme: 'golden-luxe',
     likes: '61K',
     views: '1m',
@@ -90,8 +90,8 @@ const characters = [
   {
     id: 'mia',
     name: 'Mia',
-    image: 'https://placehold.co/400x600.png',
-    hint: 'beautiful woman pink hair',
+    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png',
+    hint: 'beautiful woman',
     theme: 'mystic-purple',
     likes: '33K',
     views: '4m',
@@ -100,8 +100,8 @@ const characters = [
   {
     id: 'nova',
     name: 'Nova',
-    image: 'https://placehold.co/400x600.png',
-    hint: 'beautiful woman pink hair',
+    image: 'https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png',
+    hint: 'beautiful woman',
     theme: 'seductive-red',
     likes: '72K',
     views: '30m',
