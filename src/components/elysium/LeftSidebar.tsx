@@ -1,7 +1,6 @@
 
 "use client";
 
-import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -55,13 +54,11 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
       <div className="flex flex-col items-center space-y-4">
         <div className="relative p-1 rounded-3xl bg-gradient-to-tr from-primary to-fuchsia-800 shadow-2xl shadow-primary/30">
            <div className="relative h-[320px] w-[240px] rounded-2xl overflow-hidden">
-            <Image
+            <img
               src={characterImage || "https://placehold.co/400x600.png"}
               alt="Raven AI Companion"
               data-ai-hint="beautiful woman"
-              fill
-              className="object-cover object-top"
-              priority
+              className="absolute inset-0 h-full w-full object-cover object-top"
             />
             <div className="absolute top-3 left-3">
                 <div className="flex items-center gap-1.5 bg-black/50 backdrop-blur-sm text-yellow-300 text-xs font-bold py-1 px-2 rounded-full border border-yellow-300/30">
@@ -205,3 +202,5 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
     </aside>
   );
 }
+
+    

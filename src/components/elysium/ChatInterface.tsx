@@ -1,7 +1,6 @@
 
 "use client";
 import React, { useState, useRef, useEffect } from 'react';
-import Image from 'next/image';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -69,11 +68,10 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
   return (
     <div className="relative h-full">
       {characterImage && (
-        <Image
+        <img
           src={characterImage}
           alt="Chat Background"
-          fill
-          className="object-cover object-top opacity-[0.08]"
+          className="absolute inset-0 h-full w-full object-cover object-top opacity-[0.08]"
           data-ai-hint="beautiful woman"
         />
       )}
@@ -188,3 +186,5 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
     </div>
   );
 }
+
+    

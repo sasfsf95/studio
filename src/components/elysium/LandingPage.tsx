@@ -2,7 +2,6 @@
 "use client";
 
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {
@@ -24,6 +23,7 @@ import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Switch } from '@/components/ui/switch';
+import Image from 'next/image';
 
 const characters = [
     {
@@ -137,7 +137,7 @@ export function LandingPage() {
                         <AccordionTrigger className="text-base font-normal hover:no-underline py-2 px-4 hover:bg-accent rounded-md data-[state=open]:bg-accent data-[state=open]:text-white text-gray-300"><MessageSquare className="mr-3" /> My Chats</AccordionTrigger>
                         <AccordionContent className="pl-8 pt-2 space-y-2">
                             <div className="flex items-center gap-3 cursor-pointer p-2 rounded-md hover:bg-accent/50">
-                                <Image src="https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png" alt="Trisha" width={40} height={40} className="rounded-full" data-ai-hint="beautiful woman" />
+                                <img src="https://storage.googleapis.com/project-spark-b2952.appspot.com/yuki-ai--yuki-ai/generated/7a274533-3d92-4914-b6c8-a92af35d3d44.png" alt="Trisha" width={40} height={40} className="rounded-full" data-ai-hint="beautiful woman" />
                                 <div>
                                     <p className="font-semibold text-white">Trisha</p>
                                     <p className="text-xs text-muted-foreground">Trisha sent you a pic...</p>
@@ -199,12 +199,11 @@ export function LandingPage() {
                 <Card key={character.id} className="bg-card border-border overflow-hidden rounded-lg group cursor-pointer shadow-lg hover:shadow-primary/20 hover:border-primary/50 transition-all duration-300" onClick={() => handleCharacterSelect(character)}>
                   <CardContent className="p-0">
                     <div className="relative h-[300px] w-full">
-                      <Image
+                      <img
                         src={character.image}
                         alt={character.name}
                         data-ai-hint={character.hint}
-                        fill
-                        className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                        className="absolute inset-0 h-full w-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
                        {character.tags?.includes('New') && <Badge className="absolute top-2 left-2 bg-primary border-none text-primary-foreground font-semibold">New</Badge>}
@@ -230,3 +229,5 @@ export function LandingPage() {
     </div>
   );
 }
+
+    
