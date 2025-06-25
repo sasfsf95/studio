@@ -21,7 +21,7 @@ export default function ChatPage() {
       const storedCharacter = localStorage.getItem('selectedCharacter');
       if (storedCharacter) {
         const character = JSON.parse(storedCharacter);
-        setCharacterImage(character.image || '/character.png');
+        setCharacterImage(character.image || '/character.jpg');
         setTheme(character.theme || 'romantic-pink');
         setCompanionName(character.name || 'Aria');
       } else {

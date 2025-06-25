@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Button } from '@/components/ui/button';
@@ -6,9 +7,8 @@ import { Progress } from '@/components/ui/progress';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Crown, Sparkles, MessageSquare, Heart, Flame, WandSparkles, Users, Moon, Eclipse, Upload } from 'lucide-react';
+import { Crown, Sparkles, MessageSquare, Heart, Flame, WandSparkles, Users, Moon, Eclipse } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useRef } from 'react';
 
 interface LeftSidebarProps {
   characterImage: string | null;
@@ -20,23 +20,6 @@ interface LeftSidebarProps {
 }
 
 export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme, companionName, setCompanionName }: LeftSidebarProps) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleImageUploadClick = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const newImageUrl = e.target?.result as string;
-        setCharacterImage(newImageUrl);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   return (
     <aside className="w-[360px] bg-black/30 p-4 flex flex-col space-y-6 border-r border-white/5 overflow-y-auto">
@@ -54,7 +37,7 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
         <div className="relative p-1 rounded-3xl bg-gradient-to-tr from-primary to-fuchsia-800 shadow-2xl shadow-primary/30">
            <div className="relative h-[320px] w-[240px] rounded-2xl overflow-hidden">
             <img
-              src={characterImage || "/character.png"}
+              src={characterImage || "/character.jpg"}
               alt="Raven AI Companion"
               data-ai-hint="beautiful woman"
               className="absolute inset-0 h-full w-full object-cover object-top"
@@ -109,20 +92,6 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
           <div>
             <Label htmlFor="companion-name" className="text-muted-foreground text-xs font-medium">Name</Label>
             <Input id="companion-name" value={companionName} onChange={(e) => setCompanionName(e.target.value)} className="mt-1 bg-black/40 border-white/10 h-9" />
-          </div>
-          <div>
-            <Label className="text-muted-foreground text-xs font-medium block mb-1">Character Image</Label>
-            <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                className="hidden"
-                accept="image/*"
-            />
-            <Button onClick={handleImageUploadClick} variant="outline" className="w-full bg-black/40 border-white/10 h-9">
-                <Upload className="mr-2 h-4 w-4" />
-                Upload New Image
-            </Button>
           </div>
           <div>
             <Label htmlFor="personality" className="text-muted-foreground text-xs font-medium">Personality</Label>
