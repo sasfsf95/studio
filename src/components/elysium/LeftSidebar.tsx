@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Button } from '@/components/ui/button';
@@ -52,7 +51,7 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
       </header>
 
       <div className="flex flex-col items-center space-y-4">
-        <div className="relative animate-glow p-1 rounded-3xl bg-gradient-to-tr from-primary to-fuchsia-800 shadow-2xl shadow-primary/30">
+        <div className="relative animate-glow animate-float p-1 rounded-3xl bg-gradient-to-tr from-primary to-fuchsia-800 shadow-2xl shadow-primary/30">
            <div className="relative h-[320px] w-[240px] rounded-2xl overflow-hidden">
             <img
               src={characterImage || "/character.jpg"}
@@ -113,6 +112,7 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
           </div>
           <div>
             <Label className="text-muted-foreground text-xs font-medium">Image</Label>
+            <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept="image/*" />
             <Button variant="outline" className="mt-1 w-full bg-black/40 border-white/10 h-9" onClick={handleImageUploadClick}>
                 <Camera className="mr-2 h-4 w-4"/>
                 Change Image
