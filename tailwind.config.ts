@@ -79,9 +79,22 @@ export default {
           '0%': { opacity: '0', transform: 'translateY(20px) scale(0.9)' },
           '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
         },
-        pulse: {
+        'pulse': {
           '0%, 100%': { opacity: '1' },
           '50%': { opacity: '.5' },
+        },
+        'glow': {
+          '0%, 100%': { 'boxShadow': '0 0 15px 5px hsl(var(--primary) / 0.4)' },
+          '50%': { 'boxShadow': '0 0 25px 10px hsl(var(--primary) / 0.2)' },
+        },
+        'heartbeat': {
+            '0%': { transform: 'scale(1)' },
+            '50%': { transform: 'scale(1.15)' },
+            '100%': { transform: 'scale(1)' },
+        },
+        'twinkle': {
+            '0%, 100%': { opacity: '1' },
+            '50%': { opacity: '0.6' },
         },
       },
       animation: {
@@ -89,6 +102,9 @@ export default {
         'accordion-up': 'accordion-up 0.2s ease-out',
         'message-in': 'message-in 0.5s ease-out forwards',
         'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'glow': 'glow 4s ease-in-out infinite',
+        'heartbeat': 'heartbeat 1.5s ease-in-out infinite',
+        'twinkle': 'twinkle 2s ease-in-out infinite',
       },
     },
   },

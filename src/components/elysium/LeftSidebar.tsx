@@ -52,20 +52,13 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
       </header>
 
       <div className="flex flex-col items-center space-y-4">
-        <div className="relative p-1 rounded-3xl bg-gradient-to-tr from-primary to-fuchsia-800 shadow-2xl shadow-primary/30">
+        <div className="relative animate-glow p-1 rounded-3xl bg-gradient-to-tr from-primary to-fuchsia-800 shadow-2xl shadow-primary/30">
            <div className="relative h-[320px] w-[240px] rounded-2xl overflow-hidden">
             <img
               src={characterImage || "/character.jpg"}
               alt={companionName}
               data-ai-hint="beautiful woman"
               className="absolute inset-0 h-full w-full object-cover object-top"
-            />
-            <input 
-              type="file" 
-              ref={fileInputRef} 
-              onChange={handleFileChange}
-              className="hidden"
-              accept="image/png, image/jpeg, image/jpg"
             />
             <div className="absolute top-3 left-3">
                 <div className="flex items-center gap-1.5 bg-black/50 backdrop-blur-sm text-yellow-300 text-xs font-bold py-1 px-2 rounded-full border border-yellow-300/30">
