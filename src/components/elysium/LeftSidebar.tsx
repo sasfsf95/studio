@@ -7,8 +7,9 @@ import { Progress } from '@/components/ui/progress';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Crown, Sparkles, MessageSquare, Heart, Flame, WandSparkles, Users, Moon, Eclipse } from 'lucide-react';
+import { Crown, Sparkles, MessageSquare, Heart, Flame, WandSparkles, Users, Moon, Eclipse, Camera } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useRef } from 'react';
 
 interface LeftSidebarProps {
   characterImage: string | null;
@@ -20,6 +21,23 @@ interface LeftSidebarProps {
 }
 
 export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme, companionName, setCompanionName }: LeftSidebarProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const imageUrl = e.target?.result as string;
+        setCharacterImage(imageUrl);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   return (
     <aside className="w-[360px] bg-black/30 p-4 flex flex-col space-y-6 border-r border-white/5 overflow-y-auto">
@@ -34,13 +52,29 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
       </header>
 
       <div className="flex flex-col items-center space-y-4">
-        <div className="relative p-1 rounded-3xl bg-gradient-to-tr from-primary to-fuchsia-800 shadow-2xl shadow-primary/30">
+        <div className="relative p-1 rounded-3xl bg-gradient-to-tr from-primary to-fuchsia-800 shadow-2xl shadow-primary/30 group">
            <div className="relative h-[320px] w-[240px] rounded-2xl overflow-hidden">
             <img
               src={characterImage || "/character.jpg"}
-              alt="Raven AI Companion"
+              alt={companionName}
               data-ai-hint="beautiful woman"
               className="absolute inset-0 h-full w-full object-cover object-top"
+            />
+             <div 
+              className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
+              onClick={handleImageUploadClick}
+            >
+              <div className="text-center text-white">
+                <Camera className="h-12 w-12 mx-auto" />
+                <p className="font-semibold mt-2">Change Image</p>
+              </div>
+            </div>
+            <input 
+              type="file" 
+              ref={fileInputRef} 
+              onChange={handleFileChange}
+              className="hidden"
+              accept="image/png, image/jpeg, image/jpg"
             />
             <div className="absolute top-3 left-3">
                 <div className="flex items-center gap-1.5 bg-black/50 backdrop-blur-sm text-yellow-300 text-xs font-bold py-1 px-2 rounded-full border border-yellow-300/30">
