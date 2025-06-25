@@ -52,7 +52,7 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
       </header>
 
       <div className="flex flex-col items-center space-y-4">
-        <div className="relative p-1 rounded-3xl bg-gradient-to-tr from-primary to-fuchsia-800 shadow-2xl shadow-primary/30 group">
+        <div className="relative p-1 rounded-3xl bg-gradient-to-tr from-primary to-fuchsia-800 shadow-2xl shadow-primary/30">
            <div className="relative h-[320px] w-[240px] rounded-2xl overflow-hidden">
             <img
               src={characterImage || "/character.jpg"}
@@ -60,15 +60,6 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
               data-ai-hint="beautiful woman"
               className="absolute inset-0 h-full w-full object-cover object-top"
             />
-             <div 
-              className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
-              onClick={handleImageUploadClick}
-            >
-              <div className="text-center text-white">
-                <Camera className="h-12 w-12 mx-auto" />
-                <p className="font-semibold mt-2">Change Image</p>
-              </div>
-            </div>
             <input 
               type="file" 
               ref={fileInputRef} 
@@ -126,6 +117,13 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
           <div>
             <Label htmlFor="companion-name" className="text-muted-foreground text-xs font-medium">Name</Label>
             <Input id="companion-name" value={companionName} onChange={(e) => setCompanionName(e.target.value)} className="mt-1 bg-black/40 border-white/10 h-9" />
+          </div>
+          <div>
+            <Label className="text-muted-foreground text-xs font-medium">Image</Label>
+            <Button variant="outline" className="mt-1 w-full bg-black/40 border-white/10 h-9" onClick={handleImageUploadClick}>
+                <Camera className="mr-2 h-4 w-4"/>
+                Change Image
+            </Button>
           </div>
           <div>
             <Label htmlFor="personality" className="text-muted-foreground text-xs font-medium">Personality</Label>
