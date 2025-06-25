@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Button } from '@/components/ui/button';
@@ -51,20 +52,22 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
       </header>
 
       <div className="flex flex-col items-center space-y-4">
-        <div className="relative animate-glow animate-float p-1 rounded-3xl bg-gradient-to-tr from-primary to-fuchsia-800 shadow-2xl shadow-primary/30">
-           <div className="relative h-[320px] w-[240px] rounded-2xl overflow-hidden">
-            <img
-              src={characterImage || "/character.jpg"}
-              alt={companionName}
-              data-ai-hint="beautiful woman"
-              className="absolute inset-0 h-full w-full object-cover object-top"
-            />
-            <div className="absolute top-3 left-3">
-                <div className="flex items-center gap-1.5 bg-black/50 backdrop-blur-sm text-yellow-300 text-xs font-bold py-1 px-2 rounded-full border border-yellow-300/30">
-                    <Sparkles className="h-4 w-4" />
-                    PREMIUM
-                </div>
-            </div>
+        <div className="group [perspective:1000px]">
+           <div className="relative animate-glow animate-float p-1 rounded-3xl bg-gradient-to-tr from-primary to-fuchsia-800 shadow-2xl shadow-primary/30 transition-transform duration-500 ease-out group-hover:[transform:rotateX(5deg)_rotateY(-10deg)_scale(1.05)] [transform-style:preserve-3d]">
+             <div className="relative h-[320px] w-[240px] rounded-2xl overflow-hidden">
+              <img
+                src={characterImage || "/character.jpg"}
+                alt={companionName}
+                data-ai-hint="beautiful woman"
+                className="absolute inset-0 h-full w-full object-cover object-top"
+              />
+              <div className="absolute top-3 left-3">
+                  <div className="flex items-center gap-1.5 bg-black/50 backdrop-blur-sm text-yellow-300 text-xs font-bold py-1 px-2 rounded-full border border-yellow-300/30">
+                      <Sparkles className="h-4 w-4" />
+                      PREMIUM
+                  </div>
+              </div>
+             </div>
            </div>
         </div>
 
