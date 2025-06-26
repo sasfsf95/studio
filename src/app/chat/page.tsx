@@ -7,7 +7,7 @@ import { LeftSidebar } from '@/components/elysium/LeftSidebar';
 import { useRouter } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Heart, Loader2, Sparkles, Menu } from 'lucide-react';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
@@ -140,6 +140,8 @@ export default function ChatPage() {
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-[300px] sm:w-[360px] p-0 bg-black/80 backdrop-blur-sm border-r-white/5">
+              <SheetTitle className="sr-only">Companion Customization</SheetTitle>
+              <SheetDescription className="sr-only">Customize your AI companion's name, image, theme, and personality.</SheetDescription>
               <LeftSidebar 
                 characterImage={characterImage} 
                 setCharacterImage={setCharacterImage} 
