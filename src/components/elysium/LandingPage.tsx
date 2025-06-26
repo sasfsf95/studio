@@ -25,7 +25,7 @@ import React, { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Switch } from '@/components/ui/switch';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 
 const initialCharacters = [
     {
@@ -171,7 +171,8 @@ export function LandingPage() {
                             </Button>
                         </SheetTrigger>
                         <SheetContent side="left" className="w-[300px] bg-[#1C1C1E] p-4 border-r-0">
-                             <h1 className="text-3xl font-bold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600">yuki.ai</h1>
+                             <SheetTitle className="text-3xl font-bold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600">yuki.ai</SheetTitle>
+                             <SheetDescription className="sr-only">Main navigation menu and options.</SheetDescription>
                              <SidebarNav />
                         </SheetContent>
                     </Sheet>

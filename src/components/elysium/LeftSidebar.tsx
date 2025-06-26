@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Crown, Sparkles, MessageSquare, Heart, Flame, WandSparkles, Users, Moon, Eclipse, Camera } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useRef } from 'react';
+import { SheetDescription, SheetTitle } from '@/components/ui/sheet';
 
 interface LeftSidebarProps {
   characterImage: string | null;
@@ -40,6 +41,8 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
 
   return (
     <aside className="w-[360px] bg-black/30 p-4 flex flex-col space-y-6 border-r border-white/5 overflow-y-auto">
+      <SheetTitle className="sr-only">Companion Customization</SheetTitle>
+      <SheetDescription className="sr-only">Customize your AI companion's name, image, theme, and personality.</SheetDescription>
       <header className="flex justify-between items-center">
         <div className="flex items-center gap-2">
           <Crown className="h-6 w-6 text-yellow-400" />
@@ -52,7 +55,7 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
 
       <div className="flex flex-col items-center space-y-4">
         <div className="group [perspective:1000px]">
-           <div className="relative p-1 rounded-3xl bg-gradient-to-tr from-primary to-fuchsia-800 shadow-2xl shadow-primary/30 transition-transform duration-500 ease-out group-hover:[transform:rotateX(5deg)_rotateY(-10deg)_scale(1.05)] [transform-style:preserve-3d]">
+           <div className="relative p-1 rounded-3xl bg-gradient-to-tr from-primary to-fuchsia-800 shadow-2xl shadow-primary/30 [transform-style:preserve-3d]">
              <div className="relative h-[320px] w-[240px] rounded-2xl overflow-hidden">
               <img
                 src={characterImage || "/character.jpg"}
