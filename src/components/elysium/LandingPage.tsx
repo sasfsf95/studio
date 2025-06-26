@@ -19,11 +19,13 @@ import {
   PlusSquare,
   Sparkles,
   Upload,
+  Menu,
 } from 'lucide-react';
 import React, { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Switch } from '@/components/ui/switch';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 const initialCharacters = [
     {
@@ -39,7 +41,7 @@ const initialCharacters = [
   {
     id: 'ivana',
     name: 'Ivana',
-    image: '/character.jpg',
+    image: '/character1.jpg',
     theme: 'mystic-purple',
     likes: '52K',
     views: '2m',
@@ -48,7 +50,7 @@ const initialCharacters = [
   {
     id: 'chloe',
     name: 'Chloe',
-    image: '/character.jpg',
+    image: '/character2.jpg',
     theme: 'golden-luxe',
     likes: '39K',
     views: '2m',
@@ -57,7 +59,7 @@ const initialCharacters = [
   {
     id: 'seraphina',
     name: 'Seraphina',
-    image: '/character.jpg',
+    image: '/character3.jpg',
     theme: 'seductive-red',
     likes: '44K',
     views: '3m',
@@ -66,7 +68,7 @@ const initialCharacters = [
   {
     id: 'lila',
     name: 'Lila',
-    image: '/character.jpg',
+    image: '/character8.jpg',
     theme: 'romantic-pink',
     likes: '25K',
     views: '5m',
@@ -75,7 +77,7 @@ const initialCharacters = [
   {
     id: 'zara',
     name: 'Zara',
-    image: '/character.jpg',
+    image: '/character5.jpg',
     theme: 'golden-luxe',
     likes: '61K',
     views: '1m',
@@ -84,7 +86,7 @@ const initialCharacters = [
   {
     id: 'mia',
     name: 'Mia',
-    image: '/character.jpg',
+    image: '/character6.jpg',
     theme: 'mystic-purple',
     likes: '33K',
     views: '4m',
@@ -93,7 +95,7 @@ const initialCharacters = [
   {
     id: 'nova',
     name: 'Nova',
-    image: '/character.jpg',
+    image: '/character7.jpg',
     theme: 'seductive-red',
     likes: '72K',
     views: '30m',
@@ -160,9 +162,24 @@ export function LandingPage() {
 
         <main className="flex-1">
           <header className="sticky top-0 z-20 bg-[#1C1C1E]/80 backdrop-blur-sm border-b border-border p-4 flex justify-between items-center">
-             <div className="flex items-center gap-6 text-base font-semibold">
-                 <Button variant="ghost" className="text-primary border-b-2 border-primary rounded-none px-1 py-0 h-auto hover:text-primary">Girls</Button>
-                 <Button variant="ghost" className="text-muted-foreground hover:text-white px-1 py-0 h-auto">Anime</Button>
+             <div className="flex items-center gap-4">
+                <div className="lg:hidden">
+                    <Sheet>
+                        <SheetTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                                <Menu className="h-6 w-6"/>
+                            </Button>
+                        </SheetTrigger>
+                        <SheetContent side="left" className="w-[300px] bg-[#1C1C1E] p-4 border-r-0">
+                             <h1 className="text-3xl font-bold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600">yuki.ai</h1>
+                             <SidebarNav />
+                        </SheetContent>
+                    </Sheet>
+                </div>
+                 <div className="hidden sm:flex items-center gap-6 text-base font-semibold">
+                     <Button variant="ghost" className="text-primary border-b-2 border-primary rounded-none px-1 py-0 h-auto hover:text-primary">Girls</Button>
+                     <Button variant="ghost" className="text-muted-foreground hover:text-white px-1 py-0 h-auto">Anime</Button>
+                 </div>
              </div>
              <Button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold hover:opacity-90"><Crown className="mr-2" /> Become Premium</Button>
           </header>
