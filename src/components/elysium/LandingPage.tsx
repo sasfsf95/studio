@@ -189,8 +189,9 @@ export function LandingPage() {
                             </Button>
                         </SheetTrigger>
                         <SheetContent side="left" className="w-[300px] bg-[#1C1C1E] p-4 border-r-0">
-                            <SheetTitle className="text-3xl font-bold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600">yuki.ai</SheetTitle>
+                            <SheetTitle className="sr-only">yuki.ai Navigation</SheetTitle>
                             <SheetDescription className="sr-only">Main navigation menu and options.</SheetDescription>
+                            <div className="text-3xl font-bold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600">yuki.ai</div>
                              <SidebarNav />
                         </SheetContent>
                     </Sheet>
@@ -225,7 +226,7 @@ export function LandingPage() {
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 [perspective:1000px]">
               {initialCharacters.map(character => (
-                <Card key={character.id} className="bg-card border-border overflow-hidden rounded-lg group cursor-pointer shadow-lg hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 [transform-style:preserve-3d] origin-bottom hover:[transform:rotateX(-10deg)_scale(1.05)]" onClick={() => handleCharacterSelect(character)}>
+                <Card key={character.id} className="bg-card border-border overflow-hidden rounded-lg group cursor-pointer shadow-lg hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 [transform-style:preserve-3d] origin-center hover:[transform:rotateY(15deg)_scale(1.05)]" onClick={() => handleCharacterSelect(character)}>
                   <CardContent className="p-0">
                     <div className="relative h-[300px] w-full [transform-style:preserve-3d]">
                       <img
