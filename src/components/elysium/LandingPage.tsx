@@ -26,6 +26,7 @@ import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Switch } from '@/components/ui/switch';
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { PremiumDialog } from './PremiumDialog';
 
 const initialCharacters = [
     {
@@ -201,7 +202,9 @@ export function LandingPage() {
                      <Button variant="ghost" className="text-muted-foreground hover:text-white px-1 py-0 h-auto">Anime</Button>
                  </div>
              </div>
-             <Button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold hover:opacity-90"><Crown className="mr-2" /> Become Premium</Button>
+             <PremiumDialog>
+                <Button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold hover:opacity-90"><Crown className="mr-2" /> Become Premium</Button>
+             </PremiumDialog>
           </header>
 
           <div className="p-4 md:p-6">
@@ -258,5 +261,3 @@ export function LandingPage() {
     </div>
   );
 }
-
-    
