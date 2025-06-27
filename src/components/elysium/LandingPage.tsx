@@ -59,7 +59,7 @@ const initialCharacters = [
   {
     id: 'seraphina',
     name: 'Seraphina',
-    image: '/character3.jpg',
+    image: '/character3.jpeg',
     theme: 'seductive-red',
     likes: '44K',
     views: '3m',
@@ -68,7 +68,7 @@ const initialCharacters = [
   {
     id: 'lila',
     name: 'Lila',
-    image: '/character8.jpg',
+    image: '/character8.jpeg',
     theme: 'romantic-pink',
     likes: '25K',
     views: '5m',
@@ -77,7 +77,7 @@ const initialCharacters = [
   {
     id: 'zara',
     name: 'Zara',
-    image: '/character5.jpg',
+    image: '/character5.jpeg',
     theme: 'golden-luxe',
     likes: '61K',
     views: '1m',
@@ -86,7 +86,7 @@ const initialCharacters = [
   {
     id: 'mia',
     name: 'Mia',
-    image: '/character6.jpg',
+    image: '/character6.jpeg',
     theme: 'mystic-purple',
     likes: '33K',
     views: '4m',
@@ -95,7 +95,25 @@ const initialCharacters = [
   {
     id: 'nova',
     name: 'Nova',
-    image: '/character7.jpg',
+    image: '/character7.jpeg',
+    theme: 'seductive-red',
+    likes: '72K',
+    views: '30m',
+    online: true,
+  },
+  {
+    id: 'mia-2',
+    name: 'Mia',
+    image: '/character9.jpeg',
+    theme: 'mystic-purple',
+    likes: '33K',
+    views: '4m',
+    online: true,
+  },
+  {
+    id: 'nova-2',
+    name: 'Nova',
+    image: '/character10.jpeg',
     theme: 'seductive-red',
     likes: '72K',
     views: '30m',
