@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState, useRef, useEffect } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -186,7 +185,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
           </div>
         
           <div className="flex items-end gap-2 border rounded-xl p-2 bg-black/40 border-white/10">
-            <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept="image/*" />
+            <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept="image/jpeg, image/png, image/gif, image/webp" />
             <Button size="icon" variant="ghost" onClick={handleAttachmentClick} disabled={isAiResponding} className="flex-shrink-0 h-10 w-10 rounded-full hover:bg-primary/20">
                 <Paperclip className="h-5 w-5 text-primary" />
             </Button>
@@ -216,5 +215,3 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
     </div>
   );
 }
-
-    

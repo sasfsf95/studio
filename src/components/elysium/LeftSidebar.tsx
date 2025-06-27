@@ -114,7 +114,7 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
           </div>
           <div>
             <Label className="text-muted-foreground text-xs font-medium">Image</Label>
-            <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept="image/*" />
+            <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept="image/jpeg, image/png, image/gif, image/webp" />
             <Button variant="outline" className="mt-1 w-full bg-black/40 border-white/10 h-9" onClick={handleImageUploadClick}>
                 <Camera className="mr-2 h-4 w-4"/>
                 Change Image
