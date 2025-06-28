@@ -87,7 +87,7 @@ const initialCharacters = [
     online: false,
   },
   {
-    id: 'mia-stark',
+    id: 'mia-stark-1',
     name: 'Mia',
     image: '/character6.jpeg',
     theme: 'mystic-purple',
@@ -105,7 +105,7 @@ const initialCharacters = [
     online: true,
   },
   {
-    id: 'mia',
+    id: 'mia-stark-2',
     name: 'Mia Stark',
     image: '/character9.jpeg',
     theme: 'mystic-purple',
@@ -251,7 +251,7 @@ export function LandingPage() {
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
               {initialCharacters.map(character => (
-                <Card key={character.id} className="relative bg-card border-border rounded-3xl group cursor-pointer shadow-lg hover:z-10 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:-translate-y-2 hover:scale-105" onClick={() => handleCharacterSelect(character)}>
+                <Card key={character.id} className="relative bg-card border-border rounded-3xl group cursor-pointer shadow-lg hover:z-10 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300 ease-in-out hover:-translate-y-2 hover:scale-105 [will-change:transform,box-shadow]" onClick={() => handleCharacterSelect(character)}>
                   <CardContent className="p-0 overflow-hidden rounded-3xl">
                     <div className="relative h-[300px] w-full overflow-hidden">
                       <img
