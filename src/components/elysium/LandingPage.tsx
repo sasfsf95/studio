@@ -35,6 +35,7 @@ const initialCharacters = [
     id: 'aria',
     name: 'Aria',
     image: '/character.jpg',
+    video: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
     theme: 'romantic-pink',
     likes: '38K',
     views: '3K',
@@ -45,6 +46,7 @@ const initialCharacters = [
     id: 'ivana',
     name: 'Ivana',
     image: '/character1.jpg',
+    video: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
     theme: 'mystic-purple',
     likes: '52K',
     views: '2m',
@@ -54,6 +56,7 @@ const initialCharacters = [
     id: 'chloe',
     name: 'Chloe',
     image: '/character2.jpg',
+    video: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4',
     theme: 'golden-luxe',
     likes: '39K',
     views: '2m',
@@ -63,6 +66,7 @@ const initialCharacters = [
     id: 'seraphina',
     name: 'Seraphina',
     image: '/character3.jpeg',
+    video: 'https://storage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4',
     theme: 'seductive-red',
     likes: '44K',
     views: '3m',
@@ -72,6 +76,7 @@ const initialCharacters = [
     id: 'lila',
     name: 'Lila',
     image: '/character8.jpeg',
+    video: 'https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
     theme: 'romantic-pink',
     likes: '25K',
     views: '5m',
@@ -81,15 +86,17 @@ const initialCharacters = [
     id: 'zara',
     name: 'Zara',
     image: '/character5.jpeg',
+    video: 'https://storage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4',
     theme: 'golden-luxe',
     likes: '61K',
     views: '1m',
     online: false,
   },
   {
-    id: 'mia-stark-1',
+    id: 'mia',
     name: 'Mia',
     image: '/character6.jpeg',
+    video: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4',
     theme: 'mystic-purple',
     likes: '33K',
     views: '4m',
@@ -99,15 +106,17 @@ const initialCharacters = [
     id: 'nova',
     name: 'Nova',
     image: '/character7.jpeg',
+    video: 'https://storage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',
     theme: 'seductive-red',
     likes: '72K',
     views: '30m',
     online: true,
   },
   {
-    id: 'mia-stark-2',
+    id: 'mia-stark',
     name: 'Mia Stark',
     image: '/character9.jpeg',
+    video: 'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
     theme: 'mystic-purple',
     likes: '33K',
     views: '4m',
@@ -117,6 +126,7 @@ const initialCharacters = [
     id: 'nova-2',
     name: 'Nova II',
     image: '/character10.jpeg',
+    video: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
     theme: 'seductive-red',
     likes: '72K',
     views: '30m',
@@ -251,12 +261,16 @@ export function LandingPage() {
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
               {initialCharacters.map(character => (
-                <Card key={character.id} className="relative bg-card border-border rounded-3xl group cursor-pointer shadow-lg hover:z-10 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300 ease-in-out hover:-translate-y-2 hover:scale-105 [will-change:transform,box-shadow]" onClick={() => handleCharacterSelect(character)}>
-                  <CardContent className="p-0 overflow-hidden rounded-3xl">
+                <Card key={character.id} className="relative bg-card border-border rounded-3xl group cursor-pointer shadow-lg hover:z-10 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300 ease-in-out hover:-translate-y-2 hover:scale-[1.03] [will-change:transform]" onClick={() => handleCharacterSelect(character)}>
+                  <CardContent className="p-0 overflow-hidden rounded-[calc(1.5rem-1px)]">
                     <div className="relative h-[300px] w-full overflow-hidden">
-                      <img
-                        src={character.image}
-                        alt={character.name}
+                       <video
+                        src={character.video}
+                        poster={character.image}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
                         className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 ease-in-out group-hover:scale-110"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent transition-all duration-300 group-hover:from-black/95 group-hover:via-black/50"></div>
@@ -283,5 +297,3 @@ export function LandingPage() {
     </div>
   );
 }
-
-    
