@@ -26,7 +26,7 @@ import React, { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Switch } from '@/components/ui/switch';
-import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { PremiumDialog } from './PremiumDialog';
 import { useToast } from '@/hooks/use-toast';
 
@@ -106,7 +106,7 @@ const initialCharacters = [
   },
   {
     id: 'mia-stark',
-    name: 'Mia',
+    name: 'Mia Stark',
     image: '/character9.jpeg',
     theme: 'mystic-purple',
     likes: '33K',
@@ -115,7 +115,7 @@ const initialCharacters = [
   },
   {
     id: 'nova-2',
-    name: 'Nova',
+    name: 'Nova II',
     image: '/character10.jpeg',
     theme: 'seductive-red',
     likes: '72K',
@@ -207,9 +207,10 @@ export function LandingPage() {
                             </Button>
                         </SheetTrigger>
                         <SheetContent side="left" className="w-[300px] bg-[#1C1C1E] p-4 border-r-0">
-                            <SheetTitle className="sr-only">yuki.ai Navigation</SheetTitle>
-                            <SheetDescription className="sr-only">Main navigation menu and options.</SheetDescription>
-                            <div className="text-3xl font-bold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600">yuki.ai</div>
+                            <SheetHeader>
+                               <SheetTitle className="text-3xl font-bold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600">yuki.ai</SheetTitle>
+                               <SheetDescription className="sr-only">Main navigation menu and options.</SheetDescription>
+                            </SheetHeader>
                              <SidebarNav />
                         </SheetContent>
                     </Sheet>
@@ -250,7 +251,7 @@ export function LandingPage() {
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
               {initialCharacters.map(character => (
-                <Card key={character.id} className="bg-card border-border overflow-hidden rounded-lg group cursor-pointer shadow-lg hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02]" onClick={() => handleCharacterSelect(character)}>
+                <Card key={character.id} className="bg-card border-border overflow-hidden rounded-lg group cursor-pointer shadow-lg hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:-translate-y-4 hover:scale-105" onClick={() => handleCharacterSelect(character)}>
                   <CardContent className="p-0">
                     <div className="relative h-[300px] w-full">
                       <img
