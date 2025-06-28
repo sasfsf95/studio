@@ -87,7 +87,7 @@ const initialCharacters = [
     online: false,
   },
   {
-    id: 'mia',
+    id: 'mia-stark',
     name: 'Mia',
     image: '/character6.jpeg',
     theme: 'mystic-purple',
@@ -105,7 +105,7 @@ const initialCharacters = [
     online: true,
   },
   {
-    id: 'mia-stark',
+    id: 'mia',
     name: 'Mia Stark',
     image: '/character9.jpeg',
     theme: 'mystic-purple',
@@ -251,9 +251,9 @@ export function LandingPage() {
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
               {initialCharacters.map(character => (
-                <Card key={character.id} className="relative bg-card border-border rounded-lg group cursor-pointer shadow-lg hover:z-10 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:-translate-y-4 hover:scale-105" onClick={() => handleCharacterSelect(character)}>
-                  <CardContent className="p-0">
-                    <div className="relative h-[300px] w-full overflow-hidden rounded-t-lg">
+                <Card key={character.id} className="relative bg-card border-border rounded-3xl group cursor-pointer shadow-lg hover:z-10 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:-translate-y-2 hover:scale-105" onClick={() => handleCharacterSelect(character)}>
+                  <CardContent className="p-0 overflow-hidden rounded-3xl">
+                    <div className="relative h-[300px] w-full overflow-hidden">
                       <img
                         src={character.image}
                         alt={character.name}
@@ -270,7 +270,7 @@ export function LandingPage() {
                            <div className="flex items-center gap-1 bg-black/50 backdrop-blur-sm py-0.5 px-1.5 rounded-md transition-all duration-500 group-hover:bg-primary/80 group-hover:shadow-lg"><Eye className="h-3 w-3 text-blue-300"/> {character.views}</div>
                        </div>
                     </div>
-                    <div className="p-3 bg-card rounded-b-lg">
+                    <div className="p-3 bg-card">
                       <h3 className="font-semibold text-white transition-colors duration-500 group-hover:text-primary">{character.name}</h3>
                     </div>
                   </CardContent>
@@ -283,3 +283,5 @@ export function LandingPage() {
     </div>
   );
 }
+
+    
