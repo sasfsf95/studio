@@ -22,16 +22,19 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { CreditCard, Crown, Loader2, PartyPopper } from "lucide-react";
+import { CreditCard, Crown, Loader2, PartyPopper, Wallet } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const formSchema = z.object({
-  cardName: z.string().min(2, "Name is too short"),
-  cardNumber: z.string().regex(/^\d{16}$/, "Invalid card number. Must be 16 digits."),
-  expiryDate: z.string().regex(/^(0[1-9]|1[0-2])\/\d{2}$/, "Invalid format. Use MM/YY."),
-  cvc: z.string().regex(/^\d{3,4}$/, "Invalid CVC. Must be 3 or 4 digits."),
+  cardName: z.string().optional(),
+  cardNumber: z.string().optional(),
+  expiryDate: z.string().optional(),
+  cvc: z.string().optional(),
+  upiId: z.string().optional(),
 });
 
 export function PremiumDialog({ children }: { children: React.ReactNode }) {
@@ -46,6 +49,7 @@ export function PremiumDialog({ children }: { children: React.ReactNode }) {
       cardNumber: "",
       expiryDate: "",
       cvc: "",
+      upiId: "",
     },
   });
 
@@ -82,65 +86,95 @@ export function PremiumDialog({ children }: { children: React.ReactNode }) {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-4">
-            <FormField
-              control={form.control}
-              name="cardName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name on Card</FormLabel>
-                  <FormControl>
-                    <Input placeholder="John Doe" {...field} className="bg-input border-white/10" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="cardNumber"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Card Number</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                       <CreditCard className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                       <Input placeholder="0000 0000 0000 0000" {...field} className="pl-10 bg-input border-white/10" />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex gap-4">
-               <FormField
-                control={form.control}
-                name="expiryDate"
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>Expiry Date</FormLabel>
-                    <FormControl>
-                      <Input placeholder="MM/YY" {...field} className="bg-input border-white/10"/>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-               <FormField
-                control={form.control}
-                name="cvc"
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>CVC</FormLabel>
-                    <FormControl>
-                      <Input placeholder="123" {...field} className="bg-input border-white/10"/>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-             <DialogFooter className="pt-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <Tabs defaultValue="card" className="w-full">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="card">
+                  <CreditCard className="mr-2 h-4 w-4" /> Credit Card
+                </TabsTrigger>
+                <TabsTrigger value="upi">
+                  <Wallet className="mr-2 h-4 w-4" /> UPI
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="card" className="space-y-4 py-4">
+                <FormField
+                  control={form.control}
+                  name="cardName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name on Card</FormLabel>
+                      <FormControl>
+                        <Input placeholder="John Doe" {...field} className="bg-input border-white/10" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="cardNumber"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Card Number</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <CreditCard className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                          <Input placeholder="0000 0000 0000 0000" {...field} className="pl-10 bg-input border-white/10" />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div className="flex gap-4">
+                  <FormField
+                    control={form.control}
+                    name="expiryDate"
+                    render={({ field }) => (
+                      <FormItem className="flex-1">
+                        <FormLabel>Expiry Date</FormLabel>
+                        <FormControl>
+                          <Input placeholder="MM/YY" {...field} className="bg-input border-white/10"/>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="cvc"
+                    render={({ field }) => (
+                      <FormItem className="flex-1">
+                        <FormLabel>CVC</FormLabel>
+                        <FormControl>
+                          <Input placeholder="123" {...field} className="bg-input border-white/10"/>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </TabsContent>
+              <TabsContent value="upi" className="space-y-4 py-4">
+                <FormField
+                  control={form.control}
+                  name="upiId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>UPI ID</FormLabel>
+                      <FormControl>
+                        <Input placeholder="yourname@bank" {...field} className="bg-input border-white/10" />
+                      </FormControl>
+                      <FormDescription>
+                        Enter your UPI ID to pay from your bank app.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </TabsContent>
+            </Tabs>
+            <DialogFooter className="pt-0">
               <Button type="submit" className="w-full font-bold bg-gradient-to-r from-yellow-400 to-orange-500 text-black hover:opacity-90" disabled={isSubmitting}>
                 {isSubmitting ? (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
