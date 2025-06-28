@@ -2,9 +2,6 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -15,62 +12,46 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  FormDescription,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { CreditCard, Crown, Loader2, PartyPopper, Wallet } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-const formSchema = z.object({
-  cardName: z.string().optional(),
-  cardNumber: z.string().optional(),
-  expiryDate: z.string().optional(),
-  cvc: z.string().optional(),
-  upiId: z.string().optional(),
-});
+import { CreditCard, Crown, Loader2 } from "lucide-react";
+import { createCheckoutSession } from "@/app/actions";
 
 export function PremiumDialog({
   children,
   open,
   onOpenChange,
-  onSubscribed,
 }: {
   children?: React.ReactNode;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubscribed: () => void;
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      cardName: "",
-      cardNumber: "",
-      expiryDate: "",
-      cvc: "",
-      upiId: "",
-    },
-  });
-
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  const handleSubscribeClick = async () => {
     setIsSubmitting(true);
-    // Simulate payment processing
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setIsSubmitting(false);
-    onOpenChange(false);
-    form.reset();
-    onSubscribed();
-  }
+    try {
+      const checkoutUrl = await createCheckoutSession();
+      if (checkoutUrl) {
+        window.location.href = checkoutUrl;
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Setup Incomplete",
+          description: "The payment system has not been configured by the site owner. Please fill in the .env file.",
+        });
+        setIsSubmitting(false);
+      }
+    } catch (error) {
+      console.error("Stripe Checkout Error:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Could not connect to the payment gateway. Please try again later.",
+      });
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -82,110 +63,29 @@ export function PremiumDialog({
             Become a Premium Member
           </DialogTitle>
           <DialogDescription>
-            Unlock exclusive features and get unlimited access for just $5/month.
+            Unlock exclusive features and get unlimited access to your AI companion.
           </DialogDescription>
         </DialogHeader>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <Tabs defaultValue="card" className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="card">
-                  <CreditCard className="mr-2 h-4 w-4" /> Credit Card
-                </TabsTrigger>
-                <TabsTrigger value="upi">
-                  <Wallet className="mr-2 h-4 w-4" /> UPI
-                </TabsTrigger>
-              </TabsList>
-              <TabsContent value="card" className="space-y-4 py-4">
-                <FormField
-                  control={form.control}
-                  name="cardName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Name on Card</FormLabel>
-                      <FormControl>
-                        <Input placeholder="John Doe" {...field} className="bg-input border-white/10" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="cardNumber"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Card Number</FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <CreditCard className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                          <Input placeholder="0000 0000 0000 0000" {...field} className="pl-10 bg-input border-white/10" />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <div className="flex gap-4">
-                  <FormField
-                    control={form.control}
-                    name="expiryDate"
-                    render={({ field }) => (
-                      <FormItem className="flex-1">
-                        <FormLabel>Expiry Date</FormLabel>
-                        <FormControl>
-                          <Input placeholder="MM/YY" {...field} className="bg-input border-white/10"/>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="cvc"
-                    render={({ field }) => (
-                      <FormItem className="flex-1">
-                        <FormLabel>CVC</FormLabel>
-                        <FormControl>
-                          <Input placeholder="123" {...field} className="bg-input border-white/10"/>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </TabsContent>
-              <TabsContent value="upi" className="space-y-4 py-4">
-                <FormField
-                  control={form.control}
-                  name="upiId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>UPI ID</FormLabel>
-                      <FormControl>
-                        <Input placeholder="yourname@bank" {...field} className="bg-input border-white/10" />
-                      </FormControl>
-                      <FormDescription>
-                        Enter your UPI ID to pay from your bank app.
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </TabsContent>
-            </Tabs>
-            <DialogFooter className="pt-0">
-              <Button type="submit" className="w-full font-bold bg-gradient-to-r from-yellow-400 to-orange-500 text-black hover:opacity-90" disabled={isSubmitting}>
-                {isSubmitting ? (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                    <Crown className="mr-2 h-4 w-4" />
-                )}
-                {isSubmitting ? "Processing..." : "Subscribe for $5/month"}
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
+        
+        <div className="py-4 text-center">
+            <p className="text-4xl font-bold">$5</p>
+            <p className="text-muted-foreground">per month</p>
+        </div>
+
+        <DialogFooter className="pt-0">
+          <Button 
+            onClick={handleSubscribeClick} 
+            className="w-full font-bold bg-gradient-to-r from-yellow-400 to-orange-500 text-black hover:opacity-90" 
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+                <CreditCard className="mr-2 h-4 w-4" />
+            )}
+            {isSubmitting ? "Redirecting..." : "Subscribe Now"}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

@@ -3,6 +3,7 @@
 
 import { generateIcebreakerMessages, type GenerateIcebreakerMessagesInput } from '@/ai/flows/generate-icebreaker-messages';
 import {ai} from '@/ai/genkit';
+import Stripe from 'stripe';
 
 
 export async function getIcebreakers(input: GenerateIcebreakerMessagesInput) {
@@ -75,5 +76,33 @@ export async function continueConversation({ message, chatHistory, imageUrl }: {
   } catch (error) {
     console.error("Failed to call webhook:", error);
     return "My circuits are a bit fuzzy right now, could you say that again?";
+  }
+}
+
+export async function createCheckoutSession(): Promise<string | null> {
+  if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_PRICE_ID || !process.env.NEXT_PUBLIC_APP_URL) {
+    console.error("Stripe environment variables are not set. Please check your .env file.");
+    return null;
+  }
+
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+  try {
+    const session = await stripe.checkout.sessions.create({
+      mode: 'subscription',
+      payment_method_types: ['card'],
+      line_items: [
+        {
+          price: process.env.STRIPE_PRICE_ID,
+          quantity: 1,
+        },
+      ],
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/chat?payment_success=true`,
+      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/chat`,
+    });
+    return session.url;
+  } catch (error) {
+    console.error("Failed to create Stripe checkout session:", error);
+    return null;
   }
 }

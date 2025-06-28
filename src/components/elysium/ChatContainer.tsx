@@ -7,7 +7,6 @@ import { continueConversation, getIcebreakers } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 import { PremiumDialog } from './PremiumDialog';
-import { PartyPopper } from 'lucide-react';
 
 interface ChatContainerProps {
   characterImage: string | null;
@@ -21,7 +20,7 @@ export function ChatContainer({ characterImage, companionName }: ChatContainerPr
   const [isAiResponding, startAiTransition] = useTransition();
   const { toast } = useToast();
   
-  const [isPremium, setIsPremium] = useState(true);
+  const [isPremium, setIsPremium] = useState(false);
   const [showPremiumDialog, setShowPremiumDialog] = useState(false);
   
   const FREE_MESSAGE_LIMIT = 30;
@@ -156,27 +155,12 @@ export function ChatContainer({ characterImage, companionName }: ChatContainerPr
       }
     });
   };
-  
-  const handleSubscription = () => {
-    setIsPremium(true);
-    localStorage.setItem('isPremium', 'true');
-    toast({
-        title: "Welcome to Premium!",
-        description: (
-            <div className="flex items-center gap-2">
-            <PartyPopper className="h-5 w-5 text-primary" />
-            <span>You now have unlimited access. Enjoy!</span>
-            </div>
-        ),
-    });
-  };
 
   return (
     <>
       <PremiumDialog
         open={showPremiumDialog}
         onOpenChange={setShowPremiumDialog}
-        onSubscribed={handleSubscription}
       />
       <ChatInterface
         messages={messages}

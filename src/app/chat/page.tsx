@@ -4,12 +4,13 @@
 import { useState, useEffect } from 'react';
 import { ChatContainer } from '@/components/elysium/ChatContainer';
 import { LeftSidebar } from '@/components/elysium/LeftSidebar';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Heart, Loader2, Sparkles, Menu } from 'lucide-react';
+import { Heart, Loader2, Sparkles, Menu, PartyPopper } from 'lucide-react';
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useToast } from '@/hooks/use-toast';
 
 export default function ChatPage() {
   const [characterImage, setCharacterImage] = useState<string | null>(null);
@@ -17,6 +18,31 @@ export default function ChatPage() {
   const [companionName, setCompanionName] = useState('Aria');
   const [isReady, setIsReady] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (searchParams.get('payment_success') === 'true') {
+      const isAlreadyPremium = localStorage.getItem('isPremium') === 'true';
+      if (!isAlreadyPremium) {
+        localStorage.setItem('isPremium', 'true');
+        toast({
+            title: "Welcome to Premium!",
+            description: (
+                <div className="flex items-center gap-2">
+                  <PartyPopper className="h-5 w-5 text-primary" />
+                  <span>You now have unlimited access. Enjoy!</span>
+                </div>
+            ),
+        });
+        // We do a full page reload to ensure all components re-read from localStorage
+        window.location.assign('/chat');
+      } else {
+         // If they are already premium and land here, just clean the URL
+         router.replace('/chat', { scroll: false });
+      }
+    }
+  }, [searchParams, router, toast]);
 
   useEffect(() => {
     // This code runs on the client, so window and localStorage are available.
