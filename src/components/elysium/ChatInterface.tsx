@@ -1,10 +1,11 @@
+
 "use client";
 import React, { useState, useRef, useEffect } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Send, Mic, Heart, Sparkles, Sun, Camera, Gift, Drama, Flame, Loader2, Paperclip } from 'lucide-react';
+import { Send, Mic, Heart, Sparkles, Sun, Camera, Gift, Drama, Flame, Loader2, Paperclip, Lock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export interface Message {
@@ -24,6 +25,8 @@ interface ChatInterfaceProps {
   isAiResponding: boolean;
   characterImage: string | null;
   companionName: string;
+  isLocked: boolean;
+  messagesLeft: number | null;
 }
 
 const icebreakerIcons = [
@@ -34,7 +37,7 @@ const icebreakerIcons = [
     <Gift className="h-4 w-4" />,
 ];
 
-export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingIcebreakers, isAiResponding, characterImage, companionName }: ChatInterfaceProps) {
+export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingIcebreakers, isAiResponding, characterImage, companionName, isLocked, messagesLeft }: ChatInterfaceProps) {
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -52,14 +55,14 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
   }, [inputValue]);
 
   const handleSend = () => {
-    if (inputValue.trim() && !isAiResponding) {
+    if (inputValue.trim() && !isAiResponding && !isLocked) {
       onSendMessage(inputValue.trim(), undefined);
       setInputValue('');
     }
   };
 
   const handleIcebreakerClick = (text: string) => {
-    if (!isAiResponding) {
+    if (!isAiResponding && !isLocked) {
       onSendMessage(text, undefined);
     }
   };
@@ -70,7 +73,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file && !isAiResponding) {
+    if (file && !isAiResponding && !isLocked) {
       const reader = new FileReader();
       reader.onload = (e) => {
         const imageUrl = e.target?.result as string;
@@ -158,7 +161,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
         </ScrollArea>
         
         <div className="space-y-4">
-          {!conversationStarted && (
+          {!conversationStarted && !isLocked && (
             isLoadingIcebreakers ? (
                 <div className="flex items-center justify-center p-2"><Loader2 className="h-5 w-5 animate-spin text-muted-foreground" /></div>
             ) : (
@@ -186,7 +189,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
         
           <div className="flex items-end gap-2 border rounded-xl p-2 bg-black/40 border-white/10">
             <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept="image/jpeg, image/png, image/gif, image/webp" />
-            <Button size="icon" variant="ghost" onClick={handleAttachmentClick} disabled={isAiResponding} className="flex-shrink-0 h-10 w-10 rounded-full hover:bg-primary/20">
+            <Button size="icon" variant="ghost" onClick={handleAttachmentClick} disabled={isAiResponding || isLocked} className="flex-shrink-0 h-10 w-10 rounded-full hover:bg-primary/20 disabled:opacity-50 disabled:cursor-not-allowed">
                 <Paperclip className="h-5 w-5 text-primary" />
             </Button>
             <Textarea
@@ -199,17 +202,28 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
                   handleSend();
                 }
               }}
-              placeholder="Tell me your desires..."
+              placeholder={isLocked ? "Subscribe to send more messages" : "Tell me your desires..."}
               className="flex-1 bg-transparent border-0 resize-none focus-visible:ring-0 focus-visible:ring-offset-0 p-2 max-h-32"
               rows={1}
+              disabled={isAiResponding || isLocked}
             />
-            <Button size="icon" variant="ghost" disabled={isAiResponding} className="flex-shrink-0 h-10 w-10 rounded-full bg-primary hover:bg-primary/90">
+            <Button size="icon" variant="ghost" disabled={isAiResponding || isLocked} className="flex-shrink-0 h-10 w-10 rounded-full bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed">
                 <Mic className="h-5 w-5 text-primary-foreground" />
             </Button>
-            <Button size="icon" onClick={handleSend} disabled={!inputValue.trim() || isAiResponding} className="bg-input hover:bg-input/80 flex-shrink-0 h-10 w-10 rounded-lg">
-              <Send className="h-5 w-5" />
+            <Button size="icon" onClick={handleSend} disabled={!inputValue.trim() || isAiResponding || isLocked} className="bg-input hover:bg-input/80 flex-shrink-0 h-10 w-10 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed">
+              {isLocked ? <Lock className="h-5 w-5"/> : <Send className="h-5 w-5" />}
             </Button>
           </div>
+           {messagesLeft !== null && messagesLeft > 0 && messagesLeft <= 10 && (
+                <div className="text-center text-xs text-muted-foreground">
+                    You have <span className="font-bold text-primary">{messagesLeft}</span> free messages left.
+                </div>
+            )}
+            {isLocked && (
+                <div className="text-center text-sm text-primary font-semibold p-2 rounded-md">
+                    You've reached your free message limit. Subscribe to continue!
+                </div>
+            )}
         </div>
       </div>
     </div>

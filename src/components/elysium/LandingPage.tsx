@@ -20,6 +20,7 @@ import {
   Sparkles,
   Upload,
   Menu,
+  PartyPopper,
 } from 'lucide-react';
 import React, { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -27,6 +28,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Switch } from '@/components/ui/switch';
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { PremiumDialog } from './PremiumDialog';
+import { useToast } from '@/hooks/use-toast';
 
 const initialCharacters = [
     {
@@ -103,7 +105,7 @@ const initialCharacters = [
     online: true,
   },
   {
-    id: 'mia-2',
+    id: 'mia-stark',
     name: 'Mia',
     image: '/character9.jpeg',
     theme: 'mystic-purple',
@@ -126,12 +128,27 @@ const tags = ['Asian', 'Redhead', 'Latina', 'Athletic', 'Gothic', 'Brunette', 'S
 
 export function LandingPage() {
   const router = useRouter();
+  const [isPremiumDialogOpen, setIsPremiumDialogOpen] = useState(false);
+  const { toast } = useToast();
 
   const handleCharacterSelect = (character: any) => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('selectedCharacter', JSON.stringify(character));
     }
     router.push('/chat');
+  };
+  
+  const handleSubscription = () => {
+    localStorage.setItem('isPremium', 'true');
+    toast({
+      title: "Welcome to Premium!",
+      description: (
+        <div className="flex items-center gap-2">
+          <PartyPopper className="h-5 w-5 text-primary" />
+          <span>You now have unlimited access. Enjoy!</span>
+        </div>
+      ),
+    });
   };
 
   const SidebarNav = () => (
@@ -202,7 +219,11 @@ export function LandingPage() {
                      <Button variant="ghost" className="text-muted-foreground hover:text-white px-1 py-0 h-auto">Anime</Button>
                  </div>
              </div>
-             <PremiumDialog>
+             <PremiumDialog
+                open={isPremiumDialogOpen}
+                onOpenChange={setIsPremiumDialogOpen}
+                onSubscribed={handleSubscription}
+             >
                 <Button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold hover:opacity-90"><Crown className="mr-2" /> Become Premium</Button>
              </PremiumDialog>
           </header>
@@ -227,11 +248,11 @@ export function LandingPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 [perspective:1000px]">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
               {initialCharacters.map(character => (
-                <Card key={character.id} className="bg-card border-border overflow-hidden rounded-lg group cursor-pointer shadow-lg hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 [transform-style:preserve-3d] origin-center hover:[transform:translateZ(20px)_scale(1.05)]" onClick={() => handleCharacterSelect(character)}>
+                <Card key={character.id} className="bg-card border-border overflow-hidden rounded-lg group cursor-pointer shadow-lg hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300 hover:-translate-y-2 hover:scale-[1.02]" onClick={() => handleCharacterSelect(character)}>
                   <CardContent className="p-0">
-                    <div className="relative h-[300px] w-full [transform-style:preserve-3d]">
+                    <div className="relative h-[300px] w-full">
                       <img
                         src={character.image}
                         alt={character.name}
@@ -239,16 +260,16 @@ export function LandingPage() {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent transition-all duration-300 group-hover:from-black/95 group-hover:via-black/50"></div>
                        {character.tags?.includes('New') && <Badge className="absolute top-2 left-2 bg-primary border-none text-primary-foreground font-semibold">New</Badge>}
-                       <div className="absolute top-2 right-2 flex flex-col items-center gap-2 transition-transform duration-500 group-hover:[transform:translateZ(50px)]">
+                       <div className="absolute top-2 right-2 flex flex-col items-center gap-2">
                             <Button size="icon" className="h-8 w-8 bg-black/50 hover:bg-primary backdrop-blur-sm transition-all duration-300 group-hover:scale-110 group-hover:rotate-12"><MessageSquare className="h-4 w-4" /></Button>
                             {character.online && <div className="h-2 w-2 rounded-full bg-green-400 ring-2 ring-offset-2 ring-offset-black/50 ring-green-400 animate-pulse"></div>}
                        </div>
-                       <div className="absolute bottom-2 left-2 flex items-center gap-2 text-white text-xs font-bold transition-transform duration-500 group-hover:[transform:translateZ(40px)]">
+                       <div className="absolute bottom-2 left-2 flex items-center gap-2 text-white text-xs font-bold">
                            <div className="flex items-center gap-1 bg-black/50 backdrop-blur-sm py-0.5 px-1.5 rounded-md transition-all duration-500 group-hover:bg-primary/80 group-hover:shadow-lg"><Heart className="h-3 w-3 text-red-400"/> {character.likes}</div>
                            <div className="flex items-center gap-1 bg-black/50 backdrop-blur-sm py-0.5 px-1.5 rounded-md transition-all duration-500 group-hover:bg-primary/80 group-hover:shadow-lg"><Eye className="h-3 w-3 text-blue-300"/> {character.views}</div>
                        </div>
                     </div>
-                    <div className="p-3 bg-card transition-transform duration-300 group-hover:[transform:translateZ(30px)]">
+                    <div className="p-3 bg-card">
                       <h3 className="font-semibold text-white transition-colors duration-500 group-hover:text-primary">{character.name}</h3>
                     </div>
                   </CardContent>

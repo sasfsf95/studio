@@ -6,6 +6,8 @@ import { ChatInterface, Message } from './ChatInterface';
 import { continueConversation, getIcebreakers } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
+import { PremiumDialog } from './PremiumDialog';
+import { PartyPopper } from 'lucide-react';
 
 interface ChatContainerProps {
   characterImage: string | null;
@@ -13,35 +15,87 @@ interface ChatContainerProps {
 }
 
 export function ChatContainer({ characterImage, companionName }: ChatContainerProps) {
-  const [icebreakers, setIcebreakers] = useState<string[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [icebreakers, setIcebreakers] = useState<string[]>([]);
   const [isLoadingIcebreakers, setIsLoadingIcebreakers] = useState(true);
   const [isAiResponding, startAiTransition] = useTransition();
   const { toast } = useToast();
   
+  const [isPremium, setIsPremium] = useState(true);
+  const [showPremiumDialog, setShowPremiumDialog] = useState(false);
+  
+  const FREE_MESSAGE_LIMIT = 30;
+  const userMessageCount = messages.filter(msg => msg.sender === 'user').length;
+  const messagesLeft = FREE_MESSAGE_LIMIT - userMessageCount;
+  const isLocked = !isPremium && userMessageCount >= FREE_MESSAGE_LIMIT;
+
   const placeholderAvatar = 'https://placehold.co/400x600.png';
 
+  // Load initial state and messages from localStorage
   useEffect(() => {
-    const getInitialMessages = (name: string): Omit<Message, 'id' | 'timestamp' | 'avatar'>[] => [
-        { text: "Hey gorgeous... I've been waiting for you", sender: 'ai' },
-        { text: `I'm ${name}, your intimate AI companion ✨`, sender: 'ai' },
-        { text: "Tell me your deepest desires... I'm here to listen 💋", sender: 'ai' }
-    ];
+    const premiumStatus = localStorage.getItem('isPremium') === 'true';
+    setIsPremium(premiumStatus);
 
-    const clientTimestamp = format(new Date(), 'p');
-    // Only set initial messages if there are no user messages yet.
-    // This prevents chat reset on name/image change.
-    if (!messages.some(m => m.sender === 'user')) {
-        setMessages(getInitialMessages(companionName).map((msg, i) => ({ 
-        ...msg,
-        id: (i + 1).toString(),
-        timestamp: clientTimestamp,
-        avatar: characterImage || placeholderAvatar
-        })));
+    const chatKey = `chat_messages_${companionName}`;
+    let initialMessages: Message[] = [];
+    try {
+        const savedMessagesRaw = localStorage.getItem(chatKey);
+        if (savedMessagesRaw) {
+            initialMessages = JSON.parse(savedMessagesRaw);
+        }
+    } catch (error) {
+        console.error("Failed to parse messages from localStorage", error);
+        localStorage.removeItem(chatKey); // Clear corrupted data
     }
+    
+    if (initialMessages.length > 0) {
+        setMessages(initialMessages.map(msg => 
+            msg.sender === 'ai' 
+                ? { ...msg, avatar: characterImage || placeholderAvatar } 
+                : msg
+        ));
+    } else {
+        const getInitialMessages = (name: string): Omit<Message, 'id' | 'timestamp' | 'avatar'>[] => [
+            { text: "Hey gorgeous... I've been waiting for you", sender: 'ai' },
+            { text: `I'm ${name}, your intimate AI companion ✨`, sender: 'ai' },
+            { text: "Tell me your deepest desires... I'm here to listen 💋", sender: 'ai' }
+        ];
+        const clientTimestamp = format(new Date(), 'p');
+        const welcomeMessages = getInitialMessages(companionName).map((msg, i) => ({ 
+            ...msg,
+            id: `${Date.now()}-${i}`,
+            timestamp: clientTimestamp,
+            avatar: characterImage || placeholderAvatar
+        }));
+        setMessages(welcomeMessages);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [companionName]);
+  
+  // Update avatars when characterImage changes
+  useEffect(() => {
+    setMessages(prevMessages => 
+        prevMessages.map(msg => 
+            msg.sender === 'ai' 
+                ? { ...msg, avatar: characterImage || placeholderAvatar } 
+                : msg
+        )
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [characterImage]);
 
+  // Persist messages to localStorage
+  useEffect(() => {
+    if (messages.length > 0 && messages.some(m => m.sender === 'user')) {
+        const chatKey = `chat_messages_${companionName}`;
+        localStorage.setItem(chatKey, JSON.stringify(messages));
+    }
+  }, [messages, companionName]);
 
+  // Fetch icebreakers
+  useEffect(() => {
     const fetchIcebreakers = async () => {
+      setIsLoadingIcebreakers(true);
       try {
         const result = await getIcebreakers({
           aiCompanionProfile: `${companionName} is an intimate and seductive AI companion. She is alluring, mysterious, and deeply interested in the user's desires. She is direct and encouraging of deep, personal conversations.`,
@@ -60,21 +114,20 @@ export function ChatContainer({ characterImage, companionName }: ChatContainerPr
       }
     };
     fetchIcebreakers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [toast, companionName]);
 
-  useEffect(() => {
-    setMessages(prevMessages => 
-        prevMessages.map(msg => 
-            msg.sender === 'ai' 
-                ? { ...msg, avatar: characterImage || placeholderAvatar } 
-                : msg
-        )
-    );
-  }, [characterImage]);
-  
   const handleSendMessage = (text: string, imageUrl?: string) => {
     if (!text.trim() && !imageUrl) return;
+
+    if (isLocked) {
+        setShowPremiumDialog(true);
+        toast({
+            title: "Free Message Limit Reached",
+            description: "Please subscribe to premium to continue chatting.",
+            variant: "destructive",
+        });
+        return;
+    }
 
     const newUserMessage: Message = { id: Date.now().toString(), text, sender: 'user', timestamp: format(new Date(), 'p'), imageUrl };
     const updatedMessages = [...messages, newUserMessage];
@@ -103,16 +156,39 @@ export function ChatContainer({ characterImage, companionName }: ChatContainerPr
       }
     });
   };
+  
+  const handleSubscription = () => {
+    setIsPremium(true);
+    localStorage.setItem('isPremium', 'true');
+    toast({
+        title: "Welcome to Premium!",
+        description: (
+            <div className="flex items-center gap-2">
+            <PartyPopper className="h-5 w-5 text-primary" />
+            <span>You now have unlimited access. Enjoy!</span>
+            </div>
+        ),
+    });
+  };
 
   return (
-    <ChatInterface
-      messages={messages}
-      icebreakers={icebreakers}
-      onSendMessage={handleSendMessage}
-      isLoadingIcebreakers={isLoadingIcebreakers}
-      isAiResponding={isAiResponding}
-      characterImage={characterImage}
-      companionName={companionName}
-    />
+    <>
+      <PremiumDialog
+        open={showPremiumDialog}
+        onOpenChange={setShowPremiumDialog}
+        onSubscribed={handleSubscription}
+      />
+      <ChatInterface
+        messages={messages}
+        icebreakers={icebreakers}
+        onSendMessage={handleSendMessage}
+        isLoadingIcebreakers={isLoadingIcebreakers}
+        isAiResponding={isAiResponding}
+        characterImage={characterImage}
+        companionName={companionName}
+        isLocked={isLocked}
+        messagesLeft={isPremium ? null : messagesLeft}
+      />
+    </>
   );
 }

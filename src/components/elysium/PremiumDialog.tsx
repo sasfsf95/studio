@@ -37,8 +37,17 @@ const formSchema = z.object({
   upiId: z.string().optional(),
 });
 
-export function PremiumDialog({ children }: { children: React.ReactNode }) {
-  const [isOpen, setIsOpen] = useState(false);
+export function PremiumDialog({
+  children,
+  open,
+  onOpenChange,
+  onSubscribed,
+}: {
+  children?: React.ReactNode;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onSubscribed: () => void;
+}) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
@@ -58,23 +67,14 @@ export function PremiumDialog({ children }: { children: React.ReactNode }) {
     // Simulate payment processing
     await new Promise((resolve) => setTimeout(resolve, 2000));
     setIsSubmitting(false);
-    setIsOpen(false);
+    onOpenChange(false);
     form.reset();
-
-    toast({
-      title: "Welcome to Premium!",
-      description: (
-        <div className="flex items-center gap-2">
-          <PartyPopper className="h-5 w-5 text-primary" />
-          <span>You now have unlimited access. Enjoy!</span>
-        </div>
-      ),
-    });
+    onSubscribed();
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      {children && <DialogTrigger asChild>{children}</DialogTrigger>}
       <DialogContent className="sm:max-w-[425px] bg-card border-border">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-xl">
