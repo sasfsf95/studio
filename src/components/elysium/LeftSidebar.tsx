@@ -42,7 +42,7 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
   };
 
   return (
-    <aside className="w-[360px] bg-black/30 p-4 flex flex-col space-y-6 border-r border-white/5 overflow-y-auto">
+    <div className="h-full bg-black/30 p-4 flex flex-col space-y-6 overflow-y-auto">
       <header className="flex justify-between items-center">
         <div className="flex items-center gap-2">
           <Crown className="h-6 w-6 text-yellow-400" />
@@ -200,6 +200,6 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
           </div>
         </CardContent>
       </Card>
-    </aside>
+    </div>
   );
 }

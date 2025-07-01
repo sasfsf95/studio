@@ -154,7 +154,7 @@ export default function ChatPage() {
       />
       <div className="h-screen w-full flex bg-background text-foreground">
         {/* Desktop Sidebar */}
-        <div className="hidden md:flex">
+        <aside className="hidden md:block w-[360px] border-r border-white/5">
           <LeftSidebar 
             characterImage={characterImage} 
             setCharacterImage={setCharacterImage} 
@@ -165,7 +165,7 @@ export default function ChatPage() {
             isPremium={isPremium}
             setShowPremiumDialog={setShowPremiumDialog}
           />
-        </div>
+        </aside>
 
         <main className="flex-1 flex flex-col h-full">
           {/* Mobile Header & Sidebar Sheet */}
