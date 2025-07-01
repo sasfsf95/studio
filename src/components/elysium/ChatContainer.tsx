@@ -163,6 +163,8 @@ export function ChatContainer({ characterImage, companionName, isPremium, setSho
         companionName={companionName}
         isLocked={isLocked}
         messagesLeft={isPremium ? null : messagesLeft}
+        isPremium={isPremium}
+        setShowPremiumDialog={setShowPremiumDialog}
       />
     </>
   );

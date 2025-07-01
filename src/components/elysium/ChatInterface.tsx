@@ -27,6 +27,8 @@ interface ChatInterfaceProps {
   companionName: string;
   isLocked: boolean;
   messagesLeft: number | null;
+  isPremium: boolean;
+  setShowPremiumDialog: (open: boolean) => void;
 }
 
 const icebreakerIcons = [
@@ -37,7 +39,7 @@ const icebreakerIcons = [
     <Gift className="h-4 w-4" />,
 ];
 
-export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingIcebreakers, isAiResponding, characterImage, companionName, isLocked, messagesLeft }: ChatInterfaceProps) {
+export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingIcebreakers, isAiResponding, characterImage, companionName, isLocked, messagesLeft, isPremium, setShowPremiumDialog }: ChatInterfaceProps) {
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -84,6 +86,14 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
     }
     if (event.target) {
       event.target.value = '';
+    }
+  };
+
+  const handlePremiumAction = (actionText: string) => {
+    if (!isPremium) {
+      setShowPremiumDialog(true);
+    } else if (!isAiResponding) {
+      onSendMessage(actionText);
     }
   };
 
@@ -176,13 +186,28 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
           )}
 
           <div className="flex justify-start items-center gap-2 flex-wrap">
-              <Button variant="outline" className="rounded-full bg-black/30 border-white/10 text-muted-foreground hover:bg-black/50 hover:text-foreground text-xs h-8 px-2.5 sm:text-sm sm:h-9 sm:px-3">
+              <Button 
+                variant="outline" 
+                className="rounded-full bg-black/30 border-white/10 text-muted-foreground hover:bg-black/50 hover:text-foreground text-xs h-8 px-2.5 sm:text-sm sm:h-9 sm:px-3"
+                onClick={() => handlePremiumAction("I want to send you a gift 🎁")}
+                disabled={isAiResponding}
+              >
                   <Gift className="mr-2 h-4 w-4" /> Send Gift
               </Button>
-              <Button variant="outline" className="rounded-full bg-black/30 border-white/10 text-muted-foreground hover:bg-black/50 hover:text-foreground text-xs h-8 px-2.5 sm:text-sm sm:h-9 sm:px-3">
+              <Button 
+                variant="outline" 
+                className="rounded-full bg-black/30 border-white/10 text-muted-foreground hover:bg-black/50 hover:text-foreground text-xs h-8 px-2.5 sm:text-sm sm:h-9 sm:px-3"
+                onClick={() => handlePremiumAction("Let's do some role-playing.")}
+                disabled={isAiResponding}
+              >
                   <Drama className="mr-2 h-4 w-4" /> Role Play
               </Button>
-              <Button variant="default" className="rounded-full bg-gradient-to-r from-primary to-fuchsia-600 text-primary-foreground shadow-lg shadow-primary/20 hover:opacity-90 transition-opacity text-xs h-8 px-2.5 sm:text-sm sm:h-9 sm:px-3">
+              <Button 
+                variant="default" 
+                className="rounded-full bg-gradient-to-r from-primary to-fuchsia-600 text-primary-foreground shadow-lg shadow-primary/20 hover:opacity-90 transition-opacity text-xs h-8 px-2.5 sm:text-sm sm:h-9 sm:px-3"
+                onClick={() => handlePremiumAction("I want to get more intimate with you.")}
+                disabled={isAiResponding}
+              >
                   <Flame className="mr-2 h-4 w-4" /> Get Intimate
               </Button>
           </div>
