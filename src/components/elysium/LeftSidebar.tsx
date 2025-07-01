@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Button } from '@/components/ui/button';
@@ -17,9 +18,11 @@ interface LeftSidebarProps {
   setTheme: (theme: string) => void;
   companionName: string;
   setCompanionName: (name: string) => void;
+  isPremium: boolean;
+  setShowPremiumDialog: (open: boolean) => void;
 }
 
-export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme, companionName, setCompanionName }: LeftSidebarProps) {
+export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme, companionName, setCompanionName, isPremium, setShowPremiumDialog }: LeftSidebarProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageUploadClick = () => {
@@ -45,8 +48,13 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
           <Crown className="h-6 w-6 text-yellow-400" />
           <h1 className="text-lg font-semibold text-foreground tracking-wider">Premium Experience</h1>
         </div>
-        <Button size="sm" className="font-bold bg-primary text-primary-foreground rounded-full px-5 shadow-lg shadow-primary/20 hover:bg-primary/90 transition-opacity">
-          VIP
+        <Button 
+          size="sm" 
+          className="font-bold bg-primary text-primary-foreground rounded-full px-5 shadow-lg shadow-primary/20 hover:bg-primary/90 transition-opacity"
+          onClick={() => !isPremium && setShowPremiumDialog(true)}
+          disabled={isPremium}
+        >
+          {isPremium ? 'Premium' : 'VIP'}
         </Button>
       </header>
 

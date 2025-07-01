@@ -5,18 +5,20 @@ import { useState, useEffect } from 'react';
 import { ChatContainer } from '@/components/elysium/ChatContainer';
 import { LeftSidebar } from '@/components/elysium/LeftSidebar';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Skeleton } from '@/components/ui/skeleton';
 import { Heart, Loader2, Sparkles, Menu, PartyPopper } from 'lucide-react';
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
+import { PremiumDialog } from '@/components/elysium/PremiumDialog';
 
 export default function ChatPage() {
   const [characterImage, setCharacterImage] = useState<string | null>(null);
   const [theme, setTheme] = useState('romantic-pink');
   const [companionName, setCompanionName] = useState('Aria');
   const [isReady, setIsReady] = useState(false);
+  const [isPremium, setIsPremium] = useState(false);
+  const [showPremiumDialog, setShowPremiumDialog] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
@@ -46,6 +48,9 @@ export default function ChatPage() {
 
   useEffect(() => {
     // This code runs on the client, so window and localStorage are available.
+    const premiumStatus = localStorage.getItem('isPremium') === 'true';
+    setIsPremium(premiumStatus);
+    
     try {
       const storedCharacter = localStorage.getItem('selectedCharacter');
       if (storedCharacter) {
@@ -142,57 +147,72 @@ export default function ChatPage() {
   }
   
   return (
-    <div className="h-screen w-full flex bg-background text-foreground">
-      {/* Desktop Sidebar */}
-      <div className="hidden md:flex">
-        <LeftSidebar 
-          characterImage={characterImage} 
-          setCharacterImage={setCharacterImage} 
-          theme={theme}
-          setTheme={setTheme}
-          companionName={companionName}
-          setCompanionName={setCompanionName}
-        />
-      </div>
+    <>
+      <PremiumDialog
+        open={showPremiumDialog}
+        onOpenChange={setShowPremiumDialog}
+      />
+      <div className="h-screen w-full flex bg-background text-foreground">
+        {/* Desktop Sidebar */}
+        <div className="hidden md:flex">
+          <LeftSidebar 
+            characterImage={characterImage} 
+            setCharacterImage={setCharacterImage} 
+            theme={theme}
+            setTheme={setTheme}
+            companionName={companionName}
+            setCompanionName={setCompanionName}
+            isPremium={isPremium}
+            setShowPremiumDialog={setShowPremiumDialog}
+          />
+        </div>
 
-      <main className="flex-1 flex flex-col h-full">
-        {/* Mobile Header & Sidebar Sheet */}
-        <div className="md:hidden flex items-center justify-between p-2 border-b border-border">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Menu className="h-6 w-6" />
-                <span className="sr-only">Open Sidebar</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="w-[300px] sm:w-[360px] p-0 bg-black/80 backdrop-blur-sm border-r-white/5">
-              <SheetTitle className="sr-only">Companion Customization</SheetTitle>
-              <SheetDescription className="sr-only">Customize your AI companion's name, image, theme, and personality.</SheetDescription>
-              <LeftSidebar 
-                characterImage={characterImage} 
-                setCharacterImage={setCharacterImage} 
-                theme={theme}
-                setTheme={setTheme}
-                companionName={companionName}
-                setCompanionName={setCompanionName}
-              />
-            </SheetContent>
-          </Sheet>
-          <div className="flex items-center gap-2">
-            <Avatar className="h-8 w-8">
-              <AvatarImage src={characterImage || undefined} alt={companionName} />
-              <AvatarFallback>{companionName.charAt(0)}</AvatarFallback>
-            </Avatar>
-            <span className="font-semibold">{companionName}</span>
+        <main className="flex-1 flex flex-col h-full">
+          {/* Mobile Header & Sidebar Sheet */}
+          <div className="md:hidden flex items-center justify-between p-2 border-b border-border">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <Menu className="h-6 w-6" />
+                  <span className="sr-only">Open Sidebar</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-[300px] sm:w-[360px] p-0 bg-black/80 backdrop-blur-sm border-r-white/5">
+                <SheetTitle className="sr-only">Companion Customization</SheetTitle>
+                <SheetDescription className="sr-only">Customize your AI companion's name, image, theme, and personality.</SheetDescription>
+                <LeftSidebar 
+                  characterImage={characterImage} 
+                  setCharacterImage={setCharacterImage} 
+                  theme={theme}
+                  setTheme={setTheme}
+                  companionName={companionName}
+                  setCompanionName={setCompanionName}
+                  isPremium={isPremium}
+                  setShowPremiumDialog={setShowPremiumDialog}
+                />
+              </SheetContent>
+            </Sheet>
+            <div className="flex items-center gap-2">
+              <Avatar className="h-8 w-8">
+                <AvatarImage src={characterImage || undefined} alt={companionName} />
+                <AvatarFallback>{companionName.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <span className="font-semibold">{companionName}</span>
+            </div>
+             {/* Spacer to balance the trigger button */}
+            <div className="w-10"></div>
           </div>
-           {/* Spacer to balance the trigger button */}
-          <div className="w-10"></div>
-        </div>
-        
-        <div className="flex-1 overflow-y-auto">
-          <ChatContainer characterImage={characterImage} companionName={companionName} />
-        </div>
-      </main>
-    </div>
+          
+          <div className="flex-1 overflow-y-auto">
+            <ChatContainer 
+              characterImage={characterImage} 
+              companionName={companionName} 
+              isPremium={isPremium} 
+              setShowPremiumDialog={setShowPremiumDialog}
+            />
+          </div>
+        </main>
+      </div>
+    </>
   );
 }

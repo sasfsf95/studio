@@ -6,22 +6,20 @@ import { ChatInterface, Message } from './ChatInterface';
 import { continueConversation, getIcebreakers } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
-import { PremiumDialog } from './PremiumDialog';
 
 interface ChatContainerProps {
   characterImage: string | null;
   companionName: string;
+  isPremium: boolean;
+  setShowPremiumDialog: (open: boolean) => void;
 }
 
-export function ChatContainer({ characterImage, companionName }: ChatContainerProps) {
+export function ChatContainer({ characterImage, companionName, isPremium, setShowPremiumDialog }: ChatContainerProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [icebreakers, setIcebreakers] = useState<string[]>([]);
   const [isLoadingIcebreakers, setIsLoadingIcebreakers] = useState(true);
   const [isAiResponding, startAiTransition] = useTransition();
   const { toast } = useToast();
-  
-  const [isPremium, setIsPremium] = useState(false);
-  const [showPremiumDialog, setShowPremiumDialog] = useState(false);
   
   const FREE_MESSAGE_LIMIT = 30;
   const userMessageCount = messages.filter(msg => msg.sender === 'user').length;
@@ -30,11 +28,8 @@ export function ChatContainer({ characterImage, companionName }: ChatContainerPr
 
   const placeholderAvatar = 'https://placehold.co/400x600.png';
 
-  // Load initial state and messages from localStorage
+  // Load initial messages from localStorage
   useEffect(() => {
-    const premiumStatus = localStorage.getItem('isPremium') === 'true';
-    setIsPremium(premiumStatus);
-
     const chatKey = `chat_messages_${companionName}`;
     let initialMessages: Message[] = [];
     try {
@@ -158,10 +153,6 @@ export function ChatContainer({ characterImage, companionName }: ChatContainerPr
 
   return (
     <>
-      <PremiumDialog
-        open={showPremiumDialog}
-        onOpenChange={setShowPremiumDialog}
-      />
       <ChatInterface
         messages={messages}
         icebreakers={icebreakers}
