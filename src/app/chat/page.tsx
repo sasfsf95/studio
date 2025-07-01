@@ -169,7 +169,7 @@ export default function ChatPage() {
 
         <main className="flex-1 flex flex-col h-full">
           {/* Mobile Header & Sidebar Sheet */}
-          <div className="md:hidden flex items-center justify-between p-2 border-b border-border">
+          <div className="md:hidden flex items-center justify-between p-2 border-b border-white/10 bg-black/50 backdrop-blur-sm shadow-lg">
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon">

@@ -100,19 +100,19 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
           data-ai-hint="beautiful woman"
         />
       )}
-      <div className="relative z-10 flex flex-col h-full p-4 space-y-4">
+      <div className="relative z-10 flex flex-col h-full p-2 sm:p-4 space-y-4">
         <ScrollArea className="flex-1 pr-4 -mr-4">
           <div className="space-y-8 p-4">
             {messages.map((msg) => (
               <div 
                 key={msg.id} 
                 className={cn(
-                  "flex items-start gap-4 animate-message-in",
+                  "flex items-start gap-2 sm:gap-4 animate-message-in",
                   msg.sender === 'user' ? 'justify-end' : 'justify-start'
                 )}
               >
                 {msg.sender === 'ai' && (
-                  <Avatar className="h-10 w-10 border-2 border-primary/50">
+                  <Avatar className="h-8 w-8 sm:h-10 sm:w-10 border-2 border-primary/50">
                     <AvatarImage src={msg.avatar} alt={companionName} data-ai-hint="beautiful woman" className="object-cover object-top" />
                     <AvatarFallback>{companionName.charAt(0).toUpperCase()}</AvatarFallback>
                   </Avatar>
@@ -122,7 +122,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
                   msg.sender === 'user' ? 'items-end' : 'items-start'
                 )}>
                     <div className={cn(
-                      'max-w-md p-3 px-4 rounded-2xl text-base leading-relaxed transition-all duration-300 ease-out hover:scale-[1.02] cursor-pointer',
+                      'max-w-md p-3 px-4 rounded-2xl text-sm sm:text-base leading-relaxed transition-all duration-300 ease-out hover:scale-[1.02] cursor-pointer',
                       msg.sender === 'user'
                         ? 'bg-gradient-to-br from-primary to-fuchsia-600 text-primary-foreground rounded-br-lg shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30'
                         : 'bg-card text-card-foreground rounded-bl-lg shadow-xl shadow-primary/20 hover:shadow-2xl hover:shadow-primary/30'
@@ -135,7 +135,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
                     {msg.timestamp && <p className="text-xs text-muted-foreground px-1">{msg.timestamp}</p>}
                 </div>
                 {msg.sender === 'user' && (
-                  <Avatar className="h-10 w-10 border-2 border-border">
+                  <Avatar className="h-8 w-8 sm:h-10 sm:w-10 border-2 border-border">
                     <AvatarFallback>U</AvatarFallback>
                   </Avatar>
                 )}
@@ -176,20 +176,20 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
           )}
 
           <div className="flex justify-start items-center gap-2 flex-wrap">
-              <Button variant="outline" size="sm" className="rounded-full bg-black/30 border-white/10 text-muted-foreground hover:bg-black/50 hover:text-foreground">
+              <Button variant="outline" className="rounded-full bg-black/30 border-white/10 text-muted-foreground hover:bg-black/50 hover:text-foreground text-xs h-8 px-2.5 sm:text-sm sm:h-9 sm:px-3">
                   <Gift className="mr-2 h-4 w-4" /> Send Gift
               </Button>
-              <Button variant="outline" size="sm" className="rounded-full bg-black/30 border-white/10 text-muted-foreground hover:bg-black/50 hover:text-foreground">
+              <Button variant="outline" className="rounded-full bg-black/30 border-white/10 text-muted-foreground hover:bg-black/50 hover:text-foreground text-xs h-8 px-2.5 sm:text-sm sm:h-9 sm:px-3">
                   <Drama className="mr-2 h-4 w-4" /> Role Play
               </Button>
-              <Button variant="default" size="sm" className="rounded-full bg-gradient-to-r from-primary to-fuchsia-600 text-primary-foreground shadow-lg shadow-primary/20 hover:opacity-90 transition-opacity">
+              <Button variant="default" className="rounded-full bg-gradient-to-r from-primary to-fuchsia-600 text-primary-foreground shadow-lg shadow-primary/20 hover:opacity-90 transition-opacity text-xs h-8 px-2.5 sm:text-sm sm:h-9 sm:px-3">
                   <Flame className="mr-2 h-4 w-4" /> Get Intimate
               </Button>
           </div>
         
           <div className="flex items-end gap-2 border rounded-xl p-2 bg-black/40 border-white/10">
             <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept="image/jpeg, image/png, image/gif, image/webp" />
-            <Button size="icon" variant="ghost" onClick={handleAttachmentClick} disabled={isAiResponding || isLocked} className="flex-shrink-0 h-10 w-10 rounded-full hover:bg-primary/20 disabled:opacity-50 disabled:cursor-not-allowed">
+            <Button variant="ghost" onClick={handleAttachmentClick} disabled={isAiResponding || isLocked} className="flex-shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-full hover:bg-primary/20 disabled:opacity-50 disabled:cursor-not-allowed">
                 <Paperclip className="h-5 w-5 text-primary" />
             </Button>
             <Textarea
@@ -203,14 +203,14 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
                 }
               }}
               placeholder={isLocked ? "Subscribe to send more messages" : "Tell me your desires..."}
-              className="flex-1 bg-transparent border-0 resize-none focus-visible:ring-0 focus-visible:ring-offset-0 p-2 max-h-32"
+              className="flex-1 bg-transparent border-0 resize-none focus-visible:ring-0 focus-visible:ring-offset-0 p-2 max-h-32 text-sm sm:text-base"
               rows={1}
               disabled={isAiResponding || isLocked}
             />
-            <Button size="icon" variant="ghost" disabled={isAiResponding || isLocked} className="flex-shrink-0 h-10 w-10 rounded-full bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed">
+            <Button variant="ghost" disabled={isAiResponding || isLocked} className="flex-shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed">
                 <Mic className="h-5 w-5 text-primary-foreground" />
             </Button>
-            <Button size="icon" onClick={handleSend} disabled={!inputValue.trim() || isAiResponding || isLocked} className="bg-input hover:bg-input/80 flex-shrink-0 h-10 w-10 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed">
+            <Button onClick={handleSend} disabled={!inputValue.trim() || isAiResponding || isLocked} className="bg-input hover:bg-input/80 flex-shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed">
               {isLocked ? <Lock className="h-5 w-5"/> : <Send className="h-5 w-5" />}
             </Button>
           </div>
