@@ -96,7 +96,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
         <img
           src={characterImage}
           alt="Chat Background"
-          className="absolute inset-0 h-full w-full object-cover object-top opacity-[0.08]"
+          className="absolute inset-0 h-full w-full object-cover object-top opacity-20 md:opacity-[0.08]"
           data-ai-hint="beautiful woman"
         />
       )}
