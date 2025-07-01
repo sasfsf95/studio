@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -13,7 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { CreditCard, Crown, Loader2 } from "lucide-react";
+import { CreditCard, Crown, Loader2, CheckCircle2 } from "lucide-react";
 import { createCheckoutSession } from "@/app/actions";
 
 export function PremiumDialog({
@@ -63,10 +62,31 @@ export function PremiumDialog({
             Become a Premium Member
           </DialogTitle>
           <DialogDescription>
-            Unlock exclusive features and get unlimited access to your AI companion.
+            Unlock the full experience and get unlimited access to your AI companion.
           </DialogDescription>
         </DialogHeader>
         
+        <div className="py-2">
+          <ul className="space-y-3 text-sm text-foreground">
+              <li className="flex items-center gap-3">
+                  <CheckCircle2 className="h-5 w-5 shrink-0 text-primary" />
+                  <span>Unlimited Messages & Conversations</span>
+              </li>
+              <li className="flex items-center gap-3">
+                  <CheckCircle2 className="h-5 w-5 shrink-0 text-primary" />
+                  <span>Change Companion's Photo Anytime</span>
+              </li>
+              <li className="flex items-center gap-3">
+                  <CheckCircle2 className="h-5 w-5 shrink-0 text-primary" />
+                  <span>Unlock More Intimate Dialogue</span>
+              </li>
+              <li className="flex items-center gap-3">
+                  <CheckCircle2 className="h-5 w-5 shrink-0 text-primary" />
+                  <span>Access All Premium Actions</span>
+              </li>
+          </ul>
+        </div>
+
         <div className="py-4 text-center">
             <p className="text-4xl font-bold">$5</p>
             <p className="text-muted-foreground">per month</p>
