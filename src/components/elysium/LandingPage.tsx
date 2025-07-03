@@ -35,7 +35,7 @@ const initialCharacters = [
     id: 'aria',
     name: 'Aria',
     image: '/character.jpg',
-    video: '/sample3.mp4',
+    video: '/sample1.mp4',
     theme: 'romantic-pink',
     likes: '38K',
     views: '3K',
@@ -46,7 +46,7 @@ const initialCharacters = [
     id: 'ivana',
     name: 'Ivana',
     image: '/character1.jpg',
-    video: '/sample2.mp4',
+    video: '/sample1.mp4',
     theme: 'mystic-purple',
     likes: '52K',
     views: '2m',
@@ -56,7 +56,7 @@ const initialCharacters = [
     id: 'chloe',
     name: 'Chloe',
     image: '/character2.jpg',
-    video: '/sample3.mp4',
+    video: '/sample1.mp4',
     theme: 'golden-luxe',
     likes: '39K',
     views: '2m',
@@ -66,7 +66,7 @@ const initialCharacters = [
     id: 'seraphina',
     name: 'Seraphina',
     image: '/character3.jpeg',
-    video: '/sample3.mp4',
+    video: '/sample1.mp4',
     theme: 'seductive-red',
     likes: '44K',
     views: '3m',
@@ -86,7 +86,7 @@ const initialCharacters = [
     id: 'zara',
     name: 'Zara',
     image: '/character5.jpeg',
-    video: '/sample4.mp4',
+    video: '/sample1.mp4',
     theme: 'golden-luxe',
     likes: '61K',
     views: '1m',
@@ -207,7 +207,7 @@ export function LandingPage() {
         </aside>
 
         <main className="flex-1">
-          <header className="sticky top-0 z-20 bg-[#1C1C1E]/80 backdrop-blur-sm border-b border-border p-4 flex justify-between items-center">
+          <header className="sticky top-0 z-20 bg-[#1C1C1E]/80 backdrop-blur-sm border-b border-border p-2 px-4 sm:p-4 flex justify-between items-center">
              <div className="flex items-center gap-4">
                 <div className="lg:hidden">
                     <Sheet>
@@ -239,11 +239,11 @@ export function LandingPage() {
              </PremiumDialog>
           </header>
 
-          <div className="p-4 md:p-6">
+          <div className="p-2 sm:p-4 md:p-6">
             <div className="flex flex-col items-center justify-center gap-4 mb-6">
                 <div className="flex items-center gap-3">
                     <Sparkles className="text-pink-400 w-5 h-5" />
-                    <p className="font-semibold text-lg">Show online only</p>
+                    <p className="font-semibold text-base sm:text-lg">Show online only</p>
                     <Switch defaultChecked />
                     <Sparkles className="text-pink-400 w-5 h-5" />
                 </div>
@@ -252,18 +252,18 @@ export function LandingPage() {
             <div className="mb-6">
               <div className="flex flex-wrap gap-2">
                 {tags.map(tag => (
-                  <Button key={tag} variant="outline" size="sm" className="rounded-full bg-zinc-900 border-zinc-700 hover:bg-zinc-800 hover:border-zinc-600">
+                  <Button key={tag} variant="outline" size="sm" className="rounded-full bg-zinc-900 border-zinc-700 hover:bg-zinc-800 hover:border-zinc-600 text-xs sm:text-sm">
                     <PlusSquare className="h-4 w-4 mr-2" /> {tag}
                   </Button>
                 ))}
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-4">
               {initialCharacters.map(character => (
                 <Card key={character.id} className="relative bg-card border-border rounded-3xl group cursor-pointer shadow-lg hover:z-10 hover:shadow-2xl hover:shadow-primary/20 transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:scale-105 [transform:translateZ(0)]" onClick={() => handleCharacterSelect(character)}>
                   <CardContent className="p-0 overflow-hidden rounded-[calc(1.5rem-1px)]">
-                    <div className="relative h-[300px] w-full overflow-hidden">
+                    <div className="relative h-[320px] w-full overflow-hidden">
                        <video
                         src={character.video}
                         poster={character.image}
