@@ -250,7 +250,7 @@ export function LandingPage() {
             </div>
 
             <div className="mb-6">
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap justify-center gap-2">
                 {tags.map(tag => (
                   <Button key={tag} variant="outline" size="sm" className="rounded-full bg-zinc-900 border-zinc-700 hover:bg-zinc-800 hover:border-zinc-600 text-xs sm:text-sm">
                     <PlusSquare className="h-4 w-4 mr-2" /> {tag}
@@ -261,7 +261,7 @@ export function LandingPage() {
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-4">
               {initialCharacters.map(character => (
-                <Card key={character.id} className="relative bg-card border-border rounded-3xl group cursor-pointer shadow-lg hover:z-10 hover:shadow-2xl hover:shadow-primary/20 transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:scale-105 [transform:translateZ(0)]" onClick={() => handleCharacterSelect(character)}>
+                <Card key={character.id} className="relative bg-card border-none rounded-3xl group cursor-pointer shadow-lg hover:z-10 hover:shadow-2xl hover:shadow-primary/20 transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:scale-105 [transform:translateZ(0)]" onClick={() => handleCharacterSelect(character)}>
                   <CardContent className="p-0 overflow-hidden rounded-[calc(1.5rem-1px)]">
                     <div className="relative h-[320px] w-full overflow-hidden">
                        <video
