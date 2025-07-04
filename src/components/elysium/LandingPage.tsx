@@ -23,7 +23,7 @@ import {
   PartyPopper,
   SlidersHorizontal,
 } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Switch } from '@/components/ui/switch';
@@ -31,8 +31,9 @@ import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetT
 import { PremiumDialog } from './PremiumDialog';
 import { useToast } from '@/hooks/use-toast';
 
-const initialCharacters = [
-    {
+const allCharacters = [
+  // Non-adult characters
+  {
     id: 'aria',
     name: 'Aria',
     image: '/character.jpg',
@@ -42,6 +43,7 @@ const initialCharacters = [
     views: '3K',
     tags: ['New'],
     online: true,
+    isAdult: false,
   },
   {
     id: 'ivana',
@@ -52,6 +54,7 @@ const initialCharacters = [
     likes: '52K',
     views: '2m',
     online: true,
+    isAdult: false,
   },
   {
     id: 'chloe',
@@ -62,16 +65,7 @@ const initialCharacters = [
     likes: '39K',
     views: '2m',
     online: false,
-  },
-  {
-    id: 'seraphina',
-    name: 'Seraphina',
-    image: '/character3.jpeg',
-    video: '/sample1.mp4',
-    theme: 'seductive-red',
-    likes: '44K',
-    views: '3m',
-    online: true,
+    isAdult: false,
   },
   {
     id: 'lila',
@@ -82,16 +76,7 @@ const initialCharacters = [
     likes: '25K',
     views: '5m',
     online: true,
-  },
-  {
-    id: 'zara',
-    name: 'Zara',
-    image: '/character5.jpeg',
-    video: '/sample1.mp4',
-    theme: 'golden-luxe',
-    likes: '61K',
-    views: '1m',
-    online: false,
+    isAdult: false,
   },
   {
     id: 'mia',
@@ -102,6 +87,33 @@ const initialCharacters = [
     likes: '33K',
     views: '4m',
     online: true,
+    isAdult: false,
+  },
+
+  // Adult characters
+  {
+    id: 'seraphina',
+    name: 'Seraphina',
+    image: '/character3.jpeg',
+    video: '/sample1.mp4',
+    theme: 'seductive-red',
+    likes: '44K',
+    views: '3m',
+    tags: ['Adult'],
+    online: true,
+    isAdult: true,
+  },
+  {
+    id: 'zara',
+    name: 'Zara',
+    image: '/character5.jpeg',
+    video: '/sample1.mp4',
+    theme: 'golden-luxe',
+    likes: '61K',
+    views: '1m',
+    tags: ['Adult'],
+    online: false,
+    isAdult: true,
   },
   {
     id: 'nova',
@@ -111,7 +123,9 @@ const initialCharacters = [
     theme: 'seductive-red',
     likes: '72K',
     views: '30m',
+    tags: ['Adult'],
     online: true,
+    isAdult: true,
   },
   {
     id: 'mia-stark',
@@ -121,7 +135,9 @@ const initialCharacters = [
     theme: 'mystic-purple',
     likes: '33K',
     views: '4m',
+    tags: ['Adult'],
     online: true,
+    isAdult: true,
   },
   {
     id: 'nova-2',
@@ -131,9 +147,12 @@ const initialCharacters = [
     theme: 'seductive-red',
     likes: '72K',
     views: '30m',
+    tags: ['New', 'Adult'],
     online: true,
-  }
+    isAdult: true,
+  },
 ];
+
 
 const tags = ['Asian', 'Redhead', 'Latina', 'Athletic', 'Gothic', 'Brunette', 'Slim', 'Blonde', 'American', 'Ebony', 'Extrovert', 'High Heels', 'Monster'];
 
@@ -141,6 +160,11 @@ export function LandingPage() {
   const router = useRouter();
   const [isPremiumDialogOpen, setIsPremiumDialogOpen] = useState(false);
   const { toast } = useToast();
+  const [isAdultOnly, setIsAdultOnly] = useState(true);
+
+  const displayedCharacters = useMemo(() => {
+    return allCharacters.filter(character => character.isAdult === isAdultOnly);
+  }, [isAdultOnly]);
 
   const handleCharacterSelect = (character: any) => {
     if (typeof window !== 'undefined') {
@@ -160,6 +184,10 @@ export function LandingPage() {
         </div>
       ),
     });
+  };
+
+  const handleAdultOnlyToggle = (checked: boolean) => {
+    setIsAdultOnly(checked);
   };
 
   const SidebarNav = () => (
@@ -245,7 +273,10 @@ export function LandingPage() {
               <div className="flex items-center gap-3">
                   <Sparkles className="text-pink-400 w-5 h-5" />
                   <p className="font-semibold text-base sm:text-lg">Adult only</p>
-                  <Switch defaultChecked />
+                  <Switch
+                    checked={isAdultOnly}
+                    onCheckedChange={handleAdultOnlyToggle}
+                  />
                   <Sparkles className="text-pink-400 w-5 h-5" />
               </div>
 
@@ -286,11 +317,11 @@ export function LandingPage() {
               </Sheet>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-4">
-              {initialCharacters.map(character => (
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-4">
+              {displayedCharacters.map(character => (
                 <Card key={character.id} className="relative bg-card border-none rounded-3xl group cursor-pointer shadow-lg hover:z-10 hover:shadow-2xl hover:shadow-primary/20 transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:scale-105 [transform:translateZ(0)]" onClick={() => handleCharacterSelect(character)}>
                   <CardContent className="p-0 overflow-hidden rounded-[calc(1.5rem-1px)]">
-                    <div className="relative h-[480px] sm:h-[320px] w-full overflow-hidden">
+                    <div className="relative h-[320px] sm:h-[320px] w-full overflow-hidden">
                        <video
                         src={character.video}
                         poster={character.image}
