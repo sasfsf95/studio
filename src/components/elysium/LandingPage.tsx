@@ -21,12 +21,13 @@ import {
   Upload,
   Menu,
   PartyPopper,
+  SlidersHorizontal,
 } from 'lucide-react';
 import React, { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Switch } from '@/components/ui/switch';
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { PremiumDialog } from './PremiumDialog';
 import { useToast } from '@/hooks/use-toast';
 
@@ -240,30 +241,56 @@ export function LandingPage() {
           </header>
 
           <div className="p-2 sm:p-4 md:p-6">
-            <div className="flex flex-col items-center justify-center gap-4 mb-6">
-                <div className="flex items-center gap-3">
-                    <Sparkles className="text-pink-400 w-5 h-5" />
-                    <p className="font-semibold text-base sm:text-lg">Show online only</p>
-                    <Switch defaultChecked />
-                    <Sparkles className="text-pink-400 w-5 h-5" />
-                </div>
-            </div>
-
-            <div className="mb-6">
-              <div className="flex flex-wrap justify-center gap-2">
-                {tags.map(tag => (
-                  <Button key={tag} variant="outline" size="sm" className="rounded-full bg-zinc-900 border-zinc-700 hover:bg-zinc-800 hover:border-zinc-600 text-xs sm:text-sm">
-                    <PlusSquare className="h-4 w-4 mr-2" /> {tag}
-                  </Button>
-                ))}
+            <div className="flex flex-col items-center justify-center gap-4 mb-6 sm:flex-row sm:justify-between">
+              <div className="flex items-center gap-3">
+                  <Sparkles className="text-pink-400 w-5 h-5" />
+                  <p className="font-semibold text-base sm:text-lg">Show online only</p>
+                  <Switch defaultChecked />
+                  <Sparkles className="text-pink-400 w-5 h-5" />
               </div>
+
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline" className="bg-zinc-900 border-zinc-700 hover:bg-zinc-800">
+                    <SlidersHorizontal className="mr-2 h-4 w-4" />
+                    Filters
+                  </Button>
+                </SheetTrigger>
+                <SheetContent className="bg-[#1C1C1E] border-l-border" side="right">
+                  <SheetHeader>
+                    <SheetTitle>Filters</SheetTitle>
+                    <SheetDescription>
+                      Select tags to refine the characters shown.
+                    </SheetDescription>
+                  </SheetHeader>
+                  <div className="py-4">
+                    <div className="flex flex-wrap gap-2">
+                      {tags.map((tag) => (
+                        <Button
+                          key={tag}
+                          variant="outline"
+                          size="sm"
+                          className="rounded-full bg-zinc-900 border-zinc-700 hover:bg-zinc-800 hover:border-zinc-600 text-xs sm:text-sm"
+                        >
+                          <PlusSquare className="h-4 w-4 mr-2" /> {tag}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                  <SheetFooter>
+                    <Button type="submit" className="w-full bg-primary hover:bg-primary/90">
+                      Apply Filters
+                    </Button>
+                  </SheetFooter>
+                </SheetContent>
+              </Sheet>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-4">
               {initialCharacters.map(character => (
                 <Card key={character.id} className="relative bg-card border-none rounded-3xl group cursor-pointer shadow-lg hover:z-10 hover:shadow-2xl hover:shadow-primary/20 transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:scale-105 [transform:translateZ(0)]" onClick={() => handleCharacterSelect(character)}>
                   <CardContent className="p-0 overflow-hidden rounded-[calc(1.5rem-1px)]">
-                    <div className="relative h-[320px] w-full overflow-hidden">
+                    <div className="relative h-[280px] sm:h-[320px] w-full overflow-hidden">
                        <video
                         src={character.video}
                         poster={character.image}
