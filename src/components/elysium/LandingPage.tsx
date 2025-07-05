@@ -154,7 +154,7 @@ const allCharacters = [
   {
     id: 'seraphina',
     name: 'Seraphina',
-    image: '/character3.jpeg',
+    image: '/adultonly/character3.jpeg',
     video: '/sample1.mp4',
     theme: 'seductive-red',
     likes: '44K',
@@ -166,7 +166,7 @@ const allCharacters = [
   {
     id: 'zara',
     name: 'Zara',
-    image: '/character5.jpeg',
+    image: '/adultonly/character5.jpeg',
     video: '/sample1.mp4',
     theme: 'golden-luxe',
     likes: '61K',
@@ -178,7 +178,7 @@ const allCharacters = [
   {
     id: 'nova',
     name: 'Nova',
-    image: '/character7.jpeg',
+    image: '/adultonly/character7.jpeg',
     video: '/sample1.mp4',
     theme: 'seductive-red',
     likes: '72K',
@@ -190,7 +190,7 @@ const allCharacters = [
   {
     id: 'mia-stark',
     name: 'Mia Stark',
-    image: '/character9.jpeg',
+    image: '/adultonly/character9.jpeg',
     video: '/sample1.mp4',
     theme: 'mystic-purple',
     likes: '33K',
@@ -202,7 +202,7 @@ const allCharacters = [
   {
     id: 'nova-2',
     name: 'Nova II',
-    image: '/character10.jpeg',
+    image: '/adultonly/character10.jpeg',
     video: '/sample1.mp4',
     theme: 'seductive-red',
     likes: '72K',
@@ -214,7 +214,7 @@ const allCharacters = [
   {
     id: 'katarina',
     name: 'Katarina',
-    image: '/character16.jpeg',
+    image: '/adultonly/character16.jpeg',
     video: '/sample1.mp4',
     theme: 'seductive-red',
     likes: '88K',
@@ -226,7 +226,7 @@ const allCharacters = [
   {
     id: 'lilith',
     name: 'Lilith',
-    image: '/character17.jpeg',
+    image: '/adultonly/character17.jpeg',
     video: '/sample1.mp4',
     theme: 'sultry-black',
     likes: '91K',
@@ -238,7 +238,7 @@ const allCharacters = [
   {
     id: 'raven',
     name: 'Raven',
-    image: '/character18.jpeg',
+    image: '/adultonly/character18.jpeg',
     video: '/sample1.mp4',
     theme: 'mystic-purple',
     likes: '76K',
@@ -250,7 +250,7 @@ const allCharacters = [
   {
     id: 'jasmine',
     name: 'Jasmine',
-    image: '/character19.jpeg',
+    image: '/adultonly/character19.jpeg',
     video: '/sample1.mp4',
     theme: 'golden-luxe',
     likes: '82K',
@@ -262,7 +262,7 @@ const allCharacters = [
   {
     id: 'ember',
     name: 'Ember',
-    image: '/character20.jpeg',
+    image: '/adultonly/character20.jpeg',
     video: '/sample1.mp4',
     theme: 'seductive-red',
     likes: '95K',
@@ -475,5 +475,3 @@ export function LandingPage() {
     </div>
   );
 }
-
-    
