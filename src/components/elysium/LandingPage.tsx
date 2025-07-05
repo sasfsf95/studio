@@ -49,7 +49,7 @@ const allCharacters = [
     id: 'ivana',
     name: 'Ivana',
     image: '/character1.jpg',
-    video: '/sample1.mp4',
+    video: '/sample2.mp4',
     theme: 'mystic-purple',
     likes: '52K',
     views: '2m',
@@ -60,7 +60,7 @@ const allCharacters = [
     id: 'chloe',
     name: 'Chloe',
     image: '/character2.jpg',
-    video: '/sample1.mp4',
+    video: '/sample3.mp4',
     theme: 'golden-luxe',
     likes: '39K',
     views: '2m',
@@ -71,7 +71,7 @@ const allCharacters = [
     id: 'lila',
     name: 'Lila',
     image: '/character8.jpeg',
-    video: '/sample1.mp4',
+    video: '/sample4.mp4',
     theme: 'romantic-pink',
     likes: '25K',
     views: '5m',
@@ -82,7 +82,7 @@ const allCharacters = [
     id: 'mia',
     name: 'Mia',
     image: '/character6.jpeg',
-    video: '/sample1.mp4',
+    //video: '/sample1.mp4',
     theme: 'mystic-purple',
     likes: '33K',
     views: '4m',
@@ -92,8 +92,8 @@ const allCharacters = [
   {
     id: 'elena',
     name: 'Elena',
-    image: '/character11.jpeg',
-    video: '/sample1.mp4',
+    image: '/character5.jpeg',
+    //video: '/sample1.mp4',
     theme: 'midnight-blue',
     likes: '41K',
     views: '6m',
@@ -104,8 +104,8 @@ const allCharacters = [
   {
     id: 'sofia',
     name: 'Sofia',
-    image: '/character12.jpeg',
-    video: '/sample1.mp4',
+    image: '/character3.jpeg',
+    //video: '/sample1.mp4',
     theme: 'romantic-pink',
     likes: '29K',
     views: '1m',
@@ -116,8 +116,8 @@ const allCharacters = [
   {
     id: 'yuki',
     name: 'Yuki',
-    image: '/character13.jpeg',
-    video: '/sample1.mp4',
+    image: '/character4.jpg',
+    //video: '/sample1.mp4',
     theme: 'mystic-purple',
     likes: '65K',
     views: '8m',
@@ -128,8 +128,8 @@ const allCharacters = [
   {
     id: 'hana',
     name: 'Hana',
-    image: '/character14.jpeg',
-    video: '/sample1.mp4',
+    image: '/character9.jpeg',
+    //video: '/sample1.mp4',
     theme: 'golden-luxe',
     likes: '37K',
     views: '2.5m',
@@ -140,8 +140,8 @@ const allCharacters = [
   {
     id: 'isabella',
     name: 'Isabella',
-    image: '/character15.jpeg',
-    video: '/sample1.mp4',
+    image: '/character10.jpeg',
+    //video: '/sample1.mp4',
     theme: 'midnight-blue',
     likes: '48K',
     views: '7m',
@@ -154,8 +154,8 @@ const allCharacters = [
   {
     id: 'seraphina',
     name: 'Seraphina',
-    image: '/adultonly/character3.jpeg',
-    video: '/sample1.mp4',
+    image: '/adultonly/ado10.jpg',
+    //video: '/sample1.mp4',
     theme: 'seductive-red',
     likes: '44K',
     views: '3m',
@@ -166,8 +166,8 @@ const allCharacters = [
   {
     id: 'zara',
     name: 'Zara',
-    image: '/adultonly/character5.jpeg',
-    video: '/sample1.mp4',
+    image: '/adultonly/ado11.jpg',
+    //video: '/sample1.mp4',
     theme: 'golden-luxe',
     likes: '61K',
     views: '1m',
@@ -178,8 +178,8 @@ const allCharacters = [
   {
     id: 'nova',
     name: 'Nova',
-    image: '/adultonly/character7.jpeg',
-    video: '/sample1.mp4',
+    image: '/adultonly/ado12.jpg',
+    //video: '/sample1.mp4',
     theme: 'seductive-red',
     likes: '72K',
     views: '30m',
@@ -190,8 +190,8 @@ const allCharacters = [
   {
     id: 'mia-stark',
     name: 'Mia Stark',
-    image: '/adultonly/character9.jpeg',
-    video: '/sample1.mp4',
+    image: '/adultonly/ado13.jpg',
+    //video: '/sample1.mp4',
     theme: 'mystic-purple',
     likes: '33K',
     views: '4m',
@@ -202,8 +202,8 @@ const allCharacters = [
   {
     id: 'nova-2',
     name: 'Nova II',
-    image: '/adultonly/character10.jpeg',
-    video: '/sample1.mp4',
+    image: '/adultonly/ado14.jpg',
+    //video: '/sample1.mp4',
     theme: 'seductive-red',
     likes: '72K',
     views: '30m',
@@ -214,8 +214,8 @@ const allCharacters = [
   {
     id: 'katarina',
     name: 'Katarina',
-    image: '/adultonly/character16.jpeg',
-    video: '/sample1.mp4',
+    image: '/adultonly/ado2.jpg',
+    //video: '/sample1.mp4',
     theme: 'seductive-red',
     likes: '88K',
     views: '12m',
@@ -226,8 +226,8 @@ const allCharacters = [
   {
     id: 'lilith',
     name: 'Lilith',
-    image: '/adultonly/character17.jpeg',
-    video: '/sample1.mp4',
+    image: '/adultonly/ado3.jpg',
+    //video: '/sample1.mp4',
     theme: 'sultry-black',
     likes: '91K',
     views: '15m',
@@ -238,8 +238,8 @@ const allCharacters = [
   {
     id: 'raven',
     name: 'Raven',
-    image: '/adultonly/character18.jpeg',
-    video: '/sample1.mp4',
+    image: '/adultonly/ado4.jpg',
+    //video: '/sample1.mp4',
     theme: 'mystic-purple',
     likes: '76K',
     views: '10m',
@@ -250,8 +250,8 @@ const allCharacters = [
   {
     id: 'jasmine',
     name: 'Jasmine',
-    image: '/adultonly/character19.jpeg',
-    video: '/sample1.mp4',
+    image: '/adultonly/ado5.jpg',
+    //video: '/sample1.mp4',
     theme: 'golden-luxe',
     likes: '82K',
     views: '11m',
@@ -262,8 +262,8 @@ const allCharacters = [
   {
     id: 'ember',
     name: 'Ember',
-    image: '/adultonly/character20.jpeg',
-    video: '/sample1.mp4',
+    image: '/adultonly/ado7.jpg',
+    //video: '/sample1.mp4',
     theme: 'seductive-red',
     likes: '95K',
     views: '20m',
@@ -280,7 +280,7 @@ export function LandingPage() {
   const router = useRouter();
   const [isPremiumDialogOpen, setIsPremiumDialogOpen] = useState(false);
   const { toast } = useToast();
-  const [isAdultOnly, setIsAdultOnly] = useState(true);
+  const [isAdultOnly, setIsAdultOnly] = useState(false);
 
   const displayedCharacters = useMemo(() => {
     return allCharacters.filter(character => character.isAdult === isAdultOnly);
