@@ -3,12 +3,22 @@
 
 import { generateIcebreakerMessages, type GenerateIcebreakerMessagesInput } from '@/ai/flows/generate-icebreaker-messages';
 import {ai} from '@/ai/genkit';
+import { textToSpeech, TextToSpeechOutput } from '@/ai/flows/text-to-speech';
 import Stripe from 'stripe';
 
 
 export async function getIcebreakers(input: GenerateIcebreakerMessagesInput) {
   const result = await generateIcebreakerMessages(input);
   return result;
+}
+
+export async function getAudio(text: string): Promise<TextToSpeechOutput | null> {
+    try {
+        return await textToSpeech(text);
+    } catch (error) {
+        console.error("Failed to generate audio:", error);
+        return null;
+    }
 }
 
 export async function continueConversation({ message, chatHistory, imageUrl }: { message: string, chatHistory: string, imageUrl?: string }): Promise<string> {

@@ -3,7 +3,7 @@
 
 import { useState, useTransition, useEffect } from 'react';
 import { ChatInterface, Message } from './ChatInterface';
-import { continueConversation, getIcebreakers } from '@/app/actions';
+import { continueConversation, getIcebreakers, getAudio } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 
@@ -140,9 +140,22 @@ export function ChatContainer({ characterImage, companionName, isPremium, setSho
           .join('\n');
 
         const aiResponseText = await continueConversation({ message: text, chatHistory, imageUrl });
+        
+        const audioPromise = isPremium ? getAudio(aiResponseText) : Promise.resolve(null);
+        
+        const audioResult = await audioPromise;
 
-        const aiResponse: Message = { id: (Date.now() + 1).toString(), text: aiResponseText, sender: 'ai', timestamp: format(new Date(), 'p'), avatar: characterImage || placeholderAvatar };
+        const aiResponse: Message = { 
+            id: (Date.now() + 1).toString(), 
+            text: aiResponseText, 
+            sender: 'ai', 
+            timestamp: format(new Date(), 'p'), 
+            avatar: characterImage || placeholderAvatar,
+            audioUrl: audioResult?.audioDataUri
+        };
+        
         setMessages(prev => [...prev, aiResponse]);
+
       } catch (error) {
          console.error("Failed to get AI response:", error);
          const aiErrorResponse: Message = { id: (Date.now() + 1).toString(), text: "My circuits are a bit fuzzy right now, could you say that again?", sender: 'ai', timestamp: format(new Date(), 'p'), avatar: characterImage || placeholderAvatar };
