@@ -14,6 +14,7 @@ import {
   Share2,
   HelpCircle,
   LogOut,
+  LogIn,
   Heart,
   Eye,
   PlusSquare,
@@ -23,13 +24,14 @@ import {
   PartyPopper,
   SlidersHorizontal,
 } from 'lucide-react';
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Switch } from '@/components/ui/switch';
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { PremiumDialog } from './PremiumDialog';
 import { useToast } from '@/hooks/use-toast';
+import Link from 'next/link';
 
 const allCharacters = [
   // Non-adult characters
@@ -281,6 +283,16 @@ export function LandingPage() {
   const [isPremiumDialogOpen, setIsPremiumDialogOpen] = useState(false);
   const { toast } = useToast();
   const [isAdultOnly, setIsAdultOnly] = useState(false);
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    // Mock user check
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
 
   const displayedCharacters = useMemo(() => {
     return allCharacters.filter(character => character.isAdult === isAdultOnly);
@@ -308,6 +320,15 @@ export function LandingPage() {
 
   const handleAdultOnlyToggle = (checked: boolean) => {
     setIsAdultOnly(checked);
+  };
+  
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    setUser(null);
+    toast({
+      title: 'Logged Out',
+      description: 'You have been successfully logged out.',
+    });
   };
 
   const SidebarNav = () => (
@@ -341,7 +362,13 @@ export function LandingPage() {
             <Button variant="ghost" className="w-full justify-start text-base text-gray-300 hover:text-white hover:bg-accent"><Share2 className="mr-3" /> Affiliate Program</Button>
             <div className="flex items-center justify-between text-xs text-muted-foreground pt-4">
                  <Button variant="ghost" size="sm" className="text-xs text-gray-400 hover:text-white"><HelpCircle className="mr-2 h-4 w-4" /> Feedback</Button>
-                 <Button variant="ghost" size="sm" className="text-xs text-gray-400 hover:text-white"><LogOut className="mr-2 h-4 w-4" /> Logout</Button>
+                 {user ? (
+                    <Button variant="ghost" size="sm" className="text-xs text-gray-400 hover:text-white" onClick={handleLogout}><LogOut className="mr-2 h-4 w-4" /> Logout</Button>
+                 ) : (
+                    <Link href="/login">
+                        <Button variant="ghost" size="sm" className="text-xs text-gray-400 hover:text-white"><LogIn className="mr-2 h-4 w-4" /> Login</Button>
+                    </Link>
+                 )}
             </div>
         </div>
     </div>
@@ -379,13 +406,20 @@ export function LandingPage() {
                      <Button variant="ghost" className="text-muted-foreground hover:text-white px-1 py-0 h-auto">Anime</Button>
                  </div>
              </div>
-             <PremiumDialog
-                open={isPremiumDialogOpen}
-                onOpenChange={setIsPremiumDialogOpen}
-                onSubscribed={handleSubscription}
-             >
-                <Button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold hover:opacity-90"><Crown className="mr-2" /> Become Premium</Button>
-             </PremiumDialog>
+             <div className="flex items-center gap-4">
+                <PremiumDialog
+                    open={isPremiumDialogOpen}
+                    onOpenChange={setIsPremiumDialogOpen}
+                    onSubscribed={handleSubscription}
+                >
+                    <Button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold hover:opacity-90"><Crown className="mr-2" /> Become Premium</Button>
+                </PremiumDialog>
+                {!user && (
+                    <Link href="/login">
+                        <Button variant="outline" className="hidden sm:inline-flex bg-zinc-900 border-zinc-700 hover:bg-zinc-800">Login</Button>
+                    </Link>
+                )}
+             </div>
           </header>
 
           <div className="p-2 sm:p-4 md:p-6">
