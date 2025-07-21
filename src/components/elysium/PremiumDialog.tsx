@@ -14,8 +14,6 @@ import {
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { CreditCard, Crown, Loader2, CheckCircle2, PartyPopper } from "lucide-react";
-import { createCheckoutSession } from "@/app/actions";
-import Image from 'next/image';
 
 export function PremiumDialog({
   children,
@@ -75,7 +73,7 @@ export function PremiumDialog({
                      </DialogDescription>
                 </DialogHeader>
                  <div className="flex flex-col items-center justify-center py-4">
-                    <Image
+                    <img
                         src="/qr-payment.png"
                         alt="Scan to pay with any UPI app"
                         width={300}
