@@ -74,7 +74,7 @@ export function PremiumDialog({
                 </DialogHeader>
                  <div className="flex flex-col items-center justify-center py-4">
                     <img
-                        src="/payment/qr-payment.png"
+                        src="/payment/PAYMENATQR.jpg"
                         alt="Scan to pay with any UPI app"
                         width={300}
                         height={300}
