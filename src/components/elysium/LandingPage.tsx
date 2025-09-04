@@ -4,6 +4,7 @@
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import Image from 'next/image';
 import {
   Compass,
   Video,
@@ -378,7 +379,10 @@ export function LandingPage() {
     <div className="bg-[#111111] text-white min-h-screen">
       <div className="flex">
         <aside className="w-72 h-screen p-4 bg-[#1C1C1E] border-r border-border hidden lg:block sticky top-0">
-             <h1 className="text-3xl font-bold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600">yuki.ai</h1>
+             <div className="flex items-center justify-center gap-3 mb-8">
+               <Image src="/logo.png" alt="Yuki AI Logo" width={40} height={40} className="rounded-md" />
+               <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600">Yuki AI</h1>
+             </div>
              <SidebarNav />
         </aside>
 
@@ -394,7 +398,10 @@ export function LandingPage() {
                         </SheetTrigger>
                         <SheetContent side="left" className="w-[300px] bg-[#1C1C1E] p-4 border-r-0">
                             <SheetHeader>
-                               <SheetTitle className="text-3xl font-bold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600">yuki.ai</SheetTitle>
+                               <div className="flex items-center justify-center gap-3 mb-8">
+                                 <Image src="/logo.png" alt="Yuki AI Logo" width={32} height={32} className="rounded-md" />
+                                 <SheetTitle className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600">Yuki AI</SheetTitle>
+                               </div>
                                <SheetDescription className="sr-only">Main navigation menu and options.</SheetDescription>
                             </SheetHeader>
                              <SidebarNav />
@@ -423,6 +430,22 @@ export function LandingPage() {
           </header>
 
           <div className="p-2 sm:p-4 md:p-6">
+            {/* SEO Optimized Hero Section */}
+            <div className="text-center mb-8 px-4">
+              <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600">
+                Your Perfect AI Girlfriend Awaits
+              </h1>
+              <p className="text-xl md:text-2xl text-gray-300 mb-6 max-w-3xl mx-auto">
+                Experience the future of virtual relationships with Yuki AI. Chat with beautiful AI girlfriends, enjoy intimate conversations, and build meaningful connections with advanced AI companions.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-400 mb-8">
+                <span className="bg-gray-800 px-3 py-1 rounded-full">🤖 Advanced AI Technology</span>
+                <span className="bg-gray-800 px-3 py-1 rounded-full">💕 Emotional Intelligence</span>
+                <span className="bg-gray-800 px-3 py-1 rounded-full">🌟 Personalized Experience</span>
+                <span className="bg-gray-800 px-3 py-1 rounded-full">🔒 Private & Secure</span>
+              </div>
+            </div>
+            
             <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4 mb-6">
               <div className="flex items-center gap-3">
                   <Sparkles className="text-pink-400 w-5 h-5" />
