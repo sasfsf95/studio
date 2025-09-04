@@ -20,19 +20,29 @@ import {
   Eye,
   PlusSquare,
   Sparkles,
-  Upload,
   Menu,
   PartyPopper,
   SlidersHorizontal,
 } from 'lucide-react';
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, lazy, Suspense } from 'react';
 import { Badge } from '@/components/ui/badge';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Switch } from '@/components/ui/switch';
-import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { PremiumDialog } from './PremiumDialog';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
+
+// Lazy load heavy components
+const Accordion = lazy(() => import('@/components/ui/accordion').then(m => ({ default: m.Accordion })));
+const AccordionContent = lazy(() => import('@/components/ui/accordion').then(m => ({ default: m.AccordionContent })));
+const AccordionItem = lazy(() => import('@/components/ui/accordion').then(m => ({ default: m.AccordionItem })));
+const AccordionTrigger = lazy(() => import('@/components/ui/accordion').then(m => ({ default: m.AccordionTrigger })));
+const Sheet = lazy(() => import('@/components/ui/sheet').then(m => ({ default: m.Sheet })));
+const SheetContent = lazy(() => import('@/components/ui/sheet').then(m => ({ default: m.SheetContent })));
+const SheetDescription = lazy(() => import('@/components/ui/sheet').then(m => ({ default: m.SheetDescription })));
+const SheetFooter = lazy(() => import('@/components/ui/sheet').then(m => ({ default: m.SheetFooter })));
+const SheetHeader = lazy(() => import('@/components/ui/sheet').then(m => ({ default: m.SheetHeader })));
+const SheetTitle = lazy(() => import('@/components/ui/sheet').then(m => ({ default: m.SheetTitle })));
+const SheetTrigger = lazy(() => import('@/components/ui/sheet').then(m => ({ default: m.SheetTrigger })));
+const PremiumDialog = lazy(() => import('./PremiumDialog').then(m => ({ default: m.PremiumDialog })));
 
 const allCharacters = [
   // Non-adult characters
@@ -343,20 +353,22 @@ export function LandingPage() {
             <div className="pt-4 space-y-2">
                 <Button variant="ghost" className="w-full justify-start text-base text-gray-300 hover:text-white hover:bg-accent"><User className="mr-3" /> My profile</Button>
                 <Button variant="ghost" className="w-full justify-start text-base text-gray-300 hover:text-white hover:bg-accent"><Star className="mr-3" /> My Models</Button>
-                <Accordion type="single" collapsible defaultValue="item-1" className="w-full">
-                    <AccordionItem value="item-1" className="border-none">
-                        <AccordionTrigger className="text-base font-normal hover:no-underline py-2 px-4 hover:bg-accent rounded-md data-[state=open]:bg-accent data-[state=open]:text-white text-gray-300"><MessageSquare className="mr-3" /> My Chats</AccordionTrigger>
-                        <AccordionContent className="pl-8 pt-2 space-y-2">
-                            <div className="flex items-center gap-3 cursor-pointer p-2 rounded-md hover:bg-accent/50">
-                                <img src="/character.jpg" alt="Trisha" width={40} height={40} className="rounded-full object-cover" />
-                                <div>
-                                    <p className="font-semibold text-white">Trisha</p>
-                                    <p className="text-xs text-muted-foreground">Trisha sent you a pic...</p>
-                                </div>
-                            </div>
-                        </AccordionContent>
-                    </AccordionItem>
-                </Accordion>
+                <Suspense fallback={<div className="h-12 bg-gray-800 rounded animate-pulse"></div>}>
+                  <Accordion type="single" collapsible defaultValue="item-1" className="w-full">
+                      <AccordionItem value="item-1" className="border-none">
+                          <AccordionTrigger className="text-base font-normal hover:no-underline py-2 px-4 hover:bg-accent rounded-md data-[state=open]:bg-accent data-[state=open]:text-white text-gray-300"><MessageSquare className="mr-3" /> My Chats</AccordionTrigger>
+                          <AccordionContent className="pl-8 pt-2 space-y-2">
+                              <div className="flex items-center gap-3 cursor-pointer p-2 rounded-md hover:bg-accent/50">
+                                  <Image src="/character.jpg" alt="Trisha" width={40} height={40} className="rounded-full object-cover" />
+                                  <div>
+                                      <p className="font-semibold text-white">Trisha</p>
+                                      <p className="text-xs text-muted-foreground">Trisha sent you a pic...</p>
+                                  </div>
+                              </div>
+                          </AccordionContent>
+                      </AccordionItem>
+                  </Accordion>
+                </Suspense>
             </div>
         </nav>
         <div className="mt-auto space-y-2">
@@ -414,13 +426,15 @@ export function LandingPage() {
                  </div>
              </div>
              <div className="flex items-center gap-4">
-                <PremiumDialog
-                    open={isPremiumDialogOpen}
-                    onOpenChange={setIsPremiumDialogOpen}
-                    onSubscribed={handleSubscription}
-                >
-                    <Button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold hover:opacity-90"><Crown className="mr-2" /> Become Premium</Button>
-                </PremiumDialog>
+                <Suspense fallback={<Button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold" disabled>Loading...</Button>}>
+                  <PremiumDialog
+                      open={isPremiumDialogOpen}
+                      onOpenChange={setIsPremiumDialogOpen}
+                      onSubscribed={handleSubscription}
+                  >
+                      <Button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold hover:opacity-90"><Crown className="mr-2" /> Become Premium</Button>
+                  </PremiumDialog>
+                </Suspense>
                 {!user && (
                     <Link href="/login">
                         <Button variant="outline" className="hidden sm:inline-flex bg-zinc-900 border-zinc-700 hover:bg-zinc-800">Login</Button>
@@ -457,44 +471,46 @@ export function LandingPage() {
                   <Sparkles className="text-pink-400 w-5 h-5" />
               </div>
 
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant="outline" className="bg-zinc-900 border-zinc-700 hover:bg-zinc-800">
-                    <SlidersHorizontal className="mr-2 h-4 w-4" />
-                    Filters
-                  </Button>
-                </SheetTrigger>
-                <SheetContent className="bg-[#1C1C1E] border-l-border" side="right">
-                  <SheetHeader>
-                    <SheetTitle>Filters</SheetTitle>
-                    <SheetDescription>
-                      Select tags to refine the characters shown.
-                    </SheetDescription>
-                  </SheetHeader>
-                  <div className="py-4">
-                    <div className="flex flex-wrap gap-2">
-                      {tags.map((tag) => (
-                        <Button
-                          key={tag}
-                          variant="outline"
-                          size="sm"
-                          className="rounded-full bg-zinc-900 border-zinc-700 hover:bg-zinc-800 hover:border-zinc-600 text-xs sm:text-sm"
-                        >
-                          <PlusSquare className="h-4 w-4 mr-2" /> {tag}
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
-                  <SheetFooter>
-                    <Button type="submit" className="w-full bg-primary hover:bg-primary/90">
-                      Apply Filters
+              <Suspense fallback={<Button variant="outline" className="bg-zinc-900 border-zinc-700" disabled>Loading...</Button>}>
+                <Sheet>
+                  <SheetTrigger asChild>
+                    <Button variant="outline" className="bg-zinc-900 border-zinc-700 hover:bg-zinc-800">
+                      <SlidersHorizontal className="mr-2 h-4 w-4" />
+                      Filters
                     </Button>
-                  </SheetFooter>
-                </SheetContent>
-              </Sheet>
+                  </SheetTrigger>
+                  <SheetContent className="bg-[#1C1C1E] border-l-border" side="right">
+                    <SheetHeader>
+                      <SheetTitle>Filters</SheetTitle>
+                      <SheetDescription>
+                        Select tags to refine the characters shown.
+                      </SheetDescription>
+                    </SheetHeader>
+                    <div className="py-4">
+                      <div className="flex flex-wrap gap-2">
+                        {tags.map((tag) => (
+                          <Button
+                            key={tag}
+                            variant="outline"
+                            size="sm"
+                            className="rounded-full bg-zinc-900 border-zinc-700 hover:bg-zinc-800 hover:border-zinc-600 text-xs sm:text-sm"
+                          >
+                            <PlusSquare className="h-4 w-4 mr-2" /> {tag}
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+                    <SheetFooter>
+                      <Button type="submit" className="w-full bg-primary hover:bg-primary/90">
+                        Apply Filters
+                      </Button>
+                    </SheetFooter>
+                  </SheetContent>
+                </Sheet>
+              </Suspense>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-4">
+            <div className="character-grid grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-4">
               {displayedCharacters.map(character => (
                 <Card key={character.id} className="relative bg-card border-none rounded-3xl group cursor-pointer shadow-lg hover:z-10 hover:shadow-2xl hover:shadow-primary/20 transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:scale-105 [transform:translateZ(0)]" onClick={() => handleCharacterSelect(character)}>
                   <CardContent className="p-0 overflow-hidden rounded-[calc(1.5rem-1px)]">

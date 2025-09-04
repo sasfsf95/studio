@@ -55,7 +55,39 @@
   body {
     @apply bg-background text-foreground;
     overflow-x: hidden;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
+}
+
+/* Performance optimizations */
+.character-card-video {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.character-card-image {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Reduce reflows and repaints */
+.character-grid {
+  contain: layout style paint;
+}
+
+/* Optimize animations */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Optimize video loading */
+video {
+  object-fit: cover;
+  background-color: #1a1a1a;
 }
 
 @layer base {
