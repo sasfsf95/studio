@@ -344,15 +344,34 @@ export function LandingPage() {
 
   const SidebarNav = () => (
     <div className="flex flex-col h-full text-sm">
-        <nav className="flex-grow space-y-2">
-            <Button variant="ghost" className="w-full justify-start text-base text-gray-300 hover:text-white hover:bg-accent"><Compass className="mr-3" /> Explore Models</Button>
-            <Button variant="ghost" className="w-full justify-start text-base text-gray-300 hover:text-white hover:bg-accent"><Video className="mr-3" /> Generate Video</Button>
-            <Button variant="ghost" className="w-full justify-start text-base text-gray-300 hover:text-white hover:bg-accent"><Star className="mr-3" /> Generate Image</Button>
-            <Button className="w-full justify-start bg-primary hover:bg-primary/90 text-primary-foreground text-base my-2 font-semibold"><PlusSquare className="mr-3" /> Create my Ai Girlfriend</Button>
+        <nav className="flex-grow space-y-3">
+            <Button variant="ghost" className="w-full justify-start text-base text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-pink-500/20 hover:to-purple-600/20 border border-transparent hover:border-pink-500/30 rounded-xl py-3 transition-all duration-300 group">
+              <Compass className="mr-3 group-hover:text-pink-400 transition-colors" /> 
+              <span className="group-hover:text-white transition-colors">Explore Models</span>
+            </Button>
+            <Button variant="ghost" className="w-full justify-start text-base text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-purple-500/20 hover:to-pink-600/20 border border-transparent hover:border-purple-500/30 rounded-xl py-3 transition-all duration-300 group">
+              <Video className="mr-3 group-hover:text-purple-400 transition-colors" /> 
+              <span className="group-hover:text-white transition-colors">Generate Video</span>
+            </Button>
+            <Button variant="ghost" className="w-full justify-start text-base text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-yellow-500/20 hover:to-orange-600/20 border border-transparent hover:border-yellow-500/30 rounded-xl py-3 transition-all duration-300 group">
+              <Star className="mr-3 group-hover:text-yellow-400 transition-colors" /> 
+              <span className="group-hover:text-white transition-colors">Generate Image</span>
+            </Button>
+            <Button className="w-full justify-start bg-gradient-to-r from-pink-500 via-purple-500 to-pink-600 hover:from-pink-600 hover:via-purple-600 hover:to-pink-700 text-white text-base my-4 font-semibold py-4 rounded-xl shadow-lg shadow-pink-500/25 hover:shadow-pink-500/40 border border-pink-400/30 hover:border-pink-300/50 transition-all duration-300 group relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+              <PlusSquare className="mr-3 relative z-10" /> 
+              <span className="relative z-10">Create my AI Girlfriend</span>
+            </Button>
             
-            <div className="pt-4 space-y-2">
-                <Button variant="ghost" className="w-full justify-start text-base text-gray-300 hover:text-white hover:bg-accent"><User className="mr-3" /> My profile</Button>
-                <Button variant="ghost" className="w-full justify-start text-base text-gray-300 hover:text-white hover:bg-accent"><Star className="mr-3" /> My Models</Button>
+            <div className="pt-6 space-y-3">
+                <Button variant="ghost" className="w-full justify-start text-base text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-blue-500/20 hover:to-cyan-600/20 border border-transparent hover:border-blue-500/30 rounded-xl py-3 transition-all duration-300 group">
+                  <User className="mr-3 group-hover:text-blue-400 transition-colors" /> 
+                  <span className="group-hover:text-white transition-colors">My Profile</span>
+                </Button>
+                <Button variant="ghost" className="w-full justify-start text-base text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-emerald-500/20 hover:to-teal-600/20 border border-transparent hover:border-emerald-500/30 rounded-xl py-3 transition-all duration-300 group">
+                  <Star className="mr-3 group-hover:text-emerald-400 transition-colors" /> 
+                  <span className="group-hover:text-white transition-colors">My Models</span>
+                </Button>
                 <Suspense fallback={<div className="h-12 bg-gray-800 rounded animate-pulse"></div>}>
                   <Accordion type="single" collapsible defaultValue="item-1" className="w-full">
                       <AccordionItem value="item-1" className="border-none">
@@ -371,9 +390,12 @@ export function LandingPage() {
                 </Suspense>
             </div>
         </nav>
-        <div className="mt-auto space-y-2">
-            <Button variant="ghost" className="w-full justify-start text-base text-gray-300 hover:text-white hover:bg-accent"><Share2 className="mr-3" /> Affiliate Program</Button>
-            <div className="flex items-center justify-between text-xs text-muted-foreground pt-4">
+        <div className="mt-auto space-y-4 pt-6 border-t border-gradient-to-r from-pink-500/20 to-purple-600/20">
+            <Button variant="ghost" className="w-full justify-start text-base text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-orange-500/20 hover:to-red-600/20 border border-transparent hover:border-orange-500/30 rounded-xl py-3 transition-all duration-300 group">
+              <Share2 className="mr-3 group-hover:text-orange-400 transition-colors" /> 
+              <span className="group-hover:text-white transition-colors">Affiliate Program</span>
+            </Button>
+            <div className="flex items-center justify-between text-xs text-muted-foreground pt-2">
                  <Button variant="ghost" size="sm" className="text-xs text-gray-400 hover:text-white"><HelpCircle className="mr-2 h-4 w-4" /> Feedback</Button>
                  {user ? (
                     <Button variant="ghost" size="sm" className="text-xs text-gray-400 hover:text-white" onClick={handleLogout}><LogOut className="mr-2 h-4 w-4" /> Logout</Button>
@@ -390,16 +412,19 @@ export function LandingPage() {
   return (
     <div className="bg-[#111111] text-white min-h-screen">
       <div className="flex">
-        <aside className="w-72 h-screen p-4 bg-[#1C1C1E] border-r border-border hidden lg:block sticky top-0">
-             <div className="flex items-center justify-center gap-3 mb-8">
-               <Image src="/logo.png" alt="Yuki AI Logo" width={40} height={40} className="rounded-md" />
-               <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600">Yuki AI</h1>
+        <aside className="w-72 h-screen p-6 bg-gradient-to-b from-[#0A0A0B] via-[#1A1A1E] to-[#0F0F10] border-r border-gradient-to-b from-pink-500/20 to-purple-600/20 hidden lg:block sticky top-0 backdrop-blur-xl">
+             <div className="flex items-center justify-center gap-3 mb-10 p-4 rounded-2xl bg-gradient-to-r from-pink-500/10 to-purple-600/10 border border-pink-500/20 backdrop-blur-sm">
+               <div className="relative">
+                 <Image src="/logo.png" alt="Yuki AI Logo" width={48} height={48} className="rounded-xl shadow-lg shadow-pink-500/20" />
+                 <div className="absolute -inset-1 bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl blur opacity-30 animate-pulse"></div>
+               </div>
+               <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-pink-600 drop-shadow-lg">Yuki AI</h1>
              </div>
              <SidebarNav />
         </aside>
 
         <main className="flex-1">
-          <header className="sticky top-0 z-20 bg-[#1C1C1E]/80 backdrop-blur-sm border-b border-border p-2 px-4 sm:p-4 flex justify-between items-center">
+          <header className="sticky top-0 z-20 bg-gradient-to-r from-[#0A0A0B]/90 via-[#1A1A1E]/90 to-[#0A0A0B]/90 backdrop-blur-xl border-b border-gradient-to-r from-pink-500/20 via-purple-500/20 to-pink-500/20 p-2 px-4 sm:p-4 flex justify-between items-center shadow-lg shadow-black/20">
              <div className="flex items-center gap-4">
                 <div className="lg:hidden">
                     <Sheet>
@@ -408,11 +433,14 @@ export function LandingPage() {
                                 <Menu className="h-6 w-6"/>
                             </Button>
                         </SheetTrigger>
-                        <SheetContent side="left" className="w-[300px] bg-[#1C1C1E] p-4 border-r-0">
+                        <SheetContent side="left" className="w-[320px] bg-gradient-to-b from-[#0A0A0B] via-[#1A1A1E] to-[#0F0F10] p-6 border-r border-pink-500/20 backdrop-blur-xl">
                             <SheetHeader>
-                               <div className="flex items-center justify-center gap-3 mb-8">
-                                 <Image src="/logo.png" alt="Yuki AI Logo" width={32} height={32} className="rounded-md" />
-                                 <SheetTitle className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600">Yuki AI</SheetTitle>
+                               <div className="flex items-center justify-center gap-3 mb-10 p-4 rounded-2xl bg-gradient-to-r from-pink-500/10 to-purple-600/10 border border-pink-500/20 backdrop-blur-sm">
+                                 <div className="relative">
+                                   <Image src="/logo.png" alt="Yuki AI Logo" width={40} height={40} className="rounded-xl shadow-lg shadow-pink-500/20" />
+                                   <div className="absolute -inset-1 bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl blur opacity-30 animate-pulse"></div>
+                                 </div>
+                                 <SheetTitle className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-pink-600 drop-shadow-lg">Yuki AI</SheetTitle>
                                </div>
                                <SheetDescription className="sr-only">Main navigation menu and options.</SheetDescription>
                             </SheetHeader>
@@ -421,8 +449,8 @@ export function LandingPage() {
                     </Sheet>
                 </div>
                  <div className="hidden sm:flex items-center gap-6 text-base font-semibold">
-                     <Button variant="ghost" className="text-primary border-b-2 border-primary rounded-none px-1 py-0 h-auto hover:text-primary">Girls</Button>
-                     <Button variant="ghost" className="text-muted-foreground hover:text-white px-1 py-0 h-auto">Anime</Button>
+                     <Button variant="ghost" className="text-pink-400 border-b-2 border-pink-400 rounded-none px-3 py-2 h-auto hover:text-pink-300 hover:border-pink-300 bg-gradient-to-r from-pink-500/10 to-purple-600/10 transition-all duration-300">Girls</Button>
+                     <Button variant="ghost" className="text-gray-400 hover:text-white px-3 py-2 h-auto hover:bg-gradient-to-r hover:from-purple-500/10 hover:to-pink-600/10 rounded-lg transition-all duration-300">Anime</Button>
                  </div>
              </div>
              <div className="flex items-center gap-4">
@@ -432,7 +460,12 @@ export function LandingPage() {
                       onOpenChange={setIsPremiumDialogOpen}
                       onSubscribed={handleSubscription}
                   >
-                      <Button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold hover:opacity-90"><Crown className="mr-2" /> Become Premium</Button>
+                      <Button className="relative bg-gradient-to-r from-yellow-400 via-orange-500 to-yellow-600 hover:from-yellow-500 hover:via-orange-600 hover:to-yellow-700 text-black font-bold py-3 px-6 rounded-xl shadow-xl shadow-yellow-500/30 hover:shadow-yellow-500/50 border-2 border-yellow-300/50 hover:border-yellow-200/70 transition-all duration-300 group overflow-hidden">
+                          <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                          <Crown className="mr-2 relative z-10 group-hover:rotate-12 transition-transform duration-300" /> 
+                          <span className="relative z-10 font-extrabold text-lg">✨ Become Premium ✨</span>
+                          <div className="absolute -inset-1 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-xl blur opacity-30 group-hover:opacity-50 transition-opacity duration-300"></div>
+                      </Button>
                   </PremiumDialog>
                 </Suspense>
                 {!user && (
@@ -444,19 +477,19 @@ export function LandingPage() {
           </header>
 
           <div className="p-2 sm:p-4 md:p-6">
-            {/* SEO Optimized Hero Section */}
-            <div className="text-center mb-8 px-4">
-              <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600">
+            {/* Premium SEO Hero Section */}
+            <div className="text-center mb-12 px-4">
+              <h1 className="text-5xl md:text-7xl font-black mb-6 premium-text drop-shadow-2xl tracking-tight leading-tight float-animation">
                 Your Perfect AI Girlfriend Awaits
               </h1>
-              <p className="text-xl md:text-2xl text-gray-300 mb-6 max-w-3xl mx-auto">
+              <p className="text-xl md:text-3xl text-gray-200 mb-8 max-w-4xl mx-auto font-medium leading-relaxed">
                 Experience the future of virtual relationships with Yuki AI. Chat with beautiful AI girlfriends, enjoy intimate conversations, and build meaningful connections with advanced AI companions.
               </p>
-              <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-400 mb-8">
-                <span className="bg-gray-800 px-3 py-1 rounded-full">🤖 Advanced AI Technology</span>
-                <span className="bg-gray-800 px-3 py-1 rounded-full">💕 Emotional Intelligence</span>
-                <span className="bg-gray-800 px-3 py-1 rounded-full">🌟 Personalized Experience</span>
-                <span className="bg-gray-800 px-3 py-1 rounded-full">🔒 Private & Secure</span>
+              <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-300 mb-10">
+                <span className="bg-gradient-to-r from-pink-500/20 to-purple-600/20 border border-pink-500/30 px-4 py-3 rounded-full backdrop-blur-sm premium-glow font-semibold">🤖 Advanced AI Technology</span>
+                <span className="bg-gradient-to-r from-purple-500/20 to-pink-600/20 border border-purple-500/30 px-4 py-3 rounded-full backdrop-blur-sm premium-glow font-semibold">💕 Emotional Intelligence</span>
+                <span className="bg-gradient-to-r from-yellow-500/20 to-orange-600/20 border border-yellow-500/30 px-4 py-3 rounded-full backdrop-blur-sm premium-glow font-semibold">🌟 Personalized Experience</span>
+                <span className="bg-gradient-to-r from-emerald-500/20 to-teal-600/20 border border-emerald-500/30 px-4 py-3 rounded-full backdrop-blur-sm premium-glow font-semibold">🔒 Private & Secure</span>
               </div>
             </div>
             
