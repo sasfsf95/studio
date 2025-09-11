@@ -519,6 +519,7 @@ export function LandingPage() {
   const { toast } = useToast();
   const [isAdultOnly, setIsAdultOnly] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [showProfile, setShowProfile] = useState(false);
 
   useEffect(() => {
     // Mock user check
@@ -588,10 +589,78 @@ export function LandingPage() {
             </Button>
             
             <div className="pt-6 space-y-3">
-                <Button variant="ghost" className="w-full justify-start text-base text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-blue-500/20 hover:to-cyan-600/20 border border-transparent hover:border-blue-500/30 rounded-xl py-3 transition-all duration-300 group">
+                <Button 
+                  variant="ghost" 
+                  className="w-full justify-start text-base text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-blue-500/20 hover:to-cyan-600/20 border border-transparent hover:border-blue-500/30 rounded-xl py-3 transition-all duration-300 group"
+                  onClick={() => setShowProfile(!showProfile)}
+                >
                   <User className="mr-3 group-hover:text-blue-400 transition-colors" /> 
                   <span className="group-hover:text-white transition-colors">My Profile</span>
                 </Button>
+                
+                {/* User Profile Details */}
+                {showProfile && user && (
+                  <div className="ml-4 p-4 bg-gradient-to-r from-blue-500/10 to-cyan-600/10 border border-blue-500/20 rounded-xl space-y-3">
+                    <div className="text-sm">
+                      <div className="flex items-center gap-2 mb-2">
+                        <User className="h-4 w-4 text-blue-400" />
+                        <span className="text-blue-300 font-semibold">Profile Details</span>
+                      </div>
+                      
+                      <div className="space-y-2 text-gray-300">
+                        <div className="flex justify-between">
+                          <span className="text-gray-400">Name:</span>
+                          <span className="text-white font-medium">{user.name || user.email}</span>
+                        </div>
+                        
+                        {/* Combined Mobile Number with Country Code */}
+                        {(user.mobile || user.mobileNumber || user.countryCode) && (
+                          <div className="flex justify-between">
+                            <span className="text-gray-400">Mobile:</span>
+                            <span className="text-white font-medium">
+                              {user.mobile || 
+                               (user.countryCode && user.mobileNumber ? `${user.countryCode} ${user.mobileNumber}` : 
+                                user.countryCode || user.mobileNumber || 'Not provided')}
+                            </span>
+                          </div>
+                        )}
+                        
+                        {user.email && (
+                          <div className="flex justify-between">
+                            <span className="text-gray-400">Email:</span>
+                            <span className="text-white font-medium text-xs">{user.email}</span>
+                          </div>
+                        )}
+                      </div>
+                      
+                      <div className="pt-3 border-t border-blue-500/20 mt-3">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="w-full text-red-400 hover:text-red-300 hover:bg-red-500/10 justify-center" 
+                          onClick={handleLogout}
+                        >
+                          <LogOut className="mr-2 h-4 w-4" /> 
+                          Logout
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
+                {showProfile && !user && (
+                  <div className="ml-4 p-4 bg-gradient-to-r from-gray-500/10 to-gray-600/10 border border-gray-500/20 rounded-xl">
+                    <div className="text-sm text-gray-400 text-center">
+                      <User className="h-8 w-8 mx-auto mb-2 text-gray-500" />
+                      <p>Please login to view profile</p>
+                      <Link href="/login">
+                        <Button size="sm" className="mt-2 bg-blue-600 hover:bg-blue-700">
+                          <LogIn className="mr-2 h-4 w-4" /> Login
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                )}
                 <Button variant="ghost" className="w-full justify-start text-base text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-emerald-500/20 hover:to-teal-600/20 border border-transparent hover:border-emerald-500/30 rounded-xl py-3 transition-all duration-300 group">
                   <Star className="mr-3 group-hover:text-emerald-400 transition-colors" /> 
                   <span className="group-hover:text-white transition-colors">My Models</span>
@@ -622,7 +691,10 @@ export function LandingPage() {
             <div className="flex items-center justify-between text-xs text-muted-foreground pt-2">
                  <Button variant="ghost" size="sm" className="text-xs text-gray-400 hover:text-white"><HelpCircle className="mr-2 h-4 w-4" /> Feedback</Button>
                  {user ? (
-                    <Button variant="ghost" size="sm" className="text-xs text-gray-400 hover:text-white" onClick={handleLogout}><LogOut className="mr-2 h-4 w-4" /> Logout</Button>
+                    <div className="text-xs text-green-400 flex items-center gap-1">
+                      <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                      {user.name || 'Logged In'}
+                    </div>
                  ) : (
                     <Link href="/login">
                         <Button variant="ghost" size="sm" className="text-xs text-gray-400 hover:text-white"><LogIn className="mr-2 h-4 w-4" /> Login</Button>
