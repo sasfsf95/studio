@@ -43,6 +43,7 @@ const SheetHeader = lazy(() => import('@/components/ui/sheet').then(m => ({ defa
 const SheetTitle = lazy(() => import('@/components/ui/sheet').then(m => ({ default: m.SheetTitle })));
 const SheetTrigger = lazy(() => import('@/components/ui/sheet').then(m => ({ default: m.SheetTrigger })));
 const PremiumDialog = lazy(() => import('./PremiumDialog').then(m => ({ default: m.PremiumDialog })));
+const DonationDialog = lazy(() => import('./DonationDialog').then(m => ({ default: m.DonationDialog })));
 
 const allCharacters = [
   // Non-adult characters
@@ -516,6 +517,7 @@ const tags = ['Asian', 'Redhead', 'Latina', 'Athletic', 'Gothic', 'Brunette', 'S
 export function LandingPage() {
   const router = useRouter();
   const [isPremiumDialogOpen, setIsPremiumDialogOpen] = useState(false);
+  const [isDonationDialogOpen, setIsDonationDialogOpen] = useState(false);
   const { toast } = useToast();
   const [isAdultOnly, setIsAdultOnly] = useState(false);
   const [user, setUser] = useState<any>(null);
@@ -551,6 +553,13 @@ export function LandingPage() {
           <span>You now have unlimited access. Enjoy!</span>
         </div>
       ),
+    });
+  };
+
+  const handleDonation = () => {
+    toast({
+      title: "Thank You! 💕",
+      description: "Your support helps us develop more amazing features!",
     });
   };
 
@@ -760,7 +769,6 @@ export function LandingPage() {
                   <PremiumDialog
                       open={isPremiumDialogOpen}
                       onOpenChange={setIsPremiumDialogOpen}
-                      onSubscribed={handleSubscription}
                   >
                       <Button className="relative bg-gradient-to-r from-yellow-400 via-orange-500 to-yellow-600 hover:from-yellow-500 hover:via-orange-600 hover:to-yellow-700 text-black font-bold py-3 px-6 rounded-xl shadow-xl shadow-yellow-500/30 hover:shadow-yellow-500/50 border-2 border-yellow-300/50 hover:border-yellow-200/70 transition-all duration-300 group overflow-hidden">
                           <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
@@ -769,6 +777,20 @@ export function LandingPage() {
                           <div className="absolute -inset-1 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-xl blur opacity-30 group-hover:opacity-50 transition-opacity duration-300"></div>
                       </Button>
                   </PremiumDialog>
+                </Suspense>
+                
+                <Suspense fallback={<Button className="bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold" disabled>Loading...</Button>}>
+                  <DonationDialog
+                      open={isDonationDialogOpen}
+                      onOpenChange={setIsDonationDialogOpen}
+                  >
+                      <Button className="relative bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-xl shadow-xl shadow-pink-500/30 hover:shadow-pink-500/50 border-2 border-pink-300/50 hover:border-pink-200/70 transition-all duration-300 group overflow-hidden">
+                          <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                          <Heart className="mr-2 relative z-10 group-hover:scale-110 transition-transform duration-300" /> 
+                          <span className="relative z-10 font-extrabold text-lg">💝 Donate</span>
+                          <div className="absolute -inset-1 bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl blur opacity-30 group-hover:opacity-50 transition-opacity duration-300"></div>
+                      </Button>
+                  </DonationDialog>
                 </Suspense>
                 {!user && (
                     <Link href="/login">
