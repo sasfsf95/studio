@@ -613,17 +613,23 @@ export function LandingPage() {
                           <span className="text-white font-medium">{user.name || user.email}</span>
                         </div>
                         
-                        {/* Combined Mobile Number with Country Code */}
-                        {(user.mobile || user.mobileNumber || user.countryCode) && (
-                          <div className="flex justify-between">
-                            <span className="text-gray-400">Mobile:</span>
-                            <span className="text-white font-medium">
-                              {user.mobile || 
-                               (user.countryCode && user.mobileNumber ? `${user.countryCode} ${user.mobileNumber}` : 
-                                user.countryCode || user.mobileNumber || 'Not provided')}
-                            </span>
-                          </div>
-                        )}
+                        {/* Normalized Mobile Number with Country Code */}
+                        {(() => {
+                          const raw = user.mobileNumber || user.mobile;
+                          const cc = user.countryCode;
+                          const num = raw?.toString().replace(/\D/g, '') || '';
+                          const ccNum = cc?.toString().replace(/[^\d]/g, '') || '';
+                          const phone = [ccNum && `+${ccNum}`, num].filter(Boolean).join(' ');
+                          
+                          return (num || ccNum) && (
+                            <div className="flex justify-between">
+                              <span className="text-gray-400">Mobile:</span>
+                              <span className="text-white font-medium">
+                                {phone || 'Not provided'}
+                              </span>
+                            </div>
+                          );
+                        })()}
                         
                         {user.email && (
                           <div className="flex justify-between">
