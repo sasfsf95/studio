@@ -51,7 +51,6 @@ const allCharacters = [
     id: 'aria',
     name: 'Aria',
     image: '/character.jpg',
-    video: '/sample1.mp4',
     theme: 'romantic-pink',
     likes: '38K',
     views: '3K',
@@ -63,7 +62,6 @@ const allCharacters = [
     id: 'ivana',
     name: 'Ivana',
     image: '/character1.jpg',
-    video: '/sample2.mp4',
     theme: 'mystic-purple',
     likes: '52K',
     views: '2m',
@@ -74,7 +72,6 @@ const allCharacters = [
     id: 'chloe',
     name: 'Chloe',
     image: '/character2.jpg',
-    video: '/sample3.mp4',
     theme: 'golden-luxe',
     likes: '39K',
     views: '2m',
@@ -84,8 +81,7 @@ const allCharacters = [
   {
     id: 'lila',
     name: 'Lila',
-    image: '/character8.jpeg',
-    video: '/sample4.mp4',
+    image: '/models/elegant1.jpg',
     theme: 'romantic-pink',
     likes: '25K',
     views: '5m',
@@ -95,8 +91,7 @@ const allCharacters = [
   {
     id: 'mia',
     name: 'Mia',
-    image: '/character6.jpeg',
-    //video: '/sample1.mp4',
+    image: '/models/aliabut1.jpg',
     theme: 'mystic-purple',
     likes: '33K',
     views: '4m',
@@ -106,8 +101,7 @@ const allCharacters = [
   {
     id: 'elena',
     name: 'Elena',
-    image: '/character5.jpeg',
-    //video: '/sample1.mp4',
+    image: '/models/redstyle.jpg',
     theme: 'midnight-blue',
     likes: '41K',
     views: '6m',
@@ -119,7 +113,7 @@ const allCharacters = [
     id: 'sofia',
     name: 'Sofia',
     image: '/character3.jpeg',
-    //video: '/sample1.mp4',
+
     theme: 'romantic-pink',
     likes: '29K',
     views: '1m',
@@ -131,7 +125,7 @@ const allCharacters = [
     id: 'yuki',
     name: 'Yuki',
     image: '/character4.jpg',
-    //video: '/sample1.mp4',
+
     theme: 'mystic-purple',
     likes: '65K',
     views: '8m',
@@ -143,7 +137,7 @@ const allCharacters = [
     id: 'hana',
     name: 'Hana',
     image: '/character9.jpeg',
-    //video: '/sample1.mp4',
+
     theme: 'golden-luxe',
     likes: '37K',
     views: '2.5m',
@@ -155,7 +149,7 @@ const allCharacters = [
     id: 'isabella',
     name: 'Isabella',
     image: '/character10.jpeg',
-    //video: '/sample1.mp4',
+
     theme: 'midnight-blue',
     likes: '48K',
     views: '7m',
@@ -234,7 +228,7 @@ const allCharacters = [
   {
     id: 'iris',
     name: 'Iris',
-    image: '/character6.jpeg',
+    image: '/models/bikini1.jpg',
     theme: 'golden-luxe',
     likes: '38K',
     views: '2.9m',
@@ -245,7 +239,7 @@ const allCharacters = [
   {
     id: 'rose',
     name: 'Rose',
-    image: '/character8.jpeg',
+    image: '/models/saree2.jpg',
     theme: 'romantic-pink',
     likes: '63K',
     views: '8.1m',
@@ -256,7 +250,7 @@ const allCharacters = [
   {
     id: 'jade',
     name: 'Jade',
-    image: '/character9.jpeg',
+    image: '/models/bikini2.jpg',
     theme: 'midnight-blue',
     likes: '49K',
     views: '6.2m',
@@ -267,7 +261,7 @@ const allCharacters = [
   {
     id: 'crystal',
     name: 'Crystal',
-    image: '/character10.jpeg',
+    image: '/models/saree1.jpg',
     theme: 'mystic-purple',
     likes: '58K',
     views: '7.4m',
@@ -281,7 +275,7 @@ const allCharacters = [
     id: 'seraphina',
     name: 'Seraphina',
     image: '/adultonly/ado10.jpg',
-    //video: '/sample1.mp4',
+
     theme: 'seductive-red',
     likes: '44K',
     views: '3m',
@@ -293,7 +287,7 @@ const allCharacters = [
     id: 'zara',
     name: 'Zara',
     image: '/adultonly/ado11.jpg',
-    //video: '/sample1.mp4',
+
     theme: 'golden-luxe',
     likes: '61K',
     views: '1m',
@@ -305,7 +299,7 @@ const allCharacters = [
     id: 'nova',
     name: 'Nova',
     image: '/adultonly/ado12.jpg',
-    //video: '/sample1.mp4',
+
     theme: 'seductive-red',
     likes: '72K',
     views: '30m',
@@ -317,7 +311,7 @@ const allCharacters = [
     id: 'mia-stark',
     name: 'Mia Stark',
     image: '/adultonly/ado13.jpg',
-    //video: '/sample1.mp4',
+
     theme: 'mystic-purple',
     likes: '33K',
     views: '4m',
@@ -329,7 +323,7 @@ const allCharacters = [
     id: 'nova-2',
     name: 'Nova II',
     image: '/adultonly/ado14.jpg',
-    //video: '/sample1.mp4',
+
     theme: 'seductive-red',
     likes: '72K',
     views: '30m',
@@ -341,7 +335,7 @@ const allCharacters = [
     id: 'katarina',
     name: 'Katarina',
     image: '/adultonly/ado2.jpg',
-    //video: '/sample1.mp4',
+
     theme: 'seductive-red',
     likes: '88K',
     views: '12m',
@@ -353,7 +347,7 @@ const allCharacters = [
     id: 'lilith',
     name: 'Lilith',
     image: '/adultonly/ado3.jpg',
-    //video: '/sample1.mp4',
+
     theme: 'sultry-black',
     likes: '91K',
     views: '15m',
@@ -365,7 +359,7 @@ const allCharacters = [
     id: 'raven',
     name: 'Raven',
     image: '/adultonly/ado4.jpg',
-    //video: '/sample1.mp4',
+
     theme: 'mystic-purple',
     likes: '76K',
     views: '10m',
@@ -377,7 +371,7 @@ const allCharacters = [
     id: 'jasmine',
     name: 'Jasmine',
     image: '/adultonly/ado5.jpg',
-    //video: '/sample1.mp4',
+
     theme: 'golden-luxe',
     likes: '82K',
     views: '11m',
@@ -389,7 +383,7 @@ const allCharacters = [
     id: 'ember',
     name: 'Ember',
     image: '/adultonly/ado7.jpg',
-    //video: '/sample1.mp4',
+
     theme: 'seductive-red',
     likes: '95K',
     views: '20m',
@@ -872,13 +866,9 @@ export function LandingPage() {
                 <Card key={character.id} className="relative bg-card border-none rounded-3xl group cursor-pointer shadow-lg hover:z-10 hover:shadow-2xl hover:shadow-primary/20 transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:scale-105 [transform:translateZ(0)]" onClick={() => handleCharacterSelect(character)}>
                   <CardContent className="p-0 overflow-hidden rounded-[calc(1.5rem-1px)]">
                     <div className="relative h-[320px] sm:h-[320px] w-full overflow-hidden">
-                       <video
-                        src={character.video}
-                        poster={character.image}
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
+                       <img
+                        src={character.image}
+                        alt={character.name}
                         className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 ease-in-out group-hover:scale-110"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent transition-all duration-300 group-hover:from-black/95 group-hover:via-black/50"></div>
