@@ -396,7 +396,7 @@ const allCharacters = [
   {
     id: 'scarlet-rose',
     name: 'Scarlet Rose',
-    image: '/adultonly/ado2.jpg',
+    image: '/adultonly/adult1.jpg',
     theme: 'seductive-red',
     likes: '78K',
     views: '14m',
@@ -407,7 +407,7 @@ const allCharacters = [
   {
     id: 'midnight-fox',
     name: 'Midnight Fox',
-    image: '/adultonly/ado3.jpg',
+    image: '/adultonly/adult2.jpg',
     theme: 'sultry-black',
     likes: '102K',
     views: '25m',
@@ -418,7 +418,7 @@ const allCharacters = [
   {
     id: 'velvet',
     name: 'Velvet',
-    image: '/adultonly/ado4.jpg',
+    image: '/adultonly/adult3.jpg',
     theme: 'mystic-purple',
     likes: '86K',
     views: '18m',
@@ -462,7 +462,7 @@ const allCharacters = [
   {
     id: 'diamond-diva',
     name: 'Diamond Diva',
-    image: '/adultonly/ado11.jpg',
+    image: '/adultonly/adult4.jpg',
     theme: 'golden-luxe',
     likes: '89K',
     views: '19m',
