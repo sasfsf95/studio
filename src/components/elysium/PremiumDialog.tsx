@@ -80,6 +80,13 @@ export function PremiumDialog({
                         height={300}
                         data-ai-hint="QR code payment"
                     />
+                    <Button 
+                        onClick={() => window.open('https://upilinks.in/payment-link/upi351332616', '_blank')}
+                        className="mt-4 w-full font-bold bg-blue-600 text-white hover:bg-blue-700"
+                    >
+                        <CreditCard className="mr-2 h-4 w-4" />
+                        Pay with UPI
+                    </Button>
                  </div>
                 <DialogFooter className="pt-0">
                     <Button 
