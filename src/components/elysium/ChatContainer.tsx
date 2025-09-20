@@ -141,17 +141,9 @@ export function ChatContainer({ characterImage, companionName, isPremium, setSho
     
     startAiTransition(async () => {
       try {
-        const chatHistory = updatedMessages
-          .map(msg => {
-            let historyLine = `${msg.sender === 'user' ? 'User' : companionName}: ${msg.text}`;
-            if (msg.imageUrl) {
-                historyLine += " (sent an image)";
-            }
-            return historyLine;
-          })
-          .join('\n');
-
-        const aiResponseData = await continueConversation({ message: text, chatHistory, imageUrl, chatId });
+        // Construct message for webhook, including image if present.
+        const messageToSend = imageUrl ? `${text} [user sent an image]` : text;
+        const aiResponseData = await continueConversation({ message: messageToSend, chatId });
         
         let audioResult = null;
         if (isPremium && aiResponseData.type === 'text') {
