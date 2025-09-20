@@ -12,9 +12,10 @@ interface ChatContainerProps {
   companionName: string;
   isPremium: boolean;
   setShowPremiumDialog: (open: boolean) => void;
+  chatId: string;
 }
 
-export function ChatContainer({ characterImage, companionName, isPremium, setShowPremiumDialog }: ChatContainerProps) {
+export function ChatContainer({ characterImage, companionName, isPremium, setShowPremiumDialog, chatId }: ChatContainerProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [icebreakers, setIcebreakers] = useState<string[]>([]);
   const [isLoadingIcebreakers, setIsLoadingIcebreakers] = useState(true);
@@ -81,8 +82,19 @@ export function ChatContainer({ characterImage, companionName, isPremium, setSho
   // Persist messages to localStorage
   useEffect(() => {
     if (messages.length > 0 && messages.some(m => m.sender === 'user')) {
-        const chatKey = `chat_messages_${companionName}`;
-        localStorage.setItem(chatKey, JSON.stringify(messages));
+      const chatKey = `chat_messages_${companionName}`;
+      // Slice the last 100 messages to avoid exceeding localStorage quota
+      const recentMessages = messages.slice(-100);
+      try {
+        localStorage.setItem(chatKey, JSON.stringify(recentMessages));
+      } catch (error) {
+        console.error("Failed to save messages to localStorage:", error);
+        // If it still fails, it might be a different issue, but we can try clearing to be safe.
+        if ((error as DOMException).name === 'QuotaExceededError') {
+          console.warn("Clearing local storage for chat due to quota exceeded error.");
+          localStorage.removeItem(chatKey);
+        }
+      }
     }
   }, [messages, companionName]);
 
@@ -139,22 +151,28 @@ export function ChatContainer({ characterImage, companionName, isPremium, setSho
           })
           .join('\n');
 
-        const aiResponseText = await continueConversation({ message: text, chatHistory, imageUrl });
+        const aiResponseData = await continueConversation({ message: text, chatHistory, imageUrl, chatId });
         
-        const audioPromise = isPremium ? getAudio(aiResponseText) : Promise.resolve(null);
-        
-        const audioResult = await audioPromise;
+        let audioResult = null;
+        if (isPremium && aiResponseData.type === 'text') {
+            audioResult = await getAudio(aiResponseData.content);
+        }
 
-        const aiResponse: Message = { 
-            id: (Date.now() + 1).toString(), 
-            text: aiResponseText, 
-            sender: 'ai', 
-            timestamp: format(new Date(), 'p'), 
-            avatar: characterImage || placeholderAvatar,
-            audioUrl: audioResult?.audioDataUri
+        const aiResponseMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          text: aiResponseData.type === 'text' ? aiResponseData.content : '',
+          sender: 'ai',
+          timestamp: format(new Date(), 'p'),
+          avatar: characterImage || placeholderAvatar,
+          audioUrl: aiResponseData.type === 'audio' ? aiResponseData.content : audioResult?.audioDataUri,
+          imageUrl: aiResponseData.type === 'image' ? aiResponseData.content : undefined,
         };
-        
-        setMessages(prev => [...prev, aiResponse]);
+
+        if(aiResponseData.type === 'error') {
+            aiResponseMessage.text = aiResponseData.content;
+        }
+
+        setMessages(prev => [...prev, aiResponseMessage]);
 
       } catch (error) {
          console.error("Failed to get AI response:", error);

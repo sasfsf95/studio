@@ -14,6 +14,7 @@ import { PremiumDialog } from '@/components/elysium/PremiumDialog';
 
 export default function ChatPage() {
   const [characterImage, setCharacterImage] = useState<string | null>(null);
+  const [characterId, setCharacterId] = useState<string>('');
   const [theme, setTheme] = useState('romantic-pink');
   const [companionName, setCompanionName] = useState('Aria');
   const [isReady, setIsReady] = useState(false);
@@ -56,6 +57,7 @@ export default function ChatPage() {
       if (storedCharacter) {
         const character = JSON.parse(storedCharacter);
         setCharacterImage(character.image || '/character.jpg');
+        setCharacterId(character.id || 'default-chat');
         setTheme(character.theme || 'romantic-pink');
         setCompanionName(character.name || 'Aria');
       } else {
@@ -87,13 +89,14 @@ export default function ChatPage() {
         name: companionName,
         image: characterImage,
         theme: theme,
+        id: characterId,
       };
 
       localStorage.setItem('selectedCharacter', JSON.stringify(updatedCharacter));
     } catch (error) {
       console.error("Failed to save character to localStorage", error);
     }
-  }, [characterImage, companionName, theme, isReady]);
+  }, [characterImage, companionName, theme, isReady, characterId]);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -209,6 +212,7 @@ export default function ChatPage() {
               companionName={companionName} 
               isPremium={isPremium} 
               setShowPremiumDialog={setShowPremiumDialog}
+              chatId={characterId}
             />
           </div>
         </main>

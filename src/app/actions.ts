@@ -21,7 +21,7 @@ export async function getAudio(text: string): Promise<TextToSpeechOutput | null>
     }
 }
 
-export async function continueConversation({ message, chatHistory, imageUrl, chatId }: { message: string, chatHistory: string, imageUrl?: string, chatId: string }): Promise<{ type: 'text', content: string } | { type: 'audio', content: string } | { type: 'image', content: string } | { type: 'error', content: string }> {
+export async function continueConversation({ message, chatHistory, imageUrl, chatId }: { message: string, chatHistory: string, imageUrl?: string, chatId: string }): Promise<{ type: 'text' | 'audio' | 'image' | 'error', content: string }> {
   const webhookUrl = 'https://sasa8.app.n8n.cloud/webhook-test/b6ef4898-3421-4def-99c8-33ffa36249b8';
 
   try {
