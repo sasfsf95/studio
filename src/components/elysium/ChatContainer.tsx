@@ -83,13 +83,13 @@ export function ChatContainer({ characterImage, companionName, isPremium, setSho
   useEffect(() => {
     if (messages.length > 0 && messages.some(m => m.sender === 'user')) {
       const chatKey = `chat_messages_${companionName}`;
-      // Slice the last 100 messages to avoid exceeding localStorage quota
-      const recentMessages = messages.slice(-100);
+      // Filter out messages with images or audio before saving to avoid exceeding quota.
+      const textOnlyMessages = messages.filter(msg => !msg.imageUrl && !msg.audioUrl);
+      const recentMessages = textOnlyMessages.slice(-100);
       try {
         localStorage.setItem(chatKey, JSON.stringify(recentMessages));
       } catch (error) {
         console.error("Failed to save messages to localStorage:", error);
-        // If it still fails, it might be a different issue, but we can try clearing to be safe.
         if ((error as DOMException).name === 'QuotaExceededError') {
           console.warn("Clearing local storage for chat due to quota exceeded error.");
           localStorage.removeItem(chatKey);
