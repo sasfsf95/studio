@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -75,13 +76,7 @@ export function DonationDialog({
                     </p>
                  </div>
                 <DialogFooter className="pt-0">
-                    <Button 
-                        onClick={handleDonationComplete} 
-                        className="w-full font-bold bg-pink-600 text-white hover:bg-pink-700"
-                    >
-                        <CheckCircle2 className="mr-2 h-4 w-4" />
-                        I have donated
-                    </Button>
+                    
                 </DialogFooter>
             </>
         ) : (

@@ -89,13 +89,7 @@ export function PremiumDialog({
                     </Button>
                  </div>
                 <DialogFooter className="pt-0">
-                    <Button 
-                        onClick={handlePaymentComplete} 
-                        className="w-full font-bold bg-green-600 text-white hover:bg-green-700"
-                    >
-                        <CheckCircle2 className="mr-2 h-4 w-4" />
-                        I have paid
-                    </Button>
+                    
                 </DialogFooter>
             </>
         ) : (
