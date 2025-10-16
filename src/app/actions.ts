@@ -22,7 +22,7 @@ export async function getAudio(text: string): Promise<TextToSpeechOutput | null>
 }
 
 export async function continueConversation({ message, chatHistory, imageUrl }: { message: string, chatHistory: string, imageUrl?: string }): Promise<string> {
-  const webhookUrl = 'https://sasa9.app.n8n.cloud/webhook/fc5e4bc5-968d-4583-a8b6-8c86539202c3';
+  const webhookUrl = 'https://sasa10.app.n8n.cloud/webhook/fc5e4bc5-968d-4583-a8b6-8c86539202c3';
 
   try {
     const response = await fetch(webhookUrl, {
