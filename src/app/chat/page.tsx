@@ -5,12 +5,13 @@ import { useState, useEffect } from 'react';
 import { ChatContainer } from '@/components/elysium/ChatContainer';
 import { LeftSidebar } from '@/components/elysium/LeftSidebar';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Heart, Loader2, Sparkles, Menu, PartyPopper } from 'lucide-react';
+import { Heart, Loader2, Sparkles, Menu, PartyPopper, ArrowLeft } from 'lucide-react';
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
 import { PremiumDialog } from '@/components/elysium/PremiumDialog';
+import Link from 'next/link';
 
 export default function ChatPage() {
   const [characterImage, setCharacterImage] = useState<string | null>(null);
@@ -169,28 +170,34 @@ export default function ChatPage() {
         <main className="flex-1 flex flex-col h-full">
           {/* Mobile Header & Sidebar Sheet */}
           <div className="md:hidden flex items-center justify-between p-2 border-b border-white/10 bg-black/50 backdrop-blur-sm shadow-lg">
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Menu className="h-6 w-6" />
-                  <span className="sr-only">Open Sidebar</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left" className="w-[300px] sm:w-[360px] p-0 bg-black/80 backdrop-blur-sm border-r-white/5">
-                <SheetTitle className="sr-only">Companion Customization</SheetTitle>
-                <SheetDescription className="sr-only">Customize your AI companion's name, image, theme, and personality.</SheetDescription>
-                <LeftSidebar 
-                  characterImage={characterImage} 
-                  setCharacterImage={setCharacterImage} 
-                  theme={theme}
-                  setTheme={setTheme}
-                  companionName={companionName}
-                  setCompanionName={setCompanionName}
-                  isPremium={isPremium}
-                  setShowPremiumDialog={setShowPremiumDialog}
-                />
-              </SheetContent>
-            </Sheet>
+            <div className="flex items-center gap-1">
+              <Button variant="ghost" size="icon" onClick={() => router.push('/')}>
+                  <ArrowLeft className="h-6 w-6" />
+                  <span className="sr-only">Back</span>
+              </Button>
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <Menu className="h-6 w-6" />
+                    <span className="sr-only">Open Sidebar</span>
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left" className="w-[300px] sm:w-[360px] p-0 bg-black/80 backdrop-blur-sm border-r-white/5">
+                  <SheetTitle className="sr-only">Companion Customization</SheetTitle>
+                  <SheetDescription className="sr-only">Customize your AI companion's name, image, theme, and personality.</SheetDescription>
+                  <LeftSidebar 
+                    characterImage={characterImage} 
+                    setCharacterImage={setCharacterImage} 
+                    theme={theme}
+                    setTheme={setTheme}
+                    companionName={companionName}
+                    setCompanionName={setCompanionName}
+                    isPremium={isPremium}
+                    setShowPremiumDialog={setShowPremiumDialog}
+                  />
+                </SheetContent>
+              </Sheet>
+            </div>
             <div className="flex items-center gap-2">
               <Avatar className="h-8 w-8">
                 <AvatarImage src={characterImage || undefined} alt={companionName} />
@@ -198,10 +205,26 @@ export default function ChatPage() {
               </Avatar>
               <span className="font-semibold">{companionName}</span>
             </div>
-             {/* Spacer to balance the trigger button */}
-            <div className="w-10"></div>
+             {/* Spacer to balance the trigger buttons */}
+            <div className="w-20"></div>
           </div>
           
+          {/* Desktop header */}
+          <div className="hidden md:flex items-center justify-between p-3 border-b border-white/10">
+              <Button variant="ghost" onClick={() => router.push('/')} className="hover:bg-accent">
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Back
+              </Button>
+              <div className="flex items-center gap-3">
+                <Avatar className="h-9 w-9">
+                  <AvatarImage src={characterImage || undefined} alt={companionName} />
+                  <AvatarFallback>{companionName.charAt(0)}</AvatarFallback>
+                </Avatar>
+                <span className="font-semibold text-lg">{companionName}</span>
+              </div>
+              <div className="w-24"></div> {/* Spacer */}
+          </div>
+
           <div className="flex-1 overflow-y-auto">
             <ChatContainer 
               characterImage={characterImage} 
