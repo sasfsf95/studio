@@ -223,10 +223,10 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
                   msg.sender === 'user' ? 'items-end' : 'items-start'
                 )}>
                     <div className={cn(
-                      'max-w-md p-3 px-4 rounded-2xl text-sm sm:text-base leading-relaxed transition-all duration-300 ease-out hover:scale-[1.02] cursor-pointer',
+                      'max-w-md p-3 px-4 rounded-2xl text-sm sm:text-base leading-relaxed transition-all duration-300 ease-out',
                       msg.sender === 'user'
-                        ? 'bg-gradient-to-br from-primary to-fuchsia-600 text-primary-foreground rounded-br-lg shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30'
-                        : 'bg-card text-card-foreground rounded-bl-lg shadow-xl shadow-primary/20 hover:shadow-2xl hover:shadow-primary/30'
+                        ? 'bg-gradient-to-br from-primary to-fuchsia-600 text-primary-foreground rounded-br-lg shadow-lg shadow-primary/20'
+                        : 'bg-card text-card-foreground rounded-bl-lg shadow-xl shadow-primary/20'
                     )}>
                       {msg.imageUrl && (
                         <img src={msg.imageUrl} alt="Uploaded content" className="rounded-lg mb-2 max-w-full h-auto" data-ai-hint="photo message"/>
