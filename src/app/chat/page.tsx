@@ -211,7 +211,7 @@ export default function ChatPage() {
           
           {/* Desktop header */}
           <div className="hidden md:flex items-center justify-between p-3 border-b border-white/10">
-              <Button variant="ghost" onClick={() => router.push('/')} className="hover:bg-accent/50 text-muted-foreground hover:text-foreground font-normal">
+              <Button variant="ghost" onClick={() => router.push('/')} className="hover:bg-accent/50 text-muted-foreground hover:text-foreground font-normal rounded-full">
                   <ArrowLeft className="mr-2 h-4 w-4" />
                   Back
               </Button>
