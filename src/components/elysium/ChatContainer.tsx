@@ -31,7 +31,7 @@ export function ChatContainer({ characterImage, companionName, isPremium, setSho
 
   // Load initial messages from localStorage
   useEffect(() => {
-    const chatKey = `chat_messages_${companionName}`;
+    const chatKey = `chat_messages_${chatId}`;
     let initialMessages: Message[] = [];
     try {
         const savedMessagesRaw = localStorage.getItem(chatKey);
@@ -65,7 +65,7 @@ export function ChatContainer({ characterImage, companionName, isPremium, setSho
         setMessages(welcomeMessages);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [companionName]);
+  }, [companionName, chatId]);
   
   // Update avatars when characterImage changes
   useEffect(() => {
@@ -82,7 +82,7 @@ export function ChatContainer({ characterImage, companionName, isPremium, setSho
   // Persist messages to localStorage
   useEffect(() => {
     if (messages.length > 0 && messages.some(m => m.sender === 'user')) {
-      const chatKey = `chat_messages_${companionName}`;
+      const chatKey = `chat_messages_${chatId}`;
       // Filter out messages with images or audio before saving to avoid exceeding quota.
       const textOnlyMessages = messages.filter(msg => !msg.imageUrl && !msg.audioUrl);
       const recentMessages = textOnlyMessages.slice(-100);
@@ -96,7 +96,7 @@ export function ChatContainer({ characterImage, companionName, isPremium, setSho
         }
       }
     }
-  }, [messages, companionName]);
+  }, [messages, companionName, chatId]);
 
   // Fetch icebreakers from cache or API
   useEffect(() => {
