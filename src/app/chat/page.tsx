@@ -127,22 +127,22 @@ export default function ChatPage() {
 
   if (!isReady) {
     return (
-        <div className="h-screen w-full flex flex-col items-center justify-center bg-black text-white relative overflow-hidden">
-            <div className="absolute inset-0 z-0 bg-gradient-to-br from-pink-500/10 via-purple-500/10 to-blue-500/10"></div>
-            <div className="relative z-10 flex flex-col items-center justify-center text-center">
-                <div className="relative mb-6">
-                    <Heart className="w-24 h-24 text-primary animate-heartbeat" />
-                    <Sparkles className="absolute -top-2 -right-2 w-8 h-8 text-yellow-300 animate-twinkle" />
-                </div>
-                <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400 mb-2">
-                    Connecting...
-                </h1>
-                <p className="text-muted-foreground">Preparing your intimate experience...</p>
-                <div className="mt-8">
-                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                </div>
+      <div className="h-screen w-full flex flex-col items-center justify-center bg-black text-white relative overflow-hidden">
+        <div className="absolute inset-0 z-0 bg-gradient-to-br from-pink-500/10 via-purple-500/10 to-blue-500/10"></div>
+        <div className="relative z-10 flex flex-col items-center justify-center text-center">
+            <div className="relative mb-6">
+                <Heart className="w-24 h-24 text-primary animate-heartbeat" />
+                <Sparkles className="absolute -top-2 -right-2 w-8 h-8 text-yellow-300 animate-twinkle" />
+            </div>
+            <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400 mb-2">
+                Connecting...
+            </h1>
+            <p className="text-muted-foreground">Preparing your intimate experience...</p>
+            <div className="mt-8">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
         </div>
+      </div>
     );
   }
   
@@ -171,13 +171,13 @@ export default function ChatPage() {
           {/* Mobile Header & Sidebar Sheet */}
           <div className="md:hidden flex items-center justify-between p-2 border-b border-white/10 bg-black/50 backdrop-blur-sm shadow-lg">
             <div className="flex items-center gap-1">
-              <Button variant="ghost" size="icon" onClick={() => router.push('/')}>
+              <Button variant="ghost" size="icon" className="text-muted-foreground hover:bg-accent/50 hover:text-white rounded-full transition-colors" onClick={() => router.push('/')}>
                   <ArrowLeft className="h-6 w-6" />
                   <span className="sr-only">Back</span>
               </Button>
               <Sheet>
                 <SheetTrigger asChild>
-                  <Button variant="ghost" size="icon">
+                  <Button variant="ghost" size="icon" className="text-muted-foreground hover:bg-accent/50 hover:text-white rounded-full transition-colors">
                     <Menu className="h-6 w-6" />
                     <span className="sr-only">Open Sidebar</span>
                   </Button>
@@ -211,7 +211,7 @@ export default function ChatPage() {
           
           {/* Desktop header */}
           <div className="hidden md:flex items-center justify-between p-3 border-b border-white/10">
-              <Button variant="ghost" onClick={() => router.push('/')} className="hover:bg-accent">
+              <Button variant="outline" onClick={() => router.push('/')} className="bg-transparent border-border hover:bg-accent hover:border-accent transition-colors text-muted-foreground hover:text-foreground font-normal">
                   <ArrowLeft className="mr-2 h-4 w-4" />
                   Back
               </Button>
