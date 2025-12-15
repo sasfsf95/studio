@@ -3,7 +3,7 @@
 
 import { useState, useTransition, useEffect } from 'react';
 import { ChatInterface, Message } from './ChatInterface';
-import { continueConversation, getIcebreakers, getAudio } from '@/app/actions';
+import { continueConversation, getAudio } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 
@@ -18,7 +18,7 @@ interface ChatContainerProps {
 export function ChatContainer({ characterImage, companionName, isPremium, setShowPremiumDialog, chatId }: ChatContainerProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [icebreakers, setIcebreakers] = useState<string[]>([]);
-  const [isLoadingIcebreakers, setIsLoadingIcebreakers] = useState(true);
+  const [isLoadingIcebreakers, setIsLoadingIcebreakers] = useState(false);
   const [isAiResponding, startAiTransition] = useTransition();
   const { toast } = useToast();
   
@@ -98,47 +98,19 @@ export function ChatContainer({ characterImage, companionName, isPremium, setSho
     }
   }, [messages, companionName, chatId]);
 
-  // Fetch icebreakers from cache or API
+  // Use a static list of icebreakers to avoid API calls.
   useEffect(() => {
-    const fetchIcebreakers = async () => {
-      setIsLoadingIcebreakers(true);
-      const icebreakerCacheKey = `icebreakers_${companionName}`;
-      
-      try {
-        const cachedIcebreakers = localStorage.getItem(icebreakerCacheKey);
-        if (cachedIcebreakers) {
-          setIcebreakers(JSON.parse(cachedIcebreakers));
-        } else {
-          const result = await getIcebreakers({
-            aiCompanionProfile: `${companionName} is an intimate and seductive AI companion. She is alluring, mysterious, and deeply interested in the user's desires. She is direct and encouraging of deep, personal conversations.`,
-            userInterests: "anything to start a deep, engaging, and flirty conversation"
-          });
-          setIcebreakers(result.icebreakerMessages);
-          localStorage.setItem(icebreakerCacheKey, JSON.stringify(result.icebreakerMessages));
-        }
-      } catch (error) {
-        console.error("Failed to get icebreakers:", error);
-        // Fallback to generic icebreakers if API fails
-        setIcebreakers([
-            "Tell me a secret...",
-            "What's on your mind?",
-            "How was your day?",
-            "Send me a picture?",
-            "Let's talk about us."
-        ]);
-        toast({
-          variant: "destructive",
-          title: "Oh no!",
-          description: "I had a little trouble thinking of conversation starters. Let's just dive in!",
-        })
-      } finally {
-        setIsLoadingIcebreakers(false);
-      }
-    };
-    if (companionName) {
-        fetchIcebreakers();
-    }
-  }, [toast, companionName]);
+    setIsLoadingIcebreakers(true);
+    const staticIcebreakers = [
+        "Tell me a secret...",
+        "What's on your mind?",
+        "I can't stop thinking about you.",
+        "Send me a selfie?",
+        "You make my heart race."
+    ];
+    setIcebreakers(staticIcebreakers);
+    setIsLoadingIcebreakers(false);
+  }, []);
 
   const handleSendMessage = (text: string, imageUrl?: string) => {
     if (!text.trim() && !imageUrl) return;

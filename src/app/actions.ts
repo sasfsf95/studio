@@ -1,16 +1,10 @@
 
 "use server";
 
-import { generateIcebreakerMessages, type GenerateIcebreakerMessagesInput } from '@/ai/flows/generate-icebreaker-messages';
 import {ai} from '@/ai/genkit';
 import { textToSpeech, TextToSpeechOutput } from '@/ai/flows/text-to-speech';
 import Stripe from 'stripe';
 
-
-export async function getIcebreakers(input: GenerateIcebreakerMessagesInput) {
-  const result = await generateIcebreakerMessages(input);
-  return result;
-}
 
 export async function getAudio(text: string): Promise<TextToSpeechOutput | null> {
     try {
