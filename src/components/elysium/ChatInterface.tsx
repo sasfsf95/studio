@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Send, Mic, Heart, Sparkles, Sun, Camera, Gift, Drama, Flame, Loader2, Paperclip, Lock, Play, Pause, Square } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 export interface Message {
   id: string;
@@ -191,9 +192,11 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
   return (
     <div className="relative h-full">
       {characterImage && (
-        <img
+        <Image
           src={characterImage}
           alt="Chat Background"
+          fill
+          quality={50}
           className="absolute inset-0 h-full w-full object-cover object-top opacity-20 md:opacity-[0.08]"
           data-ai-hint="beautiful woman"
         />
@@ -229,7 +232,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
                         : 'bg-card text-card-foreground rounded-bl-lg shadow-xl shadow-primary/20'
                     )}>
                       {msg.imageUrl && (
-                        <img src={msg.imageUrl} alt="Uploaded content" className="rounded-lg mb-2 max-w-full h-auto" data-ai-hint="photo message"/>
+                        <Image src={msg.imageUrl} alt="Uploaded content" width={200} height={300} className="rounded-lg mb-2 max-w-full h-auto" data-ai-hint="photo message"/>
                       )}
                       {msg.text && <p>{msg.text}</p>}
                       {msg.audioUrl && (
@@ -348,3 +351,5 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
     </div>
   );
 }
+
+    

@@ -862,7 +862,7 @@ export function LandingPage() {
             </div>
 
             <div className="character-grid grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-4">
-              {displayedCharacters.map(character => (
+              {displayedCharacters.map((character, index) => (
                 <Card key={character.id} className="relative bg-card border-none rounded-3xl group cursor-pointer shadow-lg hover:shadow-xl hover:shadow-primary/20 transition-transform duration-300 ease-in-out hover:-translate-y-1" onClick={() => handleCharacterSelect(character)}>
                   <CardContent className="p-0 overflow-hidden rounded-[calc(1.5rem-1px)]">
                     <div className="relative h-[320px] sm:h-[320px] w-full overflow-hidden">
@@ -871,6 +871,7 @@ export function LandingPage() {
                         alt={character.name}
                         width={300}
                         height={400}
+                        loading={index < 10 ? 'eager' : 'lazy'}
                         className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-300 ease-in-out group-hover:scale-105"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent transition-opacity duration-300 group-hover:from-black/80"></div>
@@ -897,3 +898,5 @@ export function LandingPage() {
     </div>
   );
 }
+
+    

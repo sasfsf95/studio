@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Crown, Sparkles, MessageSquare, Heart, Flame, WandSparkles, Users, Moon, Eclipse, Camera } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useRef } from 'react';
+import Image from 'next/image';
 
 interface LeftSidebarProps {
   characterImage: string | null;
@@ -62,9 +63,11 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
         <div className="group [perspective:1000px]">
            <div className="relative p-1 rounded-3xl bg-gradient-to-tr from-primary to-fuchsia-800 shadow-2xl shadow-primary/30 [transform-style:preserve-3d] group-hover:[transform:rotateY(10deg)_rotateX(5deg)] transition-transform duration-500 ease-out">
              <div className="relative h-[320px] w-[240px] rounded-2xl overflow-hidden">
-              <img
+              <Image
                 src={characterImage || "/character.jpg"}
                 alt={companionName}
+                width={240}
+                height={320}
                 data-ai-hint="beautiful woman"
                 className="absolute inset-0 h-full w-full object-cover object-top"
               />
@@ -203,3 +206,5 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
     </div>
   );
 }
+
+    
