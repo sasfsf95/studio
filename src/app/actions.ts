@@ -16,7 +16,7 @@ export async function getAudio(text: string): Promise<TextToSpeechOutput | null>
 }
 
 export async function continueConversation({ message, chatId }: { message: string, chatId: string }): Promise<{ type: 'text' | 'audio' | 'image' | 'error', content: string }> {
-  const webhookUrl = 'https://sasa14.app.n8n.cloud/webhook/sheet-chat';
+  const webhookUrl = 'https://sasa15.app.n8n.cloud/webhook/fc5e4bc5-968d-4583-a8b6-8c86539202c3';
 
   try {
     const response = await fetch(webhookUrl, {
