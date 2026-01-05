@@ -12,8 +12,8 @@ import { useRouter } from 'next/navigation';
 const tiers = [
   {
     name: 'Starter',
-    monthlyPrice: '₹9',
-    yearlyPrice: '₹7',
+    monthlyPrice: '₹19',
+    yearlyPrice: '₹15',
     description: 'Basic access to AI companionship.',
     features: [
         { text: '100 Messages / Month', icon: <MessageSquare className="h-4 w-4 text-muted-foreground" /> },
