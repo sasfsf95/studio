@@ -19,7 +19,6 @@ const tiers = [
         { text: '100 Messages / Month', icon: <MessageSquare className="h-4 w-4 text-muted-foreground" /> },
         { text: 'Access to Standard Models', icon: <Check className="h-4 w-4 text-blue-500" /> },
         { text: 'Fast Response Time', icon: <Check className="h-4 w-4 text-blue-500" /> },
-        { text: 'Unlock Intimate Chats', icon: <X className="h-4 w-4 text-red-500" />, disabled: true },
     ],
     buttonVariant: 'secondary',
     icon: <Star className="h-6 w-6 text-blue-400" />,
