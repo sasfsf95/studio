@@ -6,6 +6,7 @@ import { ChatInterface, Message } from './ChatInterface';
 import { continueConversation, getAudio } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
+import { useRouter } from 'next/navigation';
 
 interface ChatContainerProps {
   characterImage: string | null;
@@ -21,6 +22,7 @@ export function ChatContainer({ characterImage, companionName, isPremium, setSho
   const [isLoadingIcebreakers, setIsLoadingIcebreakers] = useState(false);
   const [isAiResponding, startAiTransition] = useTransition();
   const { toast } = useToast();
+  const router = useRouter();
   
   const FREE_MESSAGE_LIMIT = 30;
   const userMessageCount = messages.filter(msg => msg.sender === 'user').length;
@@ -116,12 +118,7 @@ export function ChatContainer({ characterImage, companionName, isPremium, setSho
     if (!text.trim() && !imageUrl) return;
 
     if (isLocked) {
-        setShowPremiumDialog(true);
-        toast({
-            title: "Free Message Limit Reached",
-            description: "Please subscribe to premium to continue chatting.",
-            variant: "destructive",
-        });
+        router.push('/subscribe');
         return;
     }
 

@@ -8,6 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Send, Mic, Heart, Sparkles, Sun, Camera, Gift, Drama, Flame, Loader2, Paperclip, Lock, Play, Pause, Square } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 export interface Message {
   id: string;
@@ -129,6 +130,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [activeAudio, setActiveAudio] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -145,12 +147,16 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
     if (inputValue.trim() && !isAiResponding && !isLocked) {
       onSendMessage(inputValue.trim(), undefined);
       setInputValue('');
+    } else if (isLocked) {
+      router.push('/subscribe');
     }
   };
 
   const handleIcebreakerClick = (text: string) => {
     if (!isAiResponding && !isLocked) {
       onSendMessage(text, undefined);
+    } else if (isLocked) {
+      router.push('/subscribe');
     }
   };
 
@@ -199,6 +205,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
           quality={50}
           className="absolute inset-0 h-full w-full object-cover object-top opacity-20 md:opacity-[0.08]"
           data-ai-hint="beautiful woman"
+          priority
         />
       )}
       <div className="relative z-10 flex flex-col h-full p-2 sm:p-4 space-y-4">

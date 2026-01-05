@@ -759,19 +759,14 @@ export function LandingPage() {
                  </div>
              </div>
              <div className="flex items-center gap-4">
-                <Suspense fallback={<Button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold" disabled>Loading...</Button>}>
-                  <PremiumDialog
-                      open={isPremiumDialogOpen}
-                      onOpenChange={setIsPremiumDialogOpen}
-                  >
-                      <Button className="relative bg-gradient-to-r from-yellow-400 via-orange-500 to-yellow-600 hover:from-yellow-500 hover:via-orange-600 hover:to-yellow-700 text-black font-bold py-3 px-6 rounded-xl shadow-xl shadow-yellow-500/30 hover:shadow-yellow-500/50 border-2 border-yellow-300/50 hover:border-yellow-200/70 transition-all duration-300 group overflow-hidden">
-                          <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-                          <Crown className="mr-2 relative z-10 group-hover:rotate-12 transition-transform duration-300" /> 
-                          <span className="relative z-10 font-extrabold text-lg">✨ Become Premium ✨</span>
-                          <div className="absolute -inset-1 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-xl blur opacity-30 group-hover:opacity-50 transition-opacity duration-300"></div>
-                      </Button>
-                  </PremiumDialog>
-                </Suspense>
+                <Link href="/subscribe">
+                    <Button className="relative bg-gradient-to-r from-yellow-400 via-orange-500 to-yellow-600 hover:from-yellow-500 hover:via-orange-600 hover:to-yellow-700 text-black font-bold py-3 px-6 rounded-xl shadow-xl shadow-yellow-500/30 hover:shadow-yellow-500/50 border-2 border-yellow-300/50 hover:border-yellow-200/70 transition-all duration-300 group overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                        <Crown className="mr-2 relative z-10 group-hover:rotate-12 transition-transform duration-300" /> 
+                        <span className="relative z-10 font-extrabold text-lg">✨ Become Premium ✨</span>
+                        <div className="absolute -inset-1 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-xl blur opacity-30 group-hover:opacity-50 transition-opacity duration-300"></div>
+                    </Button>
+                </Link>
                 
                 <Suspense fallback={<Button className="bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold" disabled>Loading...</Button>}>
                   <DonationDialog
@@ -898,5 +893,3 @@ export function LandingPage() {
     </div>
   );
 }
-
-    
