@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { ArrowLeft, Check, Crown, Image as ImageIcon, MessageSquare, Mic, Star, Video, Zap } from 'lucide-react';
+import { ArrowLeft, Check, Crown, Image as ImageIcon, MessageSquare, Mic, Star, Video, Zap, X, Heart } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -19,6 +19,7 @@ const tiers = [
         { text: '100 Messages / Month', icon: <MessageSquare className="h-4 w-4 text-muted-foreground" /> },
         { text: 'Access to Standard Models', icon: <Check className="h-4 w-4 text-blue-500" /> },
         { text: 'Fast Response Time', icon: <Check className="h-4 w-4 text-blue-500" /> },
+        { text: 'Unlock Intimate Chats', icon: <X className="h-4 w-4 text-red-500" />, disabled: true },
     ],
     buttonVariant: 'secondary',
     icon: <Star className="h-6 w-6 text-blue-400" />,
@@ -36,6 +37,7 @@ const tiers = [
         { text: 'Unlimited Messages', icon: <Star className="h-4 w-4 text-purple-400" /> },
         { text: 'Receive Photos', icon: <ImageIcon className="h-4 w-4 text-purple-400" /> },
         { text: 'Access to Premium Models', icon: <Crown className="h-4 w-4 text-purple-400" /> },
+        { text: 'Unlock Intimate Chats', icon: <Heart className="h-4 w-4 text-purple-400" /> },
         { text: 'Priority Support', icon: <Check className="h-4 w-4 text-purple-400" /> },
     ],
     buttonVariant: 'primary',
@@ -160,24 +162,26 @@ export default function SubscribePage() {
                   <p className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">What's Included</p>
                   <ul className="space-y-3">
                     {tier.features.map((feature, index) => (
-                      <li key={index} className="flex items-center gap-3 text-gray-300">
+                      <li key={index} className={cn("flex items-center gap-3 text-gray-300", feature.disabled && "text-gray-500 line-through")}>
                         {feature.icon}
                         <span>{feature.text}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
-                <Button
-                  className={cn(
-                    'w-full font-bold py-6 text-lg rounded-xl',
-                    tier.buttonVariant === 'primary' 
-                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg hover:opacity-90' 
-                      : 'bg-white text-black hover:bg-gray-200'
-                  )}
-                >
-                  {tier.buttonVariant === 'primary' && <Crown className="mr-2 h-5 w-5"/>}
-                  Subscribe Now
-                </Button>
+                <Link href="/chat" className="w-full">
+                  <Button
+                    className={cn(
+                      'w-full font-bold py-6 text-lg rounded-xl',
+                      tier.buttonVariant === 'primary' 
+                        ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg hover:opacity-90' 
+                        : 'bg-white text-black hover:bg-gray-200'
+                    )}
+                  >
+                    {tier.buttonVariant === 'primary' && <Crown className="mr-2 h-5 w-5"/>}
+                    Subscribe Now
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           ))}
