@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { CreditCard, Crown, Loader2, CheckCircle2, PartyPopper } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export function PremiumDialog({
   children,
@@ -25,35 +26,16 @@ export function PremiumDialog({
   onOpenChange: (open: boolean) => void;
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showQrCode, setShowQrCode] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
+
 
   const handleSubscribeClick = async () => {
-    setShowQrCode(true);
+    router.push('/subscribe');
+    onOpenChange(false);
   };
   
-  const handlePaymentComplete = () => {
-    localStorage.setItem('isPremium', 'true');
-    toast({
-        title: "Welcome to Premium!",
-        description: (
-            <div className="flex items-center gap-2">
-              <PartyPopper className="h-5 w-5 text-primary" />
-              <span>You now have unlimited access. Enjoy!</span>
-            </div>
-        ),
-    });
-    setShowQrCode(false);
-    onOpenChange(false);
-    // Full reload to ensure premium state is recognized everywhere
-    window.location.assign('/chat');
-  }
-
   const handleDialogClose = (isOpen: boolean) => {
-      if (!isOpen) {
-          // Reset the view when the dialog is closed
-          setTimeout(() => setShowQrCode(false), 300);
-      }
       onOpenChange(isOpen);
   }
 
@@ -61,38 +43,6 @@ export function PremiumDialog({
     <Dialog open={open} onOpenChange={handleDialogClose}>
       {children && <DialogTrigger asChild>{children}</DialogTrigger>}
       <DialogContent className="sm:max-w-[425px] bg-card border-border">
-        {showQrCode ? (
-            <>
-                <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2 text-xl">
-                        <CreditCard className="text-primary" />
-                        Scan to Pay
-                    </DialogTitle>
-                     <DialogDescription>
-                        Use any UPI app to scan the QR code and complete your payment.
-                     </DialogDescription>
-                </DialogHeader>
-                 <div className="flex flex-col items-center justify-center py-4">
-                    <img
-                        src="/payment/PAYMENTQR.jpg"
-                        alt="Scan to pay with any UPI app"
-                        width={300}
-                        height={300}
-                        data-ai-hint="QR code payment"
-                    />
-                    <Button 
-                        onClick={() => window.open('https://upilinks.in/payment-link/upi351332616', '_blank')}
-                        className="mt-4 w-full font-bold bg-blue-600 text-white hover:bg-blue-700"
-                    >
-                        <CreditCard className="mr-2 h-4 w-4" />
-                        Pay with UPI
-                    </Button>
-                 </div>
-                <DialogFooter className="pt-0">
-                    
-                </DialogFooter>
-            </>
-        ) : (
             <>
                 <DialogHeader>
                   <DialogTitle className="flex items-center gap-2 text-xl">
@@ -141,12 +91,13 @@ export function PremiumDialog({
                     ) : (
                         <CreditCard className="mr-2 h-4 w-4" />
                     )}
-                    {isSubmitting ? "Redirecting..." : "Subscribe Now"}
+                    {isSubmitting ? "Redirecting..." : "Choose a Plan"}
                   </Button>
                 </DialogFooter>
             </>
-        )}
       </DialogContent>
     </Dialog>
   );
 }
+
+    
