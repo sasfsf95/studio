@@ -19,12 +19,13 @@ export async function continueConversation({ message, chatId }: { message: strin
   const webhookUrl = 'https://sasa15.app.n8n.cloud/webhook/fc5e4bc5-968d-4583-a8b6-8c86539202c3';
 
   try {
+    const formData = new FormData();
+    formData.append('message', message);
+    formData.append('chatId', chatId);
+
     const response = await fetch(webhookUrl, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ message, chatId }),
+      body: formData,
     });
 
     if (!response.ok) {
