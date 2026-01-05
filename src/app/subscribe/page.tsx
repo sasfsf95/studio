@@ -1,15 +1,19 @@
 
 'use client';
 
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { Check, Crown, Image as ImageIcon, MessageSquare, Mic, Star, Video, Zap } from 'lucide-react';
+import { ArrowLeft, Check, Crown, Image as ImageIcon, MessageSquare, Mic, Star, Video, Zap } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const tiers = [
   {
     name: 'Starter',
-    price: '₹9',
+    monthlyPrice: '₹9',
+    yearlyPrice: '₹7',
     description: 'Basic access to AI companionship.',
     features: [
         { text: '100 Messages / Month', icon: <MessageSquare className="h-4 w-4 text-muted-foreground" /> },
@@ -25,7 +29,8 @@ const tiers = [
   },
   {
     name: 'Visual',
-    price: '₹49',
+    monthlyPrice: '₹49',
+    yearlyPrice: '₹39',
     description: 'Experience the connection with photos.',
     features: [
         { text: 'Unlimited Messages', icon: <Star className="h-4 w-4 text-purple-400" /> },
@@ -43,7 +48,8 @@ const tiers = [
   },
   {
     name: 'Elite',
-    price: '₹99',
+    monthlyPrice: '₹99',
+    yearlyPrice: '₹79',
     description: 'Full immersion with video & audio clips.',
     features: [
         { text: 'Everything in Visual', icon: <Check className="h-4 w-4 text-orange-500" /> },
@@ -61,16 +67,56 @@ const tiers = [
 ];
 
 export default function SubscribePage() {
-  return (
-    <div className="bg-[#0D0D12] min-h-screen text-white p-4 sm:p-8">
+    const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('yearly');
+    const router = useRouter();
+
+    return (
+    <div className="bg-[#111111] min-h-screen text-white p-4 sm:p-8">
       <div className="max-w-5xl mx-auto">
+        <Button 
+            variant="ghost" 
+            onClick={() => router.push('/')}
+            className="mb-8 inline-flex items-center gap-2 text-gray-400 hover:text-white hover:bg-gray-800 transition-colors rounded-full"
+        >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Models
+        </Button>
+
         <div className="text-center mb-12">
-          <h1 className="text-4xl sm:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
-            Choose Your Plan
+          <h1 className="text-5xl sm:text-6xl font-bold mb-4" style={{ fontFamily: 'serif' }}>
+            CHOOSE YOUR CONNECTION
           </h1>
-          <p className="text-lg text-gray-400">
-            Unlock more intimate and immersive experiences with your AI companion.
+          <p className="text-lg text-gray-400 max-w-xl mx-auto">
+            Unlock deeper levels of intimacy with photos, audio, and video content.
           </p>
+        </div>
+
+        <div className="flex justify-center items-center mb-12">
+            <div className="bg-[#1C1C1E] p-1 rounded-full flex items-center gap-2">
+                <Button 
+                    onClick={() => setBillingCycle('monthly')}
+                    variant={billingCycle === 'monthly' ? 'secondary' : 'ghost'}
+                    className={cn(
+                        "rounded-full px-6 transition-colors",
+                        billingCycle === 'monthly' ? 'bg-gray-700 text-white' : 'text-gray-400 hover:text-white'
+                    )}
+                >
+                    Monthly
+                </Button>
+                <Button
+                    onClick={() => setBillingCycle('yearly')}
+                    variant={billingCycle === 'yearly' ? 'secondary' : 'ghost'}
+                    className={cn(
+                        "rounded-full px-6 transition-colors relative",
+                        billingCycle === 'yearly' ? 'bg-gray-700 text-white' : 'text-gray-400 hover:text-white'
+                    )}
+                >
+                    Yearly
+                    <span className="absolute -top-2 -right-4 bg-green-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                        SAVE 15%
+                    </span>
+                </Button>
+            </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -98,14 +144,16 @@ export default function SubscribePage() {
                   </div>
                   <div>
                     <CardTitle className="text-2xl font-bold">{tier.name}</CardTitle>
-                    <p className="text-sm text-gray-400">{tier.description}</p>
                   </div>
                 </div>
                 
                 <div className="flex items-baseline gap-2">
-                  <span className="text-5xl font-extrabold">{tier.price}</span>
+                  <span className="text-5xl font-extrabold">
+                      {billingCycle === 'monthly' ? tier.monthlyPrice : tier.yearlyPrice}
+                  </span>
                   <span className="text-gray-400">/mo</span>
                 </div>
+                 <p className="text-sm text-gray-400 h-10">{tier.description}</p>
               </CardHeader>
               <CardContent className="flex-grow flex flex-col justify-between px-6 pb-6">
                 <div className="mb-8">
@@ -138,5 +186,3 @@ export default function SubscribePage() {
     </div>
   );
 }
-
-    
