@@ -872,7 +872,7 @@ export function LandingPage() {
                         width={300}
                         height={400}
                         loading={index < 10 ? 'eager' : 'lazy'}
-                        className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-300 ease-in-out group-hover:scale-105"
+                        className="character-card-image absolute inset-0 h-full w-full object-cover object-top transition-transform duration-300 ease-in-out group-hover:scale-105"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent transition-opacity duration-300 group-hover:from-black/80"></div>
                        {character.tags?.includes('New') && <Badge className="absolute top-2 left-2 bg-primary border-none text-primary-foreground font-semibold">New</Badge>}
