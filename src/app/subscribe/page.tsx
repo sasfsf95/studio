@@ -12,8 +12,8 @@ import { useRouter } from 'next/navigation';
 const tiers = [
   {
     name: 'Starter',
-    monthlyPrice: '₹19',
-    yearlyPrice: '₹15',
+    monthlyPrice: '₹49',
+    yearlyPrice: '₹42',
     description: 'Basic access to AI companionship.',
     features: [
         { text: '100 Messages / Month', icon: <MessageSquare className="h-4 w-4 text-muted-foreground" /> },
@@ -29,8 +29,8 @@ const tiers = [
   },
   {
     name: 'Visual',
-    monthlyPrice: '₹49',
-    yearlyPrice: '₹39',
+    monthlyPrice: '₹100',
+    yearlyPrice: '₹85',
     description: 'Experience the connection with photos.',
     features: [
         { text: 'Unlimited Messages', icon: <Star className="h-4 w-4 text-purple-400" /> },
@@ -49,8 +49,8 @@ const tiers = [
   },
   {
     name: 'Elite',
-    monthlyPrice: '₹99',
-    yearlyPrice: '₹79',
+    monthlyPrice: '₹300',
+    yearlyPrice: '₹255',
     description: 'Full immersion with video & audio clips.',
     features: [
         { text: 'Everything in Visual', icon: <Check className="h-4 w-4 text-orange-500" /> },
@@ -161,7 +161,7 @@ export default function SubscribePage() {
                   <p className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">What's Included</p>
                   <ul className="space-y-3">
                     {tier.features.map((feature, index) => (
-                      <li key={index} className={cn("flex items-center gap-3 text-gray-300", feature.disabled && "text-gray-500 line-through")}>
+                      <li key={index} className={cn("flex items-center gap-3 text-gray-300")}>
                         {feature.icon}
                         <span>{feature.text}</span>
                       </li>
