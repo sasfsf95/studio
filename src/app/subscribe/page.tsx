@@ -29,8 +29,8 @@ const tiers = [
   },
   {
     name: 'Visual',
-    monthlyPrice: '₹100',
-    yearlyPrice: '₹85',
+    monthlyPrice: '₹99',
+    yearlyPrice: '₹84',
     description: 'Experience the connection with photos.',
     features: [
         { text: 'Unlimited Messages', icon: <Star className="h-4 w-4 text-purple-400" /> },
