@@ -16,7 +16,7 @@ export async function getAudio(text: string): Promise<TextToSpeechOutput | null>
 }
 
 export async function continueConversation({ message, chatId }: { message: string, chatId: string }): Promise<{ type: 'text' | 'audio' | 'image' | 'error', content: string }> {
-  const webhookUrl = 'https://n8n-openmedia-65e9c3b3.n8nproservices.com/webhook-test/chat-ai';
+  const webhookUrl = 'https://n8n-openmedia-65e9c3b3.n8nproservices.com/webhook/chat-ai';
 
   try {
     const formData = new FormData();
