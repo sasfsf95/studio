@@ -3,23 +3,26 @@
 
 import { useState, useTransition, useEffect } from 'react';
 import { ChatInterface, Message } from './ChatInterface';
-import { continueConversation, getIcebreakers, getAudio } from '@/app/actions';
+import { continueConversation, getAudio } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
+import { useRouter } from 'next/navigation';
 
 interface ChatContainerProps {
   characterImage: string | null;
   companionName: string;
   isPremium: boolean;
   setShowPremiumDialog: (open: boolean) => void;
+  chatId: string;
 }
 
-export function ChatContainer({ characterImage, companionName, isPremium, setShowPremiumDialog }: ChatContainerProps) {
+export function ChatContainer({ characterImage, companionName, isPremium, setShowPremiumDialog, chatId }: ChatContainerProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [icebreakers, setIcebreakers] = useState<string[]>([]);
-  const [isLoadingIcebreakers, setIsLoadingIcebreakers] = useState(true);
+  const [isLoadingIcebreakers, setIsLoadingIcebreakers] = useState(false);
   const [isAiResponding, startAiTransition] = useTransition();
   const { toast } = useToast();
+  const router = useRouter();
   
   const FREE_MESSAGE_LIMIT = 30;
   const userMessageCount = messages.filter(msg => msg.sender === 'user').length;
@@ -30,7 +33,7 @@ export function ChatContainer({ characterImage, companionName, isPremium, setSho
 
   // Load initial messages from localStorage
   useEffect(() => {
-    const chatKey = `chat_messages_${companionName}`;
+    const chatKey = `chat_messages_${chatId}`;
     let initialMessages: Message[] = [];
     try {
         const savedMessagesRaw = localStorage.getItem(chatKey);
@@ -64,7 +67,7 @@ export function ChatContainer({ characterImage, companionName, isPremium, setSho
         setMessages(welcomeMessages);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [companionName]);
+  }, [companionName, chatId]);
   
   // Update avatars when characterImage changes
   useEffect(() => {
@@ -81,45 +84,41 @@ export function ChatContainer({ characterImage, companionName, isPremium, setSho
   // Persist messages to localStorage
   useEffect(() => {
     if (messages.length > 0 && messages.some(m => m.sender === 'user')) {
-        const chatKey = `chat_messages_${companionName}`;
-        localStorage.setItem(chatKey, JSON.stringify(messages));
-    }
-  }, [messages, companionName]);
-
-  // Fetch icebreakers
-  useEffect(() => {
-    const fetchIcebreakers = async () => {
-      setIsLoadingIcebreakers(true);
+      const chatKey = `chat_messages_${chatId}`;
+      // Filter out messages with images or audio before saving to avoid exceeding quota.
+      const textOnlyMessages = messages.filter(msg => !msg.imageUrl && !msg.audioUrl);
+      const recentMessages = textOnlyMessages.slice(-100);
       try {
-        const result = await getIcebreakers({
-          aiCompanionProfile: `${companionName} is an intimate and seductive AI companion. She is alluring, mysterious, and deeply interested in the user's desires. She is direct and encouraging of deep, personal conversations.`,
-          userInterests: "anything to start a deep, engaging, and flirty conversation"
-        });
-        setIcebreakers(result.icebreakerMessages);
+        localStorage.setItem(chatKey, JSON.stringify(recentMessages));
       } catch (error) {
-        console.error("Failed to get icebreakers:", error);
-        toast({
-          variant: "destructive",
-          title: "Oh no!",
-          description: "I had a little trouble thinking of conversation starters. Let's just dive in!",
-        })
-      } finally {
-        setIsLoadingIcebreakers(false);
+        console.error("Failed to save messages to localStorage:", error);
+        if ((error as DOMException).name === 'QuotaExceededError') {
+          console.warn("Clearing local storage for chat due to quota exceeded error.");
+          localStorage.removeItem(chatKey);
+        }
       }
-    };
-    fetchIcebreakers();
-  }, [toast, companionName]);
+    }
+  }, [messages, companionName, chatId]);
+
+  // Use a static list of icebreakers to avoid API calls.
+  useEffect(() => {
+    setIsLoadingIcebreakers(true);
+    const staticIcebreakers = [
+        "Tell me a secret...",
+        "What's on your mind?",
+        "I can't stop thinking about you.",
+        "Send me a selfie?",
+        "You make my heart race."
+    ];
+    setIcebreakers(staticIcebreakers);
+    setIsLoadingIcebreakers(false);
+  }, []);
 
   const handleSendMessage = (text: string, imageUrl?: string) => {
     if (!text.trim() && !imageUrl) return;
 
     if (isLocked) {
-        setShowPremiumDialog(true);
-        toast({
-            title: "Free Message Limit Reached",
-            description: "Please subscribe to premium to continue chatting.",
-            variant: "destructive",
-        });
+        router.push('/subscribe');
         return;
     }
 
@@ -129,32 +128,30 @@ export function ChatContainer({ characterImage, companionName, isPremium, setSho
     
     startAiTransition(async () => {
       try {
-        const chatHistory = updatedMessages
-          .map(msg => {
-            let historyLine = `${msg.sender === 'user' ? 'User' : companionName}: ${msg.text}`;
-            if (msg.imageUrl) {
-                historyLine += " (sent an image)";
-            }
-            return historyLine;
-          })
-          .join('\n');
-
-        const aiResponseText = await continueConversation({ message: text, chatHistory, imageUrl });
+        // Construct message for webhook, including image if present.
+        const messageToSend = imageUrl ? `${text} [user sent an image]` : text;
+        const aiResponseData = await continueConversation({ message: messageToSend, chatId });
         
-        const audioPromise = isPremium ? getAudio(aiResponseText) : Promise.resolve(null);
-        
-        const audioResult = await audioPromise;
+        let audioResult = null;
+        if (isPremium && aiResponseData.type === 'text') {
+            audioResult = await getAudio(aiResponseData.content);
+        }
 
-        const aiResponse: Message = { 
-            id: (Date.now() + 1).toString(), 
-            text: aiResponseText, 
-            sender: 'ai', 
-            timestamp: format(new Date(), 'p'), 
-            avatar: characterImage || placeholderAvatar,
-            audioUrl: audioResult?.audioDataUri
+        const aiResponseMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          text: aiResponseData.type === 'text' ? aiResponseData.content : '',
+          sender: 'ai',
+          timestamp: format(new Date(), 'p'),
+          avatar: characterImage || placeholderAvatar,
+          audioUrl: aiResponseData.type === 'audio' ? aiResponseData.content : audioResult?.audioDataUri,
+          imageUrl: aiResponseData.type === 'image' ? aiResponseData.content : undefined,
         };
-        
-        setMessages(prev => [...prev, aiResponse]);
+
+        if(aiResponseData.type === 'error') {
+            aiResponseMessage.text = aiResponseData.content;
+        }
+
+        setMessages(prev => [...prev, aiResponseMessage]);
 
       } catch (error) {
          console.error("Failed to get AI response:", error);

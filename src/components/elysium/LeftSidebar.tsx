@@ -10,6 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Crown, Sparkles, MessageSquare, Heart, Flame, WandSparkles, Users, Moon, Eclipse, Camera } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useRef } from 'react';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 interface LeftSidebarProps {
   characterImage: string | null;
@@ -24,6 +26,7 @@ interface LeftSidebarProps {
 
 export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme, companionName, setCompanionName, isPremium, setShowPremiumDialog }: LeftSidebarProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
   const handleImageUploadClick = () => {
     fileInputRef.current?.click();
@@ -41,6 +44,12 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
     }
   };
 
+  const handlePremiumClick = () => {
+    if (!isPremium) {
+      router.push('/subscribe');
+    }
+  }
+
   return (
     <div className="h-full bg-black/30 p-4 flex flex-col space-y-6 overflow-y-auto">
       <header className="flex justify-between items-center">
@@ -51,7 +60,7 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
         <Button 
           size="sm" 
           className="font-bold bg-primary text-primary-foreground rounded-full px-5 shadow-lg shadow-primary/20 hover:bg-primary/90 transition-opacity"
-          onClick={() => !isPremium && setShowPremiumDialog(true)}
+          onClick={handlePremiumClick}
           disabled={isPremium}
         >
           {isPremium ? 'Premium' : 'VIP'}
@@ -62,11 +71,14 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
         <div className="group [perspective:1000px]">
            <div className="relative p-1 rounded-3xl bg-gradient-to-tr from-primary to-fuchsia-800 shadow-2xl shadow-primary/30 [transform-style:preserve-3d] group-hover:[transform:rotateY(10deg)_rotateX(5deg)] transition-transform duration-500 ease-out">
              <div className="relative h-[320px] w-[240px] rounded-2xl overflow-hidden">
-              <img
+              <Image
                 src={characterImage || "/character.jpg"}
                 alt={companionName}
+                width={240}
+                height={320}
                 data-ai-hint="beautiful woman"
                 className="absolute inset-0 h-full w-full object-cover object-top"
+                priority
               />
               <div className="absolute top-3 left-3">
                   <div className="flex items-center gap-1.5 bg-black/50 backdrop-blur-sm text-yellow-300 text-xs font-bold py-1 px-2 rounded-full border border-yellow-300/30">
@@ -203,3 +215,5 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
     </div>
   );
 }
+
+    

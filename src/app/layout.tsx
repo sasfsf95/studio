@@ -3,9 +3,12 @@
 
 import { useState, useEffect } from 'react';
 import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { AgeGate } from '@/components/elysium/AgeGate';
+
+const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({
   children,
@@ -50,7 +53,7 @@ export default function RootLayout({
             <meta name="twitter:description" content="Meet your ideal AI girlfriend. Intimate conversations, emotional support, and personalized virtual companion experience." />
             <meta name="twitter:image" content="/logo.png" />
           </head>
-          <body className="antialiased bg-background text-foreground"></body>
+          <body className={`${inter.className} antialiased bg-background text-foreground`}></body>
         </html>
     );
   }
@@ -89,7 +92,7 @@ export default function RootLayout({
           })}
         </script>
       </head>
-      <body className="antialiased bg-background text-foreground">
+      <body className={`${inter.className} antialiased bg-background text-foreground`}>
         {isVerified ? (
           <>
             {children}

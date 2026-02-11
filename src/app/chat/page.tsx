@@ -5,18 +5,20 @@ import { useState, useEffect } from 'react';
 import { ChatContainer } from '@/components/elysium/ChatContainer';
 import { LeftSidebar } from '@/components/elysium/LeftSidebar';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Heart, Loader2, Sparkles, Menu, PartyPopper } from 'lucide-react';
+import { Heart, Loader2, Sparkles, Menu, PartyPopper, ArrowLeft } from 'lucide-react';
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
 import { PremiumDialog } from '@/components/elysium/PremiumDialog';
+import Link from 'next/link';
 
 export default function ChatPage() {
   const [characterImage, setCharacterImage] = useState<string | null>(null);
+  const [characterId, setCharacterId] = useState<string>('');
   const [theme, setTheme] = useState('romantic-pink');
   const [companionName, setCompanionName] = useState('Aria');
-  const [isReady, setIsReady] = useState(false);
+  const [isReady, setIsReady] = useState(true);
   const [isPremium, setIsPremium] = useState(false);
   const [showPremiumDialog, setShowPremiumDialog] = useState(false);
   const router = useRouter();
@@ -29,19 +31,19 @@ export default function ChatPage() {
       if (!isAlreadyPremium) {
         localStorage.setItem('isPremium', 'true');
         toast({
-            title: "Welcome to Premium!",
-            description: (
-                <div className="flex items-center gap-2">
-                  <PartyPopper className="h-5 w-5 text-primary" />
-                  <span>You now have unlimited access. Enjoy!</span>
-                </div>
-            ),
+          title: "Welcome to Premium!",
+          description: (
+            <div className="flex items-center gap-2">
+              <PartyPopper className="h-5 w-5 text-primary" />
+              <span>You now have unlimited access. Enjoy!</span>
+            </div>
+          ),
         });
         // We do a full page reload to ensure all components re-read from localStorage
-        window.location.assign('/chat');
+        window.location.reload();
       } else {
-         // If they are already premium and land here, just clean the URL
-         router.replace('/chat', { scroll: false });
+        // If they are already premium and land here, just clean the URL
+        router.replace('/chat', { scroll: false });
       }
     }
   }, [searchParams, router, toast]);
@@ -50,12 +52,13 @@ export default function ChatPage() {
     // This code runs on the client, so window and localStorage are available.
     const premiumStatus = localStorage.getItem('isPremium') === 'true';
     setIsPremium(premiumStatus);
-    
+
     try {
       const storedCharacter = localStorage.getItem('selectedCharacter');
       if (storedCharacter) {
         const character = JSON.parse(storedCharacter);
         setCharacterImage(character.image || '/character.jpg');
+        setCharacterId(character.id || 'default-chat');
         setTheme(character.theme || 'romantic-pink');
         setCompanionName(character.name || 'Aria');
       } else {
@@ -64,13 +67,13 @@ export default function ChatPage() {
         return;
       }
     } catch (error) {
-        console.error("Failed to parse character from localStorage", error);
-        // Fallback to default if parsing fails and redirect
-        router.push('/');
-        return;
+      console.error("Failed to parse character from localStorage", error);
+      // Fallback to default if parsing fails and redirect
+      router.push('/');
+      return;
     }
     // Simulate a longer loading time for the new screen to be visible
-    setTimeout(() => setIsReady(true), 1500);
+    // setTimeout(() => setIsReady(true), 1000);
   }, [router]);
 
   useEffect(() => {
@@ -81,19 +84,20 @@ export default function ChatPage() {
       const storedCharacter = localStorage.getItem('selectedCharacter');
       // Parse existing data to preserve other properties like 'id'
       const character = storedCharacter ? JSON.parse(storedCharacter) : {};
-      
+
       const updatedCharacter = {
         ...character,
         name: companionName,
         image: characterImage,
         theme: theme,
+        id: characterId,
       };
 
       localStorage.setItem('selectedCharacter', JSON.stringify(updatedCharacter));
     } catch (error) {
       console.error("Failed to save character to localStorage", error);
     }
-  }, [characterImage, companionName, theme, isReady]);
+  }, [characterImage, companionName, theme, isReady, characterId]);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -123,29 +127,25 @@ export default function ChatPage() {
 
   if (!isReady) {
     return (
-        <div className="h-screen w-full flex flex-col items-center justify-center bg-black text-white relative overflow-hidden">
-            <div className="absolute inset-0 z-0">
-                <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-pink-500/10 via-purple-500/10 to-blue-500/10"></div>
-                <div className="absolute top-1/4 left-1/4 w-96 h-2 bg-gradient-to-r from-pink-500/30 to-red-500/30 transform -rotate-12 blur-lg animate-pulse"></div>
-                <div className="absolute bottom-1/4 right-1/4 w-80 h-2 bg-gradient-to-r from-purple-500/30 to-pink-500/30 transform rotate-12 blur-lg animate-pulse [animation-delay:0.5s]"></div>
-            </div>
-            <div className="relative z-10 flex flex-col items-center justify-center text-center">
-                <div className="relative mb-6">
-                    <Heart className="w-24 h-24 text-primary animate-heartbeat" />
-                    <Sparkles className="absolute -top-2 -right-2 w-8 h-8 text-yellow-300 animate-twinkle" />
-                </div>
-                <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400 mb-2">
-                    Loading Your Companion
-                </h1>
-                <p className="text-muted-foreground">Just a moment, we're preparing your intimate experience...</p>
-                <div className="mt-8">
-                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                </div>
-            </div>
+      <div className="h-screen w-full flex flex-col items-center justify-center bg-black text-white relative overflow-hidden">
+        <div className="absolute inset-0 z-0 bg-gradient-to-br from-pink-500/10 via-purple-500/10 to-blue-500/10"></div>
+        <div className="relative z-10 flex flex-col items-center justify-center text-center">
+          <div className="relative mb-6">
+            <Heart className="w-24 h-24 text-primary animate-heartbeat" />
+            <Sparkles className="absolute -top-2 -right-2 w-8 h-8 text-yellow-300 animate-twinkle" />
+          </div>
+          <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400 mb-2">
+            Connecting...
+          </h1>
+          <p className="text-muted-foreground">Preparing your intimate experience...</p>
+          <div className="mt-8">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
         </div>
+      </div>
     );
   }
-  
+
   return (
     <>
       <PremiumDialog
@@ -155,9 +155,9 @@ export default function ChatPage() {
       <div className="h-screen w-full flex bg-background text-foreground">
         {/* Desktop Sidebar */}
         <aside className="hidden md:block w-[360px] border-r border-white/5">
-          <LeftSidebar 
-            characterImage={characterImage} 
-            setCharacterImage={setCharacterImage} 
+          <LeftSidebar
+            characterImage={characterImage}
+            setCharacterImage={setCharacterImage}
             theme={theme}
             setTheme={setTheme}
             companionName={companionName}
@@ -170,28 +170,34 @@ export default function ChatPage() {
         <main className="flex-1 flex flex-col h-full">
           {/* Mobile Header & Sidebar Sheet */}
           <div className="md:hidden flex items-center justify-between p-2 border-b border-white/10 bg-black/50 backdrop-blur-sm shadow-lg">
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Menu className="h-6 w-6" />
-                  <span className="sr-only">Open Sidebar</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left" className="w-[300px] sm:w-[360px] p-0 bg-black/80 backdrop-blur-sm border-r-white/5">
-                <SheetTitle className="sr-only">Companion Customization</SheetTitle>
-                <SheetDescription className="sr-only">Customize your AI companion's name, image, theme, and personality.</SheetDescription>
-                <LeftSidebar 
-                  characterImage={characterImage} 
-                  setCharacterImage={setCharacterImage} 
-                  theme={theme}
-                  setTheme={setTheme}
-                  companionName={companionName}
-                  setCompanionName={setCompanionName}
-                  isPremium={isPremium}
-                  setShowPremiumDialog={setShowPremiumDialog}
-                />
-              </SheetContent>
-            </Sheet>
+            <div className="flex items-center gap-1">
+              <Button variant="ghost" size="icon" className="text-muted-foreground hover:bg-accent/50 hover:text-white rounded-full transition-colors" onClick={() => router.push('/')}>
+                <ArrowLeft className="h-6 w-6" />
+                <span className="sr-only">Back</span>
+              </Button>
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon" className="text-muted-foreground hover:bg-accent/50 hover:text-white rounded-full transition-colors">
+                    <Menu className="h-6 w-6" />
+                    <span className="sr-only">Open Sidebar</span>
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left" className="w-[300px] sm:w-[360px] p-0 bg-black/80 backdrop-blur-sm border-r-white/5">
+                  <SheetTitle className="sr-only">Companion Customization</SheetTitle>
+                  <SheetDescription className="sr-only">Customize your AI companion's name, image, theme, and personality.</SheetDescription>
+                  <LeftSidebar
+                    characterImage={characterImage}
+                    setCharacterImage={setCharacterImage}
+                    theme={theme}
+                    setTheme={setTheme}
+                    companionName={companionName}
+                    setCompanionName={setCompanionName}
+                    isPremium={isPremium}
+                    setShowPremiumDialog={setShowPremiumDialog}
+                  />
+                </SheetContent>
+              </Sheet>
+            </div>
             <div className="flex items-center gap-2">
               <Avatar className="h-8 w-8">
                 <AvatarImage src={characterImage || undefined} alt={companionName} />
@@ -199,16 +205,33 @@ export default function ChatPage() {
               </Avatar>
               <span className="font-semibold">{companionName}</span>
             </div>
-             {/* Spacer to balance the trigger button */}
-            <div className="w-10"></div>
+            {/* Spacer to balance the trigger buttons */}
+            <div className="w-20"></div>
           </div>
-          
+
+          {/* Desktop header */}
+          <div className="hidden md:flex items-center justify-between p-3 border-b border-white/10">
+            <Button variant="ghost" onClick={() => router.push('/')} className="hover:bg-accent/50 text-muted-foreground hover:text-foreground font-normal rounded-full">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back
+            </Button>
+            <div className="flex items-center gap-3">
+              <Avatar className="h-9 w-9">
+                <AvatarImage src={characterImage || undefined} alt={companionName} />
+                <AvatarFallback>{companionName.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <span className="font-semibold text-lg">{companionName}</span>
+            </div>
+            <div className="w-24"></div> {/* Spacer */}
+          </div>
+
           <div className="flex-1 overflow-y-auto">
-            <ChatContainer 
-              characterImage={characterImage} 
-              companionName={companionName} 
-              isPremium={isPremium} 
+            <ChatContainer
+              characterImage={characterImage}
+              companionName={companionName}
+              isPremium={isPremium}
               setShowPremiumDialog={setShowPremiumDialog}
+              chatId={characterId}
             />
           </div>
         </main>

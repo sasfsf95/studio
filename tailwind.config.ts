@@ -1,3 +1,4 @@
+
 import type {Config} from 'tailwindcss';
 
 export default {
@@ -76,7 +77,7 @@ export default {
           to: { height: '0' },
         },
         'message-in': {
-          '0%': { opacity: '0', transform: 'translateY(20px) scale(0.9)' },
+          '0%': { opacity: '0', transform: 'translateY(10px) scale(0.98)' },
           '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
         },
         'pulse': {
@@ -85,18 +86,18 @@ export default {
         },
         'heartbeat': {
             '0%': { transform: 'scale(1)' },
-            '50%': { transform: 'scale(1.15)' },
+            '50%': { transform: 'scale(1.10)' },
             '100%': { transform: 'scale(1)' },
         },
         'twinkle': {
-            '0%, 100%': { opacity: '1' },
-            '50%': { opacity: '0.6' },
+            '0%, 100%': { opacity: '1', transform: 'scale(1)' },
+            '50%': { opacity: '0.6', transform: 'scale(0.8)' },
         },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        'message-in': 'message-in 0.5s ease-out forwards',
+        'message-in': 'message-in 0.3s ease-out forwards',
         'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'heartbeat': 'heartbeat 1.5s ease-in-out infinite',
         'twinkle': 'twinkle 2s ease-in-out infinite',
