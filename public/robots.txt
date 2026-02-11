@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://yuki.ai/sitemap.xml
+
+# AI Girlfriend Keywords for Crawlers
+# AI girlfriend, virtual girlfriend, AI companion, AI chat, virtual companion
+# AI relationship, digital girlfriend, AI dating, virtual dating, emotional AI
