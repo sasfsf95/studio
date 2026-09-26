@@ -143,10 +143,20 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
     }
   }, [inputValue]);
 
+  // Auto-focus chat input box when chat opens or when AI finishes responding
+  useEffect(() => {
+    if (!isAiResponding && !isLocked) {
+      textareaRef.current?.focus();
+    }
+  }, [isAiResponding, isLocked]);
+
   const handleSend = () => {
     if (inputValue.trim() && !isAiResponding && !isLocked) {
       onSendMessage(inputValue.trim(), undefined);
       setInputValue('');
+      setTimeout(() => {
+        textareaRef.current?.focus();
+      }, 0);
     } else if (isLocked) {
       router.push('/subscribe');
     }
@@ -155,6 +165,9 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
   const handleIcebreakerClick = (text: string) => {
     if (!isAiResponding && !isLocked) {
       onSendMessage(text, undefined);
+      setTimeout(() => {
+        textareaRef.current?.focus();
+      }, 0);
     } else if (isLocked) {
       router.push('/subscribe');
     }
@@ -176,6 +189,9 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
         const imageUrl = e.target?.result as string;
         onSendMessage(inputValue, imageUrl);
         setInputValue('');
+        setTimeout(() => {
+          textareaRef.current?.focus();
+        }, 0);
       };
       reader.readAsDataURL(file);
     }
@@ -189,6 +205,9 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
       setShowPremiumDialog(true);
     } else if (!isAiResponding) {
       onSendMessage(actionText);
+      setTimeout(() => {
+        textareaRef.current?.focus();
+      }, 0);
     }
   };
 
@@ -235,8 +254,8 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
                     <div className={cn(
                       'max-w-md p-3 px-4 rounded-2xl text-sm sm:text-base leading-relaxed transition-all duration-300 ease-out',
                       msg.sender === 'user'
-                        ? 'bg-gradient-to-br from-primary to-fuchsia-600 text-primary-foreground rounded-br-lg shadow-lg shadow-primary/20'
-                        : 'bg-card text-card-foreground rounded-bl-lg shadow-xl shadow-primary/20'
+                        ? 'bg-gradient-to-br from-primary/95 to-fuchsia-600/95 text-primary-foreground rounded-br-lg shadow-lg shadow-primary/20 border border-white/10 backdrop-blur-md'
+                        : 'liquid-glass text-card-foreground rounded-bl-lg'
                     )}>
                       {msg.imageUrl && (
                         <Image src={msg.imageUrl} alt="Uploaded content" width={200} height={300} className="rounded-lg mb-2 max-w-full h-auto" data-ai-hint="photo message"/>
@@ -261,7 +280,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
                     <AvatarImage src={characterImage || "https://placehold.co/400x600.png"} alt={companionName} data-ai-hint="beautiful woman" className="object-cover object-top" />
                     <AvatarFallback>{companionName.charAt(0).toUpperCase()}</AvatarFallback>
                   </Avatar>
-                  <div className="max-w-sm p-3 px-4 rounded-2xl rounded-bl-lg bg-card text-card-foreground">
+                  <div className="max-w-sm p-3 px-4 rounded-2xl rounded-bl-lg liquid-glass text-card-foreground">
                     <div className="flex items-center justify-center space-x-2 h-6">
                       <span className="h-2 w-2 bg-muted-foreground rounded-full animate-pulse [animation-delay:-0.3s]"></span>
                       <span className="h-2 w-2 bg-muted-foreground rounded-full animate-pulse [animation-delay:-0.15s]"></span>
@@ -316,7 +335,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
               </Button>
           </div>
         
-          <div className="flex items-end gap-2 border rounded-xl p-2 bg-black/40 border-white/10">
+          <div className="flex items-end gap-2 liquid-glass-active p-2">
             <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept="image/jpeg, image/png, image/gif, image/webp" />
             <Button variant="ghost" onClick={handleAttachmentClick} disabled={isAiResponding || isLocked} className="flex-shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-full hover:bg-primary/20 disabled:opacity-50 disabled:cursor-not-allowed">
                 <Paperclip className="h-5 w-5 text-primary" />

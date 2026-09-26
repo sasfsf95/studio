@@ -18,7 +18,7 @@ export default function ChatPage() {
   const [characterId, setCharacterId] = useState<string>('');
   const [theme, setTheme] = useState('romantic-pink');
   const [companionName, setCompanionName] = useState('Aria');
-  const [isReady, setIsReady] = useState(true);
+  const [isReady, setIsReady] = useState(false);
   const [isPremium, setIsPremium] = useState(false);
   const [showPremiumDialog, setShowPremiumDialog] = useState(false);
   const router = useRouter();
@@ -72,8 +72,8 @@ export default function ChatPage() {
       router.push('/');
       return;
     }
-    // Simulate a longer loading time for the new screen to be visible
-    // setTimeout(() => setIsReady(true), 1000);
+    // Set ready after data is loaded
+    setIsReady(true);
   }, [router]);
 
   useEffect(() => {
@@ -152,9 +152,13 @@ export default function ChatPage() {
         open={showPremiumDialog}
         onOpenChange={setShowPremiumDialog}
       />
-      <div className="h-screen w-full flex bg-background text-foreground">
+      <div className="h-screen w-full flex bg-liquid-flow text-foreground relative overflow-hidden">
+        {/* Animated Liquid Background Glowing Spots */}
+        <div className="bg-glow-spot top-10 left-[10%] z-0"></div>
+        <div className="bg-glow-spot-2 bottom-10 right-[15%] z-0"></div>
+
         {/* Desktop Sidebar */}
-        <aside className="hidden md:block w-[360px] border-r border-white/5">
+        <aside className="hidden md:block w-[360px] liquid-glass border-r-0 rounded-none sticky top-0 h-screen z-10">
           <LeftSidebar
             characterImage={characterImage}
             setCharacterImage={setCharacterImage}
@@ -167,9 +171,9 @@ export default function ChatPage() {
           />
         </aside>
 
-        <main className="flex-1 flex flex-col h-full">
+        <main className="flex-1 flex flex-col h-full relative z-10">
           {/* Mobile Header & Sidebar Sheet */}
-          <div className="md:hidden flex items-center justify-between p-2 border-b border-white/10 bg-black/50 backdrop-blur-sm shadow-lg">
+          <div className="md:hidden flex items-center justify-between p-2 liquid-glass rounded-none border-t-0 border-l-0 border-r-0 backdrop-blur-xl shadow-lg">
             <div className="flex items-center gap-1">
               <Button variant="ghost" size="icon" className="text-muted-foreground hover:bg-accent/50 hover:text-white rounded-full transition-colors" onClick={() => router.push('/')}>
                 <ArrowLeft className="h-6 w-6" />
@@ -182,7 +186,7 @@ export default function ChatPage() {
                     <span className="sr-only">Open Sidebar</span>
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="left" className="w-[300px] sm:w-[360px] p-0 bg-black/80 backdrop-blur-sm border-r-white/5">
+                <SheetContent side="left" className="w-[300px] sm:w-[360px] p-0 liquid-glass border-t-0 border-l-0 border-b-0 rounded-none backdrop-blur-xl">
                   <SheetTitle className="sr-only">Companion Customization</SheetTitle>
                   <SheetDescription className="sr-only">Customize your AI companion's name, image, theme, and personality.</SheetDescription>
                   <LeftSidebar
@@ -210,7 +214,7 @@ export default function ChatPage() {
           </div>
 
           {/* Desktop header */}
-          <div className="hidden md:flex items-center justify-between p-3 border-b border-white/10">
+          <div className="hidden md:flex items-center justify-between p-3 liquid-glass rounded-none border-t-0 border-l-0 border-r-0 backdrop-blur-xl shadow-lg">
             <Button variant="ghost" onClick={() => router.push('/')} className="hover:bg-accent/50 text-muted-foreground hover:text-foreground font-normal rounded-full">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back

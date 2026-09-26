@@ -2,7 +2,9 @@
 "use server";
 
 import {ai} from '@/ai/genkit';
+import { googleAI } from '@genkit-ai/googleai';
 import { textToSpeech, TextToSpeechOutput } from '@/ai/flows/text-to-speech';
+import { getSystemPrompt } from '@/ai/system-prompt';
 import Stripe from 'stripe';
 
 
@@ -15,84 +17,189 @@ export async function getAudio(text: string): Promise<TextToSpeechOutput | null>
     }
 }
 
-export async function continueConversation({ message, chatId }: { message: string, chatId: string }): Promise<{ type: 'text' | 'audio' | 'image' | 'error', content: string }> {
-  const webhookUrl = 'https://n8n-openmedia-65e9c3b3.n8nproservices.com/webhook/chat-ai';
+function buildMessages(systemPrompt: string, history: any[], currentMessage: string) {
+  const messages: any[] = [];
+  
+  if (!history || history.length === 0) {
+    messages.push({
+      role: 'user',
+      content: [{ text: `${systemPrompt}\n\n[Start of Conversation]\nUser: ${currentMessage}` }]
+    });
+    return messages;
+  }
+  
+  const formattedHistory = history.map((h) => ({
+    role: h.role,
+    content: h.parts,
+  }));
+  
+  if (formattedHistory[0].role === 'model') {
+    messages.push({
+      role: 'user',
+      content: [{ text: `System Instruction:\n${systemPrompt}` }]
+    });
+    messages.push(...formattedHistory);
+  } else {
+    const firstMsgText = formattedHistory[0].content?.[0]?.text || '';
+    const updatedFirstMsg = {
+      role: 'user',
+      content: [{ text: `System Instruction:\n${systemPrompt}\n\nOriginal Message:\n${firstMsgText}` }]
+    };
+    messages.push(updatedFirstMsg);
+    messages.push(...formattedHistory.slice(1));
+  }
+  
+  messages.push({
+    role: 'user',
+    content: [{ text: currentMessage }]
+  });
+  
+  return messages;
+}
 
+async function callOpenRouter(
+  systemPrompt: string,
+  history: { role: 'user' | 'model'; parts: { text: string }[] }[],
+  currentMessage: string
+): Promise<string | null> {
+  const apiKey = process.env.OPENROUTER_API_KEY;
+
+  if (!apiKey) {
+    console.error("OpenRouter API key is missing.");
+    return null;
+  }
+
+  const openRouterMessages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
+    { role: 'system', content: systemPrompt }
+  ];
+
+  if (history && history.length > 0) {
+    for (const h of history) {
+      const text = h.parts?.[0]?.text || '';
+      if (text) {
+        openRouterMessages.push({
+          role: h.role === 'model' ? 'assistant' : 'user',
+          content: text
+        });
+      }
+    }
+  }
+
+  openRouterMessages.push({
+    role: 'user',
+    content: currentMessage
+  });
+
+  const models = [
+    "google/gemini-2.0-flash-001",
+    "meta-llama/llama-3.3-70b-instruct",
+    "deepseek/deepseek-chat",
+    "openrouter/auto"
+  ];
+
+  for (const model of models) {
+    try {
+      console.log(`[OpenRouter Fallback] Trying model: ${model}`);
+      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'HTTP-Referer': process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:5000',
+          'X-Title': 'Yuki AI',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model,
+          messages: openRouterMessages,
+          temperature: 0.7,
+          max_tokens: 500,
+        }),
+      });
+
+      if (!response.ok) {
+        const errText = await response.text();
+        console.warn(`[OpenRouter Fallback] Model ${model} returned error status ${response.status}: ${errText}`);
+        continue;
+      }
+
+      const data = await response.json();
+      const reply = data?.choices?.[0]?.message?.content;
+      if (reply && reply.trim()) {
+        console.log(`[OpenRouter Fallback] Success with model: ${model}`);
+        return reply.trim();
+      }
+    } catch (err) {
+      console.warn(`[OpenRouter Fallback] Exception for model ${model}:`, err);
+    }
+  }
+
+  return null;
+}
+
+export async function continueConversation({
+  message,
+  chatId,
+  history,
+  companionName = 'Yukitha',
+}: {
+  message: string;
+  chatId: string;
+  history?: { role: 'user' | 'model'; parts: { text: string }[] }[];
+  companionName?: string;
+}): Promise<{ type: 'text' | 'audio' | 'image' | 'error', content: string }> {
+  const systemPrompt = getSystemPrompt(companionName);
+
+  // 1. Try Gemini first
   try {
-    const formData = new FormData();
-    formData.append('message', message);
-    formData.append('chatId', chatId);
+    const messages = buildMessages(systemPrompt, history || [], message);
 
-    const response = await fetch(webhookUrl, {
-      method: 'POST',
-      body: formData,
+    const response = await ai.generate({
+      model: googleAI.model('gemini-2.0-flash'),
+      messages: messages,
+      config: {
+        safetySettings: [
+          {
+            category: 'HARM_CATEGORY_HARASSMENT',
+            threshold: 'BLOCK_NONE',
+          },
+          {
+            category: 'HARM_CATEGORY_HATE_SPEECH',
+            threshold: 'BLOCK_NONE',
+          },
+          {
+            category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
+            threshold: 'BLOCK_NONE',
+          },
+          {
+            category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
+            threshold: 'BLOCK_NONE',
+          },
+        ],
+      },
     });
 
-    if (!response.ok) {
-      const errorBody = await response.text();
-      console.error("Webhook returned an error:", { status: response.status, body: errorBody });
-      return { type: 'error', content: `Sorry, I'm having trouble connecting. The server said: ${response.statusText}` };
+    const replyText = response.text;
+
+    if (replyText && replyText.trim()) {
+      return { type: 'text', content: replyText };
     }
 
-    const contentType = response.headers.get('Content-Type');
-
-    // Handle binary responses (e.g., audio, image)
-    if (contentType && (contentType.startsWith('audio/') || contentType.startsWith('image/'))) {
-      const arrayBuffer = await response.arrayBuffer();
-      const base64 = Buffer.from(arrayBuffer).toString('base64');
-      const dataUri = `data:${contentType};base64,${base64}`;
-
-      if (contentType.startsWith('audio/')) {
-        return { type: 'audio', content: dataUri };
-      } else if (contentType.startsWith('image/')) {
-        return { type: 'image', content: dataUri };
-      }
-    }
-
-    // Default to handling text/json responses
-    const responseText = await response.text();
-    
-    if (!responseText.trim()) {
-        console.error("Webhook returned an empty response.");
-        return { type: 'error', content: "I'm at a loss for words... the connection seems to have dropped." };
-    }
-
-    try {
-      const data = JSON.parse(responseText);
-      let reply: any;
-
-      // Handle n8n's common array wrapper format
-      if (Array.isArray(data) && data.length > 0) {
-        const firstItem = data[0];
-        reply = firstItem.json || firstItem;
-      } else {
-        reply = data;
-      }
-
-      if (typeof reply === 'object' && reply !== null) {
-        const messageText = reply.output || reply.reply || reply.message || reply.text;
-        if (typeof messageText === 'string') {
-          return { type: 'text', content: messageText };
-        }
-        return { type: 'text', content: JSON.stringify(reply) };
-      }
-
-      if (reply !== null && reply !== undefined) {
-          return { type: 'text', content: String(reply) };
-      }
-      
-      console.error("Webhook returned an empty or unhandled response:", responseText);
-      return { type: 'error', content: "I'm at a loss for words... the connection seems to have dropped." };
-
-    } catch (error) {
-      // Response was not valid JSON, so return it as plain text.
-      return { type: 'text', content: responseText };
-    }
-
+    console.warn("Gemini returned empty response, attempting OpenRouter fallback...");
   } catch (error) {
-    console.error("Failed to call webhook:", error);
-    return { type: 'error', content: "My circuits are a bit fuzzy right now, could you say that again?" };
+    console.warn("Gemini failed, attempting OpenRouter fallback:", error);
   }
+
+  // 2. Fallback to OpenRouter
+  try {
+    const openRouterReply = await callOpenRouter(systemPrompt, history || [], message);
+    if (openRouterReply) {
+      return { type: 'text', content: openRouterReply };
+    }
+  } catch (orError) {
+    console.error("OpenRouter fallback also failed:", orError);
+  }
+
+  return { type: 'error', content: "My circuits are a bit fuzzy right now, could you say that again?" };
 }
 
 export async function createCheckoutSession(): Promise<string | null> {

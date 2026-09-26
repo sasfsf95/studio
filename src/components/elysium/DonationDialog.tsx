@@ -51,7 +51,7 @@ export function DonationDialog({
   return (
     <Dialog open={open} onOpenChange={handleDialogClose}>
       {children && <DialogTrigger asChild>{children}</DialogTrigger>}
-      <DialogContent className="sm:max-w-[425px] bg-card border-border">
+      <DialogContent className="sm:max-w-[425px] liquid-glass-modal border border-white/20 text-white rounded-3xl p-6 shadow-2xl backdrop-blur-2xl">
         {showQrCode ? (
             <>
                 <DialogHeader>

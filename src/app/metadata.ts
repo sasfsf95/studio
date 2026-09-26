@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: 'Meet Yuki, your ideal AI girlfriend and virtual companion. Experience intimate conversations, emotional support, and personalized AI girlfriend chat. Free AI companion with advanced personality.',
   keywords: [
     'AI girlfriend',
-    'virtual girlfriend', 
+    'virtual girlfriend',
     'AI companion',
     'AI chat',
     'virtual companion',
@@ -42,20 +42,13 @@ export const metadata: Metadata = {
     siteName: 'Yuki AI',
     title: 'Yuki AI - Your Perfect AI Girlfriend & Virtual Companion',
     description: 'Experience the future of AI relationships with Yuki. Your personalized AI girlfriend ready for meaningful conversations and emotional connection.',
-    images: [
-      {
-        url: '/logo.png',
-        width: 1200,
-        height: 630,
-        alt: 'Yuki AI - Virtual Girlfriend Logo',
-      },
-    ],
+    images: [],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Yuki AI - Your Perfect AI Girlfriend',
     description: 'Meet your ideal AI girlfriend. Intimate conversations, emotional support, and personalized virtual companion experience.',
-    images: ['/logo.png'],
+    images: [],
     creator: '@yukiai',
   },
   robots: {
@@ -69,10 +62,6 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  icons: {
-    icon: '/logo.png',
-    shortcut: '/logo.png',
-    apple: '/apple-touch-icon.png',
-  },
+  icons: {},
   manifest: '/manifest.json',
 }

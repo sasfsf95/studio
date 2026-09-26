@@ -78,34 +78,38 @@ export default function SubscribePage() {
   const router = useRouter();
 
   return (
-    <div className="bg-[#111111] min-h-screen text-white p-4 sm:p-8">
-      <div className="max-w-5xl mx-auto">
+    <div className="bg-liquid-flow min-h-screen text-white p-4 sm:p-8 relative overflow-hidden">
+      {/* Ambient background glowing spots */}
+      <div className="bg-glow-spot top-10 left-1/4 z-0"></div>
+      <div className="bg-glow-spot-2 bottom-10 right-1/4 z-0"></div>
+
+      <div className="max-w-5xl mx-auto relative z-10">
         <Button
           variant="ghost"
           onClick={() => router.push('/')}
-          className="mb-8 inline-flex items-center gap-2 text-gray-400 hover:text-white hover:bg-gray-800 transition-colors rounded-full"
+          className="mb-8 inline-flex items-center gap-2 text-gray-300 hover:text-white liquid-glass rounded-full px-5 py-2 border border-white/10 hover:border-white/30 transition-all duration-300"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Models
         </Button>
 
         <div className="text-center mb-12">
-          <h1 className="text-5xl sm:text-6xl font-bold mb-4" style={{ fontFamily: 'serif' }}>
+          <h1 className="text-5xl sm:text-6xl font-black mb-4 bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-300 to-pink-500 drop-shadow-xl tracking-tight">
             CHOOSE YOUR CONNECTION
           </h1>
-          <p className="text-lg text-gray-400 max-w-xl mx-auto">
+          <p className="text-lg text-gray-300 max-w-xl mx-auto font-medium">
             Unlock deeper levels of intimacy with photos, audio, and video content.
           </p>
         </div>
 
         <div className="flex justify-center items-center mb-12">
-          <div className="bg-[#1C1C1E] p-1 rounded-full flex items-center gap-2">
+          <div className="liquid-glass p-1.5 rounded-full flex items-center gap-2 border border-white/15 backdrop-blur-xl shadow-xl">
             <Button
               onClick={() => setBillingCycle('monthly')}
               variant={billingCycle === 'monthly' ? 'secondary' : 'ghost'}
               className={cn(
-                "rounded-full px-6 transition-colors",
-                billingCycle === 'monthly' ? 'bg-gray-700 text-white' : 'text-gray-400 hover:text-white'
+                "rounded-full px-6 transition-all duration-300 font-semibold",
+                billingCycle === 'monthly' ? 'bg-gradient-to-r from-pink-500/80 to-purple-600/80 text-white shadow-lg border border-white/20' : 'text-gray-300 hover:text-white'
               )}
             >
               Monthly
@@ -114,12 +118,12 @@ export default function SubscribePage() {
               onClick={() => setBillingCycle('yearly')}
               variant={billingCycle === 'yearly' ? 'secondary' : 'ghost'}
               className={cn(
-                "rounded-full px-6 transition-colors relative",
-                billingCycle === 'yearly' ? 'bg-gray-700 text-white' : 'text-gray-400 hover:text-white'
+                "rounded-full px-6 transition-all duration-300 relative font-semibold",
+                billingCycle === 'yearly' ? 'bg-gradient-to-r from-pink-500/80 to-purple-600/80 text-white shadow-lg border border-white/20' : 'text-gray-300 hover:text-white'
               )}
             >
               Yearly
-              <span className="absolute -top-2 -right-4 bg-green-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+              <span className="absolute -top-3 -right-3 bg-gradient-to-r from-emerald-400 to-teal-500 text-black font-extrabold text-[10px] px-2 py-0.5 rounded-full shadow-md animate-pulse">
                 SAVE 15%
               </span>
             </Button>
@@ -131,43 +135,43 @@ export default function SubscribePage() {
             <Card
               key={tier.name}
               className={cn(
-                'bg-[#16161C] border rounded-2xl flex flex-col shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl',
+                'liquid-glass-card rounded-3xl flex flex-col relative overflow-hidden transition-all duration-500 transform hover:-translate-y-2',
                 tier.borderColor,
-                tier.bestValue ? 'shadow-purple-500/20' : 'shadow-black/20'
+                tier.bestValue ? 'border-pink-500/60 shadow-[0_0_40px_rgba(236,72,153,0.3)]' : 'border-white/10'
               )}
             >
-              <div className={cn("h-1.5 w-full rounded-t-2xl", tier.barColor)}></div>
+              <div className={cn("h-1.5 w-full rounded-t-3xl", tier.barColor)}></div>
               {tier.bestValue && (
-                <div className="absolute top-0 right-4 -mt-3">
-                  <div className="bg-purple-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                <div className="absolute top-3 right-4">
+                  <div className="bg-gradient-to-r from-pink-500 to-purple-600 text-white text-[11px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider shadow-lg border border-white/20">
                     Best Value
                   </div>
                 </div>
               )}
               <CardHeader className="pt-8 px-6">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className={cn("w-12 h-12 rounded-lg flex items-center justify-center", tier.iconBg)}>
+                  <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center border border-white/10 backdrop-blur-md", tier.iconBg)}>
                     {tier.icon}
                   </div>
                   <div>
-                    <CardTitle className="text-2xl font-bold">{tier.name}</CardTitle>
+                    <CardTitle className="text-2xl font-bold text-white">{tier.name}</CardTitle>
                   </div>
                 </div>
 
                 <div className="flex items-baseline gap-2">
-                  <span className="text-5xl font-extrabold">
+                  <span className="text-5xl font-black bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-200">
                     {billingCycle === 'monthly' ? tier.monthlyPrice : tier.yearlyPrice}
                   </span>
-                  <span className="text-gray-400">/mo</span>
+                  <span className="text-gray-400 font-medium">/mo</span>
                 </div>
-                <p className="text-sm text-gray-400 h-10">{tier.description}</p>
+                <p className="text-sm text-gray-300 h-10 mt-1">{tier.description}</p>
               </CardHeader>
               <CardContent className="flex-grow flex flex-col justify-between px-6 pb-6">
                 <div className="mb-8">
-                  <p className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">What's Included</p>
+                  <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">What's Included</p>
                   <ul className="space-y-3">
                     {tier.features.map((feature, index) => (
-                      <li key={index} className={cn("flex items-center gap-3 text-gray-300")}>
+                      <li key={index} className={cn("flex items-center gap-3 text-gray-200 text-sm font-medium")}>
                         {feature.icon}
                         <span>{feature.text}</span>
                       </li>
@@ -182,10 +186,10 @@ export default function SubscribePage() {
                 >
                   <Button
                     className={cn(
-                      'w-full font-bold py-6 text-lg rounded-xl',
+                      'w-full font-bold py-6 text-lg rounded-2xl transition-all duration-300 border border-white/20',
                       tier.buttonVariant === 'primary'
-                        ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg hover:opacity-90'
-                        : 'bg-white text-black hover:bg-gray-200'
+                        ? 'bg-gradient-to-r from-pink-500 via-purple-600 to-pink-600 hover:from-pink-600 hover:to-purple-700 text-white shadow-xl shadow-pink-500/25'
+                        : 'liquid-glass text-white hover:bg-white/20'
                     )}
                   >
                     {tier.buttonVariant === 'primary' && <Crown className="mr-2 h-5 w-5" />}

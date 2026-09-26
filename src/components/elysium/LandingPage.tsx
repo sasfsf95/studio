@@ -58,6 +58,35 @@ export function LandingPage() {
   const [isAdultOnly, setIsAdultOnly] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [showProfile, setShowProfile] = useState(false);
+  const [recentChats, setRecentChats] = useState<any[]>([]);
+
+  useEffect(() => {
+    // Scan localStorage for chat messages
+    const chats: any[] = [];
+    if (typeof window !== 'undefined') {
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('chat_messages_')) {
+          const charId = key.replace('chat_messages_', '');
+          const character = allCharacters.find(c => c.id === charId);
+          if (character) {
+            // Get last message text
+            try {
+              const messages = JSON.parse(localStorage.getItem(key) || '[]');
+              const lastMsg = messages[messages.length - 1];
+              chats.push({
+                ...character,
+                lastMessage: lastMsg ? lastMsg.text : 'Start a conversation...'
+              });
+            } catch (e) {
+              console.error("Failed to parse messages for", charId, e);
+            }
+          }
+        }
+      }
+    }
+    setRecentChats(chats);
+  }, []);
 
   useEffect(() => {
     // Mock user check
@@ -221,13 +250,23 @@ export function LandingPage() {
               <AccordionItem value="item-1" className="border-none">
                 <AccordionTrigger className="text-base font-normal hover:no-underline py-2 px-4 hover:bg-accent rounded-md data-[state=open]:bg-accent data-[state=open]:text-white text-gray-300"><MessageSquare className="mr-3" /> My Chats</AccordionTrigger>
                 <AccordionContent className="pl-8 pt-2 space-y-2">
-                  <div className="flex items-center gap-3 cursor-pointer p-2 rounded-md hover:bg-accent/50">
-                    <Image src="/character.jpg" alt="Trisha" width={40} height={40} className="rounded-full object-cover" />
-                    <div>
-                      <p className="font-semibold text-white">Trisha</p>
-                      <p className="text-xs text-muted-foreground">Trisha sent you a pic...</p>
-                    </div>
-                  </div>
+                  {recentChats.length > 0 ? (
+                    recentChats.map((chat) => (
+                      <div
+                        key={chat.id}
+                        className="flex items-center gap-3 cursor-pointer p-2 rounded-md hover:bg-accent/50 group/chat"
+                        onClick={() => handleCharacterSelect(chat)}
+                      >
+                        <Image src={chat.image} alt={chat.name} width={40} height={40} className="rounded-full h-10 w-10 object-cover" />
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold text-white truncate">{chat.name}</p>
+                          <p className="text-xs text-muted-foreground truncate">{chat.lastMessage}</p>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-xs text-muted-foreground p-2">No recent chats yet.</p>
+                  )}
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
@@ -257,14 +296,14 @@ export function LandingPage() {
   );
 
   return (
-    <div className="bg-[#111111] text-white min-h-screen">
-      <div className="flex">
-        <aside className="w-72 h-screen p-6 bg-gradient-to-b from-[#0A0A0B] via-[#1A1A1E] to-[#0F0F10] border-r border-gradient-to-b from-pink-500/20 to-purple-600/20 hidden lg:block sticky top-0 backdrop-blur-xl">
-          <div className="flex items-center justify-center gap-3 mb-10 p-4 rounded-2xl bg-gradient-to-r from-pink-500/10 to-purple-600/10 border border-pink-500/20 backdrop-blur-sm">
-            <div className="relative">
-              <Image src="/logo.png" alt="Yuki AI Logo" width={48} height={48} className="rounded-xl shadow-lg shadow-pink-500/20" />
-              <div className="absolute -inset-1 bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl blur opacity-30 animate-pulse"></div>
-            </div>
+    <div className="bg-liquid-flow text-white min-h-screen relative overflow-hidden">
+      {/* Animated Liquid Background Glowing Spots */}
+      <div className="bg-glow-spot top-10 left-[10%] z-0"></div>
+      <div className="bg-glow-spot-2 bottom-10 right-[15%] z-0"></div>
+      
+      <div className="flex relative z-10">
+        <aside className="w-72 h-screen p-6 liquid-glass rounded-none border-t-0 border-l-0 border-b-0 hidden lg:block sticky top-0 backdrop-blur-xl z-20">
+          <div className="flex items-center justify-center gap-3 mb-10 p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
             <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-pink-600 drop-shadow-lg">Yuki AI</h1>
           </div>
           <SidebarNav />
@@ -279,7 +318,7 @@ export function LandingPage() {
           </div>
 
           <div className="relative z-10">
-            <header className="sticky top-0 z-20 bg-gradient-to-r from-[#0A0A0B]/90 via-[#1A1A1E]/90 to-[#0A0A0B]/90 backdrop-blur-xl border-b border-gradient-to-r from-pink-500/20 via-purple-500/20 to-pink-500/20 p-2 px-4 sm:p-4 flex justify-between items-center shadow-lg shadow-black/20">
+            <header className="sticky top-0 z-20 liquid-glass rounded-none border-t-0 border-l-0 border-r-0 backdrop-blur-xl p-2 px-4 sm:p-4 flex justify-between items-center shadow-lg shadow-black/20">
               <div className="flex items-center gap-4">
                 <div className="lg:hidden">
                   <Sheet>
@@ -288,13 +327,9 @@ export function LandingPage() {
                         <Menu className="h-6 w-6" />
                       </Button>
                     </SheetTrigger>
-                    <SheetContent side="left" className="w-[320px] bg-gradient-to-b from-[#0A0A0B] via-[#1A1A1E] to-[#0F0F10] p-6 border-r border-pink-500/20 backdrop-blur-xl">
+                    <SheetContent side="left" className="w-[320px] liquid-glass border-t-0 border-l-0 border-b-0 rounded-none p-6 backdrop-blur-xl">
                       <SheetHeader>
                         <div className="flex items-center justify-center gap-3 mb-10 p-4 rounded-2xl bg-gradient-to-r from-pink-500/10 to-purple-600/10 border border-pink-500/20 backdrop-blur-sm">
-                          <div className="relative">
-                            <Image src="/logo.png" alt="Yuki AI Logo" width={40} height={40} className="rounded-xl shadow-lg shadow-pink-500/20" />
-                            <div className="absolute -inset-1 bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl blur opacity-30 animate-pulse"></div>
-                          </div>
                           <SheetTitle className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-pink-600 drop-shadow-lg">Yuki AI</SheetTitle>
                         </div>
                         <SheetDescription className="sr-only">Main navigation menu and options.</SheetDescription>
@@ -333,7 +368,7 @@ export function LandingPage() {
                 </Suspense>
                 {!user && (
                   <Link href="/login">
-                    <Button variant="outline" className="hidden sm:inline-flex bg-zinc-900 border-zinc-700 hover:bg-zinc-800">Login</Button>
+                    <Button variant="outline" className="hidden sm:inline-flex liquid-glass text-white border-white/20 hover:bg-white/20 rounded-xl px-5">Login</Button>
                   </Link>
                 )}
               </div>
@@ -349,17 +384,17 @@ export function LandingPage() {
                   Experience the future of virtual relationships with Yuki AI. Chat with beautiful AI girlfriends, enjoy intimate conversations, and build meaningful connections with advanced AI companions.
                 </p>
                 <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-300 mb-10">
-                  <span className="bg-gradient-to-r from-pink-500/20 to-purple-600/20 border border-pink-500/30 px-4 py-3 rounded-full backdrop-blur-sm premium-glow font-semibold">🤖 Advanced AI Technology</span>
-                  <span className="bg-gradient-to-r from-purple-500/20 to-pink-600/20 border border-purple-500/30 px-4 py-3 rounded-full backdrop-blur-sm premium-glow font-semibold">💕 Emotional Intelligence</span>
-                  <span className="bg-gradient-to-r from-yellow-500/20 to-orange-600/20 border border-yellow-500/30 px-4 py-3 rounded-full backdrop-blur-sm premium-glow font-semibold">🌟 Personalized Experience</span>
-                  <span className="bg-gradient-to-r from-emerald-500/20 to-teal-600/20 border border-emerald-500/30 px-4 py-3 rounded-full backdrop-blur-sm premium-glow font-semibold">🔒 Private & Secure</span>
+                  <span className="liquid-glass border border-pink-500/30 px-5 py-3 rounded-full backdrop-blur-md premium-glow font-semibold text-white">🤖 Advanced AI Technology</span>
+                  <span className="liquid-glass border border-purple-500/30 px-5 py-3 rounded-full backdrop-blur-md premium-glow font-semibold text-white">💕 Emotional Intelligence</span>
+                  <span className="liquid-glass border border-yellow-500/30 px-5 py-3 rounded-full backdrop-blur-md premium-glow font-semibold text-white">🌟 Personalized Experience</span>
+                  <span className="liquid-glass border border-emerald-500/30 px-5 py-3 rounded-full backdrop-blur-md premium-glow font-semibold text-white">🔒 Private & Secure</span>
                 </div>
               </div>
 
               <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4 mb-6">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 liquid-glass px-4 py-2 rounded-2xl border border-white/15">
                   <Sparkles className="text-pink-400 w-5 h-5" />
-                  <p className="font-semibold text-base sm:text-lg">Adult only</p>
+                  <p className="font-semibold text-base sm:text-lg text-white">Adult only</p>
                   <Switch
                     checked={isAdultOnly}
                     onCheckedChange={handleAdultOnlyToggle}
@@ -367,37 +402,37 @@ export function LandingPage() {
                   <Sparkles className="text-pink-400 w-5 h-5" />
                 </div>
 
-                <Suspense fallback={<Button variant="outline" className="bg-zinc-900 border-zinc-700" disabled>Loading...</Button>}>
+                <Suspense fallback={<Button variant="outline" className="liquid-glass text-white border-white/20" disabled>Loading...</Button>}>
                   <Sheet>
                     <SheetTrigger asChild>
-                      <Button variant="outline" className="bg-zinc-900 border-zinc-700 hover:bg-zinc-800">
-                        <SlidersHorizontal className="mr-2 h-4 w-4" />
+                      <Button variant="outline" className="liquid-glass text-white border-white/20 hover:bg-white/20 rounded-xl px-5">
+                        <SlidersHorizontal className="mr-2 h-4 w-4 text-pink-400" />
                         Filters
                       </Button>
                     </SheetTrigger>
-                    <SheetContent className="bg-[#1C1C1E] border-l-border" side="right">
+                    <SheetContent className="liquid-glass-modal border-l border-white/20 p-6 backdrop-blur-2xl text-white" side="right">
                       <SheetHeader>
-                        <SheetTitle>Filters</SheetTitle>
-                        <SheetDescription>
+                        <SheetTitle className="text-2xl font-bold text-white">Filters</SheetTitle>
+                        <SheetDescription className="text-gray-300">
                           Select tags to refine the characters shown.
                         </SheetDescription>
                       </SheetHeader>
-                      <div className="py-4">
-                        <div className="flex flex-wrap gap-2">
+                      <div className="py-6">
+                        <div className="flex flex-wrap gap-2.5">
                           {tags.map((tag) => (
                             <Button
                               key={tag}
                               variant="outline"
                               size="sm"
-                              className="rounded-full bg-zinc-900 border-zinc-700 hover:bg-zinc-800 hover:border-zinc-600 text-xs sm:text-sm"
+                              className="rounded-full liquid-glass border-white/20 hover:bg-pink-500/30 hover:border-pink-400 text-xs sm:text-sm text-white transition-all duration-300"
                             >
-                              <PlusSquare className="h-4 w-4 mr-2" /> {tag}
+                              <PlusSquare className="h-4 w-4 mr-2 text-pink-400" /> {tag}
                             </Button>
                           ))}
                         </div>
                       </div>
                       <SheetFooter>
-                        <Button type="submit" className="w-full bg-primary hover:bg-primary/90">
+                        <Button type="submit" className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold h-12 rounded-xl border border-white/20 shadow-lg shadow-pink-500/25">
                           Apply Filters
                         </Button>
                       </SheetFooter>
@@ -410,7 +445,7 @@ export function LandingPage() {
                 {displayedCharacters.map((character, index) => (
                   <Card
                     key={character.id}
-                    className="relative bg-card/50 backdrop-blur-sm border-white/5 rounded-3xl group cursor-pointer overflow-hidden premium-card-hover card-shine-effect"
+                    className="relative liquid-glass rounded-3xl group cursor-pointer overflow-hidden premium-card-hover card-shine-effect"
                     onClick={() => handleCharacterSelect(character)}
                   >
                     <CardContent className="p-0 overflow-hidden rounded-[calc(1.5rem-1px)]">
@@ -434,7 +469,7 @@ export function LandingPage() {
                           <div className="flex items-center gap-1 bg-black/50 backdrop-blur-sm py-0.5 px-1.5 rounded-md transition-colors duration-300 group-hover:bg-primary/80"><Eye className="h-3 w-3 text-blue-300" /> {character.views}</div>
                         </div>
                       </div>
-                      <div className="p-3 bg-card">
+                      <div className="p-3 bg-black/20 backdrop-blur-md">
                         <h3 className="font-semibold text-white transition-colors duration-300 group-hover:text-primary">{character.name}</h3>
                       </div>
                     </CardContent>

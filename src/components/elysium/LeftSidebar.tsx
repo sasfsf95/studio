@@ -105,7 +105,7 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
         </div>
       </div>
       
-      <Card className="bg-card/80 border-white/10">
+      <Card className="liquid-glass border-0">
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2"><Heart className="h-5 w-5 text-primary/80"/> Details</CardTitle>
         </CardHeader>

@@ -128,9 +128,23 @@ export function ChatContainer({ characterImage, companionName, isPremium, setSho
     
     startAiTransition(async () => {
       try {
-        // Construct message for webhook, including image if present.
+        // Construct history for Gemini API
+        const recentMessages = messages.slice(-20);
+        const history = recentMessages
+          .filter(msg => msg.text && msg.text.trim())
+          .map(msg => ({
+            role: (msg.sender === 'user' ? 'user' : 'model') as 'user' | 'model',
+            parts: [{ text: msg.text }]
+          }));
+
+        // Construct message for Gemini, including image if present.
         const messageToSend = imageUrl ? `${text} [user sent an image]` : text;
-        const aiResponseData = await continueConversation({ message: messageToSend, chatId });
+        const aiResponseData = await continueConversation({
+          message: messageToSend,
+          chatId,
+          history,
+          companionName,
+        });
         
         let audioResult = null;
         if (isPremium && aiResponseData.type === 'text') {
