@@ -2,10 +2,10 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: {
-    default: 'Yuki AI - Your Perfect AI Girlfriend & Virtual Companion',
-    template: '%s | Yuki AI - AI Girlfriend Chat'
+    default: 'Girl.ai - Your Perfect AI Girlfriend & Virtual Companion',
+    template: '%s | Girl.ai - AI Girlfriend Chat'
   },
-  description: 'Meet Yuki, your ideal AI girlfriend and virtual companion. Experience intimate conversations, emotional support, and personalized AI girlfriend chat. Free AI companion with advanced personality.',
+  description: 'Meet Girl.ai, your ideal AI girlfriend and virtual companion. Experience intimate conversations, emotional support, and personalized AI girlfriend chat. Free AI companion with advanced personality.',
   keywords: [
     'AI girlfriend',
     'virtual girlfriend',
@@ -23,15 +23,15 @@ export const metadata: Metadata = {
     'digital companion',
     'AI partner'
   ],
-  authors: [{ name: 'Yuki AI Team' }],
-  creator: 'Yuki AI',
-  publisher: 'Yuki AI',
+  authors: [{ name: 'Girl.ai Team' }],
+  creator: 'Girl.ai',
+  publisher: 'Girl.ai',
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://yuki.ai'),
+  metadataBase: new URL('https://girl.ai'),
   alternates: {
     canonical: '/',
   },
@@ -39,17 +39,17 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: '/',
-    siteName: 'Yuki AI',
-    title: 'Yuki AI - Your Perfect AI Girlfriend & Virtual Companion',
-    description: 'Experience the future of AI relationships with Yuki. Your personalized AI girlfriend ready for meaningful conversations and emotional connection.',
+    siteName: 'Girl.ai',
+    title: 'Girl.ai - Your Perfect AI Girlfriend & Virtual Companion',
+    description: 'Experience the future of AI relationships with Girl.ai. Your personalized AI girlfriend ready for meaningful conversations and emotional connection.',
     images: [],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Yuki AI - Your Perfect AI Girlfriend',
+    title: 'Girl.ai - Your Perfect AI Girlfriend',
     description: 'Meet your ideal AI girlfriend. Intimate conversations, emotional support, and personalized virtual companion experience.',
     images: [],
-    creator: '@yukiai',
+    creator: '@girlai',
   },
   robots: {
     index: true,

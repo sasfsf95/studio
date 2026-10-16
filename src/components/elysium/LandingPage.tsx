@@ -7,9 +7,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
 import {
   Compass,
-  Video,
-  User,
   Star,
+  User,
   MessageSquare,
   Crown,
   Share2,
@@ -31,10 +30,6 @@ import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
 
 // Lazy load heavy components
-const Accordion = lazy(() => import('@/components/ui/accordion').then(m => ({ default: m.Accordion })));
-const AccordionContent = lazy(() => import('@/components/ui/accordion').then(m => ({ default: m.AccordionContent })));
-const AccordionItem = lazy(() => import('@/components/ui/accordion').then(m => ({ default: m.AccordionItem })));
-const AccordionTrigger = lazy(() => import('@/components/ui/accordion').then(m => ({ default: m.AccordionTrigger })));
 const Sheet = lazy(() => import('@/components/ui/sheet').then(m => ({ default: m.Sheet })));
 const SheetContent = lazy(() => import('@/components/ui/sheet').then(m => ({ default: m.SheetContent })));
 const SheetDescription = lazy(() => import('@/components/ui/sheet').then(m => ({ default: m.SheetDescription })));
@@ -58,41 +53,19 @@ export function LandingPage() {
   const [isAdultOnly, setIsAdultOnly] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [showProfile, setShowProfile] = useState(false);
-  const [recentChats, setRecentChats] = useState<any[]>([]);
 
   useEffect(() => {
-    // Scan localStorage for chat messages
-    const chats: any[] = [];
-    if (typeof window !== 'undefined') {
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key && key.startsWith('chat_messages_')) {
-          const charId = key.replace('chat_messages_', '');
-          const character = allCharacters.find(c => c.id === charId);
-          if (character) {
-            // Get last message text
-            try {
-              const messages = JSON.parse(localStorage.getItem(key) || '[]');
-              const lastMsg = messages[messages.length - 1];
-              chats.push({
-                ...character,
-                lastMessage: lastMsg ? lastMsg.text : 'Start a conversation...'
-              });
-            } catch (e) {
-              console.error("Failed to parse messages for", charId, e);
-            }
-          }
-        }
-      }
-    }
-    setRecentChats(chats);
-  }, []);
-
-  useEffect(() => {
-    // Mock user check
+    // User check
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      try {
+        const parsed = JSON.parse(storedUser);
+        const storedPlan = localStorage.getItem('user_plan');
+        if (storedPlan) {
+          parsed.plan = JSON.parse(storedPlan);
+        }
+        setUser(parsed);
+      } catch (e) {}
     }
   }, []);
 
@@ -134,6 +107,8 @@ export function LandingPage() {
 
   const handleLogout = () => {
     localStorage.removeItem('user');
+    localStorage.removeItem('user_plan');
+    localStorage.removeItem('isPremium');
     setUser(null);
     toast({
       title: 'Logged Out',
@@ -148,14 +123,7 @@ export function LandingPage() {
           <Compass className="mr-3 group-hover:text-pink-400 transition-colors" />
           <span className="group-hover:text-white transition-colors">Explore Models</span>
         </Button>
-        <Button variant="ghost" className="w-full justify-start text-base text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-purple-500/20 hover:to-pink-600/20 border border-transparent hover:border-purple-500/30 rounded-xl py-3 transition-all duration-300 group">
-          <Video className="mr-3 group-hover:text-purple-400 transition-colors" />
-          <span className="group-hover:text-white transition-colors">Generate Video</span>
-        </Button>
-        <Button variant="ghost" className="w-full justify-start text-base text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-yellow-500/20 hover:to-orange-600/20 border border-transparent hover:border-yellow-500/30 rounded-xl py-3 transition-all duration-300 group">
-          <Star className="mr-3 group-hover:text-yellow-400 transition-colors" />
-          <span className="group-hover:text-white transition-colors">Generate Image</span>
-        </Button>
+
         <Button className="w-full justify-start bg-gradient-to-r from-pink-500 via-purple-500 to-pink-600 hover:from-pink-600 hover:via-purple-600 hover:to-pink-700 text-white text-base my-4 font-semibold py-4 rounded-xl shadow-lg shadow-pink-500/25 hover:shadow-pink-500/40 border border-pink-400/30 hover:border-pink-300/50 transition-all duration-300 group relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
           <PlusSquare className="mr-3 relative z-10" />
@@ -211,6 +179,26 @@ export function LandingPage() {
                       <span className="text-white font-medium text-xs">{user.email}</span>
                     </div>
                   )}
+
+                  <div className="flex justify-between items-center pt-1 border-t border-white/10">
+                    <span className="text-gray-400">Plan:</span>
+                    <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${
+                      user.plan?.premium_plan > 0
+                        ? 'bg-gradient-to-r from-amber-400 to-pink-500 text-white'
+                        : 'bg-white/10 text-pink-300'
+                    }`}>
+                      {user.plan?.premium_plan > 0 ? '👑 Premium' : 'Free Plan'}
+                    </span>
+                  </div>
+
+                  {user.plan?.premium_plan === 0 && (
+                    <div className="flex justify-between text-xs">
+                      <span className="text-gray-400">Messages Left:</span>
+                      <span className="text-pink-400 font-semibold">
+                        {user.plan.monthly_message_limit ?? 30} / 30
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 <div className="pt-3 border-t border-blue-500/20 mt-3">
@@ -245,32 +233,6 @@ export function LandingPage() {
             <Star className="mr-3 group-hover:text-emerald-400 transition-colors" />
             <span className="group-hover:text-white transition-colors">My Models</span>
           </Button>
-          <Suspense fallback={<div className="h-12 bg-gray-800 rounded animate-pulse"></div>}>
-            <Accordion type="single" collapsible defaultValue="item-1" className="w-full">
-              <AccordionItem value="item-1" className="border-none">
-                <AccordionTrigger className="text-base font-normal hover:no-underline py-2 px-4 hover:bg-accent rounded-md data-[state=open]:bg-accent data-[state=open]:text-white text-gray-300"><MessageSquare className="mr-3" /> My Chats</AccordionTrigger>
-                <AccordionContent className="pl-8 pt-2 space-y-2">
-                  {recentChats.length > 0 ? (
-                    recentChats.map((chat) => (
-                      <div
-                        key={chat.id}
-                        className="flex items-center gap-3 cursor-pointer p-2 rounded-md hover:bg-accent/50 group/chat"
-                        onClick={() => handleCharacterSelect(chat)}
-                      >
-                        <Image src={chat.image} alt={chat.name} width={40} height={40} className="rounded-full h-10 w-10 object-cover" />
-                        <div className="flex-1 min-w-0">
-                          <p className="font-semibold text-white truncate">{chat.name}</p>
-                          <p className="text-xs text-muted-foreground truncate">{chat.lastMessage}</p>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-xs text-muted-foreground p-2">No recent chats yet.</p>
-                  )}
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </Suspense>
         </div>
       </nav>
       <div className="mt-auto space-y-4 pt-6 border-t border-gradient-to-r from-pink-500/20 to-purple-600/20">
@@ -304,7 +266,7 @@ export function LandingPage() {
       <div className="flex relative z-10">
         <aside className="w-72 h-screen p-6 liquid-glass rounded-none border-t-0 border-l-0 border-b-0 hidden lg:block sticky top-0 backdrop-blur-xl z-20">
           <div className="flex items-center justify-center gap-3 mb-10 p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
-            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-pink-600 drop-shadow-lg">Yuki AI</h1>
+            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-pink-600 drop-shadow-lg">Girl.ai</h1>
           </div>
           <SidebarNav />
         </aside>
@@ -330,7 +292,7 @@ export function LandingPage() {
                     <SheetContent side="left" className="w-[320px] liquid-glass border-t-0 border-l-0 border-b-0 rounded-none p-6 backdrop-blur-xl">
                       <SheetHeader>
                         <div className="flex items-center justify-center gap-3 mb-10 p-4 rounded-2xl bg-gradient-to-r from-pink-500/10 to-purple-600/10 border border-pink-500/20 backdrop-blur-sm">
-                          <SheetTitle className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-pink-600 drop-shadow-lg">Yuki AI</SheetTitle>
+                          <SheetTitle className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-pink-600 drop-shadow-lg">Girl.ai</SheetTitle>
                         </div>
                         <SheetDescription className="sr-only">Main navigation menu and options.</SheetDescription>
                       </SheetHeader>
@@ -340,7 +302,6 @@ export function LandingPage() {
                 </div>
                 <div className="hidden sm:flex items-center gap-6 text-base font-semibold">
                   <Button variant="ghost" className="text-pink-400 border-b-2 border-pink-400 rounded-none px-3 py-2 h-auto hover:text-pink-300 hover:border-pink-300 bg-gradient-to-r from-pink-500/10 to-purple-600/10 transition-all duration-300">Girls</Button>
-                  <Button variant="ghost" className="text-gray-400 hover:text-white px-3 py-2 h-auto hover:bg-gradient-to-r hover:from-purple-500/10 hover:to-pink-600/10 rounded-lg transition-all duration-300">Anime</Button>
                 </div>
               </div>
               <div className="flex items-center gap-4">
@@ -381,7 +342,7 @@ export function LandingPage() {
                   Your Perfect AI Girlfriend Awaits
                 </h1>
                 <p className="text-xl md:text-3xl text-gray-200 mb-8 max-w-4xl mx-auto font-medium leading-relaxed">
-                  Experience the future of virtual relationships with Yuki AI. Chat with beautiful AI girlfriends, enjoy intimate conversations, and build meaningful connections with advanced AI companions.
+                  Experience the future of virtual relationships with Girl.ai. Chat with beautiful AI girlfriends, enjoy intimate conversations, and build meaningful connections with advanced AI companions.
                 </p>
                 <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-300 mb-10">
                   <span className="liquid-glass border border-pink-500/30 px-5 py-3 rounded-full backdrop-blur-md premium-glow font-semibold text-white">🤖 Advanced AI Technology</span>

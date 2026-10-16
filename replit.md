@@ -1,7 +1,7 @@
-# Yuki AI - Virtual AI Companion
+# Girl.ai - Virtual AI Companion
 
 ## Overview
-Yuki AI is a Next.js application featuring a virtual AI companion with chat capabilities. The project uses Google's Genkit AI framework for conversation generation and includes Firebase integration. The application has age verification and premium features.
+Girl.ai is a Next.js application featuring a virtual AI companion with chat capabilities. The project uses Google's Genkit AI framework for conversation generation and includes Firebase integration. The application has age verification and premium features.
 
 ## Recent Changes
 - **2025-09-04**: Imported from GitHub and configured for Replit environment

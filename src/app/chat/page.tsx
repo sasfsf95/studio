@@ -21,6 +21,7 @@ export default function ChatPage() {
   const [isReady, setIsReady] = useState(false);
   const [isPremium, setIsPremium] = useState(false);
   const [showPremiumDialog, setShowPremiumDialog] = useState(false);
+  const [userId, setUserId] = useState<number | undefined>(undefined);
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
@@ -49,6 +50,22 @@ export default function ChatPage() {
   }, [searchParams, router, toast]);
 
   useEffect(() => {
+    // ── Auth Guard ───────────────────────────────────────────────
+    // This app uses a custom localStorage-based session (key: 'user').
+    // If there is no active session, redirect to /login immediately.
+    const rawUser = localStorage.getItem('user');
+    if (!rawUser) {
+      router.replace('/login');
+      return;
+    }
+
+    try {
+      const parsedUser = JSON.parse(rawUser);
+      if (parsedUser?.id) {
+        setUserId(parsedUser.id);
+      }
+    } catch (e) {}
+
     // This code runs on the client, so window and localStorage are available.
     const premiumStatus = localStorage.getItem('isPremium') === 'true';
     setIsPremium(premiumStatus);
@@ -236,6 +253,7 @@ export default function ChatPage() {
               isPremium={isPremium}
               setShowPremiumDialog={setShowPremiumDialog}
               chatId={characterId}
+              userId={userId}
             />
           </div>
         </main>

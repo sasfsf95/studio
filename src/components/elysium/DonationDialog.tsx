@@ -84,7 +84,7 @@ export function DonationDialog({
                 <DialogHeader>
                   <DialogTitle className="flex items-center gap-2 text-xl">
                     <Heart className="text-pink-500" />
-                    Support Yuki AI Development
+                    Support Girl.ai Development
                   </DialogTitle>
                   <DialogDescription>
                     Help us build more amazing features and improve your AI companion experience.

@@ -1,7 +1,7 @@
 
 "use server";
 
-import {ai} from '@/ai/genkit';
+import { ai } from '@/ai/genkit';
 import { googleAI } from '@genkit-ai/googleai';
 import { textToSpeech, TextToSpeechOutput } from '@/ai/flows/text-to-speech';
 import { getSystemPrompt } from '@/ai/system-prompt';
@@ -9,17 +9,17 @@ import Stripe from 'stripe';
 
 
 export async function getAudio(text: string): Promise<TextToSpeechOutput | null> {
-    try {
-        return await textToSpeech(text);
-    } catch (error) {
-        console.error("Failed to generate audio:", error);
-        return null;
-    }
+  try {
+    return await textToSpeech(text);
+  } catch (error) {
+    console.error("Failed to generate audio:", error);
+    return null;
+  }
 }
 
 function buildMessages(systemPrompt: string, history: any[], currentMessage: string) {
   const messages: any[] = [];
-  
+
   if (!history || history.length === 0) {
     messages.push({
       role: 'user',
@@ -27,12 +27,12 @@ function buildMessages(systemPrompt: string, history: any[], currentMessage: str
     });
     return messages;
   }
-  
+
   const formattedHistory = history.map((h) => ({
     role: h.role,
     content: h.parts,
   }));
-  
+
   if (formattedHistory[0].role === 'model') {
     messages.push({
       role: 'user',
@@ -48,12 +48,12 @@ function buildMessages(systemPrompt: string, history: any[], currentMessage: str
     messages.push(updatedFirstMsg);
     messages.push(...formattedHistory.slice(1));
   }
-  
+
   messages.push({
     role: 'user',
     content: [{ text: currentMessage }]
   });
-  
+
   return messages;
 }
 
@@ -105,7 +105,7 @@ async function callOpenRouter(
         headers: {
           'Authorization': `Bearer ${apiKey}`,
           'HTTP-Referer': process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:5000',
-          'X-Title': 'Yuki AI',
+          'X-Title': 'Girl.ai',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -154,7 +154,7 @@ export async function continueConversation({
     const messages = buildMessages(systemPrompt, history || [], message);
 
     const response = await ai.generate({
-      model: googleAI.model('gemini-2.0-flash'),
+      model: googleAI.model('gemini-2.5-flash'),
       messages: messages,
       config: {
         safetySettings: [

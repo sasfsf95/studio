@@ -37,17 +37,17 @@ export default function RootLayout({
     return (
       <html lang="en" className="dark">
         <head>
-          <title>Yuki AI - Your Perfect AI Girlfriend & Virtual Companion</title>
-          <meta name="description" content="Meet Yuki, your ideal AI girlfriend and virtual companion. Experience intimate conversations, emotional support, and personalized AI girlfriend chat. Free AI companion with advanced personality." />
+          <title>Girl.ai - Your Perfect AI Girlfriend & Virtual Companion</title>
+          <meta name="description" content="Meet Girl.ai, your ideal AI girlfriend and virtual companion. Experience intimate conversations, emotional support, and personalized AI girlfriend chat. Free AI companion with advanced personality." />
           <meta name="keywords" content="AI girlfriend, virtual girlfriend, AI companion, AI chat, virtual companion, AI relationship, digital girlfriend, AI dating, virtual dating, emotional AI" />
           <meta name="robots" content="index, follow" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <meta property="og:title" content="Yuki AI - Your Perfect AI Girlfriend & Virtual Companion" />
-          <meta property="og:description" content="Experience the future of AI relationships with Yuki. Your personalized AI girlfriend ready for meaningful conversations and emotional connection." />
+          <meta property="og:title" content="Girl.ai - Your Perfect AI Girlfriend & Virtual Companion" />
+          <meta property="og:description" content="Experience the future of AI relationships with Girl.ai. Your personalized AI girlfriend ready for meaningful conversations and emotional connection." />
           <meta property="og:image" content="" />
           <meta property="og:type" content="website" />
           <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:title" content="Yuki AI - Your Perfect AI Girlfriend" />
+          <meta name="twitter:title" content="Girl.ai - Your Perfect AI Girlfriend" />
           <meta name="twitter:description" content="Meet your ideal AI girlfriend. Intimate conversations, emotional support, and personalized virtual companion experience." />
           <meta name="twitter:image" content="" />
         </head>
@@ -59,24 +59,24 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
-        <title>Yuki AI - Your Perfect AI Girlfriend & Virtual Companion</title>
-        <meta name="description" content="Meet Yuki, your ideal AI girlfriend and virtual companion. Experience intimate conversations, emotional support, and personalized AI girlfriend chat. Free AI companion with advanced personality." />
+        <title>Girl.ai - Your Perfect AI Girlfriend & Virtual Companion</title>
+        <meta name="description" content="Meet Girl.ai, your ideal AI girlfriend and virtual companion. Experience intimate conversations, emotional support, and personalized AI girlfriend chat. Free AI companion with advanced personality." />
         <meta name="keywords" content="AI girlfriend, virtual girlfriend, AI companion, AI chat, virtual companion, AI relationship, digital girlfriend, AI dating, virtual dating, emotional AI" />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta property="og:title" content="Yuki AI - Your Perfect AI Girlfriend & Virtual Companion" />
-        <meta property="og:description" content="Experience the future of AI relationships with Yuki. Your personalized AI girlfriend ready for meaningful conversations and emotional connection." />
+        <meta property="og:title" content="Girl.ai - Your Perfect AI Girlfriend & Virtual Companion" />
+        <meta property="og:description" content="Experience the future of AI relationships with Girl.ai. Your personalized AI girlfriend ready for meaningful conversations and emotional connection." />
         <meta property="og:image" content="" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Yuki AI - Your Perfect AI Girlfriend" />
+        <meta name="twitter:title" content="Girl.ai - Your Perfect AI Girlfriend" />
         <meta name="twitter:description" content="Meet your ideal AI girlfriend. Intimate conversations, emotional support, and personalized virtual companion experience." />
         <meta name="twitter:image" content="" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
-            "name": "Yuki AI",
+            "name": "Girl.ai",
             "description": "AI girlfriend and virtual companion for intimate conversations and emotional support",
             "applicationCategory": "Lifestyle",
             "operatingSystem": "Web",

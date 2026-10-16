@@ -9,6 +9,7 @@ import { Send, Mic, Heart, Sparkles, Sun, Camera, Gift, Drama, Flame, Loader2, P
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useToast } from '@/hooks/use-toast';
 
 export interface Message {
   id: string;
@@ -131,6 +132,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [activeAudio, setActiveAudio] = useState<string | null>(null);
   const router = useRouter();
+  const { toast } = useToast();
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -145,20 +147,28 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
 
   // Auto-focus chat input box when chat opens or when AI finishes responding
   useEffect(() => {
-    if (!isAiResponding && !isLocked) {
+    if (!isAiResponding) {
       textareaRef.current?.focus();
     }
-  }, [isAiResponding, isLocked]);
+  }, [isAiResponding]);
 
   const handleSend = () => {
-    if (inputValue.trim() && !isAiResponding && !isLocked) {
+    if (isLocked) {
+      toast({
+        variant: 'destructive',
+        title: 'Free Limit Reached',
+        description: 'Free limit completed please get premium',
+      });
+      router.push('/subscribe');
+      return;
+    }
+
+    if (inputValue.trim() && !isAiResponding) {
       onSendMessage(inputValue.trim(), undefined);
       setInputValue('');
       setTimeout(() => {
         textareaRef.current?.focus();
       }, 0);
-    } else if (isLocked) {
-      router.push('/subscribe');
     }
   };
 
@@ -169,6 +179,11 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
         textareaRef.current?.focus();
       }, 0);
     } else if (isLocked) {
+      toast({
+        variant: 'destructive',
+        title: 'Limit Reached',
+        description: 'Free limit completed please get premium',
+      });
       router.push('/subscribe');
     }
   };
@@ -350,28 +365,36 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
                   handleSend();
                 }
               }}
-              placeholder={isLocked ? "Subscribe to send more messages" : "Tell me your desires..."}
+              placeholder="Tell me your desires..."
               className="flex-1 bg-transparent border-0 resize-none focus-visible:ring-0 focus-visible:ring-offset-0 p-2 max-h-32 text-sm sm:text-base"
               rows={1}
-              disabled={isAiResponding || isLocked}
+              disabled={isAiResponding}
             />
-            <Button variant="ghost" disabled={isAiResponding || isLocked} className="flex-shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed">
+            <Button variant="ghost" disabled={isAiResponding} className="flex-shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed">
                 <Mic className="h-5 w-5 text-primary-foreground" />
             </Button>
-            <Button onClick={handleSend} disabled={!inputValue.trim() || isAiResponding || isLocked} className="bg-input hover:bg-input/80 flex-shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed">
-              {isLocked ? <Lock className="h-5 w-5"/> : <Send className="h-5 w-5" />}
+            <Button onClick={handleSend} disabled={!inputValue.trim() || isAiResponding} className="bg-input hover:bg-input/80 flex-shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed">
+              <Send className="h-5 w-5" />
             </Button>
           </div>
-           {messagesLeft !== null && messagesLeft > 0 && messagesLeft <= 10 && (
-                <div className="text-center text-xs text-muted-foreground">
-                    You have <span className="font-bold text-primary">{messagesLeft}</span> free messages left.
-                </div>
-            )}
-            {isLocked && (
-                <div className="text-center text-sm text-primary font-semibold p-2 rounded-md">
-                    You've reached your free message limit. Subscribe to continue!
-                </div>
-            )}
+          {messagesLeft !== null && messagesLeft > 0 && (
+            <div className="text-center text-xs text-muted-foreground">
+              You have <span className="font-bold text-pink-400">{messagesLeft}</span> monthly messages left.
+            </div>
+          )}
+          {isLocked && (
+            <div className="text-center text-sm font-semibold p-2.5 rounded-xl bg-pink-500/10 text-pink-300 border border-pink-500/30 flex items-center justify-center gap-2">
+              <Lock className="h-4 w-4 text-pink-400" />
+              <span>Free limit completed please get premium</span>
+              <Button
+                size="sm"
+                className="ml-2 h-7 px-3 text-xs bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white rounded-full shadow-md font-semibold"
+                onClick={() => router.push('/subscribe')}
+              >
+                Get Premium ✨
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>
