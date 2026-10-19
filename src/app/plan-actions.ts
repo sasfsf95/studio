@@ -45,19 +45,19 @@ export async function getUserPlan(userId: number): Promise<UserPlanData | null> 
         user_id: existingPlan.user_id,
         premium_plan: Number(existingPlan.premium_plan ?? 0),
         premium_expires_at: existingPlan.premium_expires_at,
-        monthly_message_limit: Number(existingPlan.monthly_message_limit ?? 30),
+        monthly_message_limit: Number(existingPlan.monthly_message_limit ?? 25),
         created_at: existingPlan.created_at,
       };
     }
 
-    // Default to free plan: premium_plan = 0, 30 monthly message limit
+    // Default to free plan: premium_plan = 0, 25 monthly message limit
     const { data: newPlan, error: insertError } = await supabaseAdmin
       .from('user_plan')
       .insert([
         {
           user_id: userId,
           premium_plan: 0,
-          monthly_message_limit: 30,
+          monthly_message_limit: 25,
           premium_expires_at: null,
         },
       ])
@@ -124,7 +124,7 @@ export async function useUserChatMessage(userId: number): Promise<QuotaDeductRes
   }
 
   // Free plan checks: 30 messages limit
-  const currentLimit = Number(plan.monthly_message_limit ?? 30);
+  const currentLimit = Number(plan.monthly_message_limit ?? 25);
 
   if (currentLimit <= 0) {
     return {
