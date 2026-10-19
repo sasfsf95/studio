@@ -30,81 +30,98 @@ export async function loginUser(
   mobileNumber: number,
   email?: string
 ): Promise<LoginResult> {
-  // 1. Look up existing user by mobile + password
-  const { data: existing, error: fetchError } = await supabaseAdmin
-    .from('User data')
-    .select('*')
-    .eq('mobile_number', mobileNumber)
-    .eq('password', password);
+  try {
+    // 1. Look up existing user by mobile number first
+    const { data: users, error: fetchError } = await supabaseAdmin
+      .from('User data')
+      .select('*')
+      .eq('mobile_number', mobileNumber);
 
-  if (fetchError) {
-    return { success: false, error: fetchError.message };
-  }
-
-  if (existing && existing.length > 0) {
-    // ✅ Found — login successful
-    const dbUser = existing[0];
-
-    // Update email if it wasn't saved before and user provided one now
-    if (email && !dbUser.email) {
-      await supabaseAdmin
-        .from('User data')
-        .update({ email })
-        .eq('id', dbUser.id);
+    if (fetchError) {
+      console.error('Error fetching user by mobile:', fetchError);
+      return { success: false, error: fetchError.message };
     }
 
-    const plan = await getUserPlan(dbUser.id);
+    if (users && users.length > 0) {
+      const dbUser = users[0];
+
+      // Validate password
+      if (dbUser.password !== password) {
+        return {
+          success: false,
+          error: 'Incorrect password. Please verify your password and try again.',
+          errorCode: 'INVALID_PASSWORD',
+        };
+      }
+
+      // Update email if provided now and not saved before
+      if (email && !dbUser.email) {
+        await supabaseAdmin
+          .from('User data')
+          .update({ email })
+          .eq('id', dbUser.id);
+      }
+
+      const plan = await getUserPlan(dbUser.id);
+      return {
+        success: true,
+        user: {
+          id: dbUser.id,
+          username: dbUser.username,
+          mobile_number: dbUser.mobile_number,
+          email: email || dbUser.email || null,
+        },
+        plan,
+        isNewUser: false,
+      };
+    }
+
+    // 2. User not found — auto-register new account
+    const insertPayload: Record<string, any> = {
+      username,
+      password,
+      mobile_number: mobileNumber,
+    };
+    if (email) insertPayload.email = email;
+
+    const { data: newUser, error: insertError } = await supabaseAdmin
+      .from('User data')
+      .insert([insertPayload])
+      .select()
+      .single();
+
+    if (insertError) {
+      console.error('Error auto-registering user:', insertError);
+      if (insertError.code === '23505') {
+        return {
+          success: false,
+          error: 'This mobile number is already linked to an existing account.',
+          errorCode: '23505',
+        };
+      }
+      return { success: false, error: insertError.message };
+    }
+
+    const plan = await getUserPlan(newUser.id);
+
     return {
       success: true,
       user: {
-        id: dbUser.id,
-        username: dbUser.username,
-        mobile_number: dbUser.mobile_number,
-        email: email || dbUser.email || null,
+        id: newUser.id,
+        username: newUser.username,
+        mobile_number: newUser.mobile_number,
+        email: newUser.email || null,
       },
       plan,
-      isNewUser: false,
+      isNewUser: true,
+    };
+  } catch (err: any) {
+    console.error('Unexpected error in loginUser:', err);
+    return {
+      success: false,
+      error: err?.message || 'Authentication service error. Please try again.',
     };
   }
-
-  // 2. Not found — auto-register
-  const insertPayload: Record<string, any> = {
-    username,
-    password,
-    mobile_number: mobileNumber,
-  };
-  if (email) insertPayload.email = email;
-
-  const { data: newUser, error: insertError } = await supabaseAdmin
-    .from('User data')
-    .insert([insertPayload])
-    .select()
-    .single();
-
-  if (insertError) {
-    if (insertError.code === '23505') {
-      return {
-        success: false,
-        error: 'This mobile number or password is already linked to another account.',
-        errorCode: '23505',
-      };
-    }
-    return { success: false, error: insertError.message };
-  }
-
-  const plan = await getUserPlan(newUser.id);
-
-  return {
-    success: true,
-    user: {
-      id: newUser.id,
-      username: newUser.username,
-      mobile_number: newUser.mobile_number,
-      email: newUser.email || null,
-    },
-    plan,
-    isNewUser: true,
-  };
 }
 
 /**
@@ -117,56 +134,64 @@ export async function signupUser(
   mobileNumber: number,
   email?: string
 ): Promise<LoginResult> {
-  // 1. Check for duplicate mobile
-  const { data: existing, error: checkError } = await supabaseAdmin
-    .from('User data')
-    .select('id')
-    .eq('mobile_number', mobileNumber);
+  try {
+    // 1. Check for duplicate mobile
+    const { data: existing, error: checkError } = await supabaseAdmin
+      .from('User data')
+      .select('id')
+      .eq('mobile_number', mobileNumber);
 
-  if (checkError) {
-    return { success: false, error: checkError.message };
-  }
+    if (checkError) {
+      return { success: false, error: checkError.message };
+    }
 
-  if (existing && existing.length > 0) {
-    return {
-      success: false,
-      error: 'This mobile number is already registered. Please log in instead.',
-      errorCode: 'DUPLICATE_MOBILE',
-    };
-  }
-
-  // 2. Insert new user
-  const insertPayload: Record<string, any> = { username, password, mobile_number: mobileNumber };
-  if (email) insertPayload.email = email;
-
-  const { data: newUser, error: insertError } = await supabaseAdmin
-    .from('User data')
-    .insert([insertPayload])
-    .select()
-    .single();
-
-  if (insertError) {
-    if (insertError.code === '23505') {
+    if (existing && existing.length > 0) {
       return {
         success: false,
-        error: 'This password is already in use. Please choose a different password.',
-        errorCode: '23505',
+        error: 'This mobile number is already registered. Please log in instead.',
+        errorCode: 'DUPLICATE_MOBILE',
       };
     }
-    return { success: false, error: insertError.message };
+
+    // 2. Insert new user
+    const insertPayload: Record<string, any> = { username, password, mobile_number: mobileNumber };
+    if (email) insertPayload.email = email;
+
+    const { data: newUser, error: insertError } = await supabaseAdmin
+      .from('User data')
+      .insert([insertPayload])
+      .select()
+      .single();
+
+    if (insertError) {
+      if (insertError.code === '23505') {
+        return {
+          success: false,
+          error: 'An account with these details already exists. Please log in.',
+          errorCode: '23505',
+        };
+      }
+      return { success: false, error: insertError.message };
+    }
+
+    const plan = await getUserPlan(newUser.id);
+
+    return {
+      success: true,
+      user: {
+        id: newUser.id,
+        username: newUser.username,
+        mobile_number: newUser.mobile_number,
+        email: newUser.email || null,
+      },
+      plan,
+      isNewUser: true,
+    };
+  } catch (err: any) {
+    console.error('Unexpected error in signupUser:', err);
+    return {
+      success: false,
+      error: err?.message || 'Signup service error. Please try again.',
+    };
   }
-
-  const plan = await getUserPlan(newUser.id);
-
-  return {
-    success: true,
-    user: {
-      id: newUser.id,
-      username: newUser.username,
-      mobile_number: newUser.mobile_number,
-      email: newUser.email || null,
-    },
-    plan,
-    isNewUser: true,
-  };
 }

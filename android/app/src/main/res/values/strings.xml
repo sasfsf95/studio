@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">GirlAI World</string>
+    <string name="error_offline_title">You\'re Offline</string>
+    <string name="error_offline_desc">Please check your internet connection and try again.</string>
+    <string name="btn_retry">Retry</string>
+    <string name="exit_prompt">Press back again to exit</string>
+</resources>

@@ -22,10 +22,16 @@ import {
   Menu,
   PartyPopper,
   SlidersHorizontal,
+  ImagePlus,
+  Video,
+  Phone,
+  ChevronRight,
+  Zap,
+  Bot,
 } from 'lucide-react';
 import React, { useState, useMemo, useEffect, lazy, Suspense } from 'react';
 import { Badge } from '@/components/ui/badge';
-import { Switch } from '@/components/ui/switch';
+
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
 
@@ -50,7 +56,7 @@ export function LandingPage() {
   const [isPremiumDialogOpen, setIsPremiumDialogOpen] = useState(false);
   const [isDonationDialogOpen, setIsDonationDialogOpen] = useState(false);
   const { toast } = useToast();
-  const [isAdultOnly, setIsAdultOnly] = useState(false);
+
   const [user, setUser] = useState<any>(null);
   const [showProfile, setShowProfile] = useState(false);
 
@@ -71,8 +77,8 @@ export function LandingPage() {
 
 
   const displayedCharacters = useMemo(() => {
-    return allCharacters.filter(character => character.isAdult === isAdultOnly);
-  }, [isAdultOnly]);
+    return allCharacters.filter(character => !character.isAdult);
+  }, []);
 
   const handleCharacterSelect = (character: any) => {
     if (typeof window !== 'undefined') {
@@ -101,9 +107,7 @@ export function LandingPage() {
     });
   };
 
-  const handleAdultOnlyToggle = (checked: boolean) => {
-    setIsAdultOnly(checked);
-  };
+
 
   const handleLogout = () => {
     localStorage.removeItem('user');
@@ -117,142 +121,196 @@ export function LandingPage() {
   };
 
   const SidebarNav = () => (
-    <div className="flex flex-col h-full text-sm">
-      <nav className="flex-grow space-y-3">
-        <Button variant="ghost" className="w-full justify-start text-base text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-pink-500/20 hover:to-purple-600/20 border border-transparent hover:border-pink-500/30 rounded-xl py-3 transition-all duration-300 group">
-          <Compass className="mr-3 group-hover:text-pink-400 transition-colors" />
-          <span className="group-hover:text-white transition-colors">Explore Models</span>
-        </Button>
+    <div className="flex flex-col h-full">
 
-        <Button className="w-full justify-start bg-gradient-to-r from-pink-500 via-purple-500 to-pink-600 hover:from-pink-600 hover:via-purple-600 hover:to-pink-700 text-white text-base my-4 font-semibold py-4 rounded-xl shadow-lg shadow-pink-500/25 hover:shadow-pink-500/40 border border-pink-400/30 hover:border-pink-300/50 transition-all duration-300 group relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-          <PlusSquare className="mr-3 relative z-10" />
-          <span className="relative z-10">Create my AI Girlfriend</span>
-        </Button>
+      {/* ── MAIN MODULES ─────────────────────────── */}
+      <nav className="flex-grow space-y-1 overflow-y-auto pr-1 thin-scroll">
 
-        <div className="pt-6 space-y-3">
-          <Button
-            variant="ghost"
-            className="w-full justify-start text-base text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-blue-500/20 hover:to-cyan-600/20 border border-transparent hover:border-blue-500/30 rounded-xl py-3 transition-all duration-300 group"
-            onClick={() => setShowProfile(!showProfile)}
-          >
-            <User className="mr-3 group-hover:text-blue-400 transition-colors" />
-            <span className="group-hover:text-white transition-colors">My Profile</span>
-          </Button>
+        {/* Section: Discover */}
+        <p className="text-[10px] uppercase tracking-widest text-white/30 font-bold px-3 pt-2 pb-1">Discover</p>
 
-          {/* User Profile Details */}
-          {showProfile && user && (
-            <div className="ml-4 p-4 bg-gradient-to-r from-blue-500/10 to-cyan-600/10 border border-blue-500/20 rounded-xl space-y-3">
-              <div className="text-sm">
-                <div className="flex items-center gap-2 mb-2">
-                  <User className="h-4 w-4 text-blue-400" />
-                  <span className="text-blue-300 font-semibold">Profile Details</span>
-                </div>
+        <button
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-pink-300 bg-gradient-to-r from-pink-500/20 to-purple-600/15 border border-pink-500/25 hover:border-pink-400/50 hover:from-pink-500/30 hover:to-purple-600/25 transition-all duration-200 group"
+        >
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-pink-500 to-purple-600 shadow-lg shadow-pink-500/30">
+            <Compass className="h-4 w-4 text-white" />
+          </span>
+          <span className="flex-1 text-left">Explore Girls</span>
+          <ChevronRight className="h-3.5 w-3.5 text-pink-400 group-hover:translate-x-0.5 transition-transform" />
+        </button>
 
-                <div className="space-y-2 text-gray-300">
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Name:</span>
-                    <span className="text-white font-medium">{user.name || user.email}</span>
-                  </div>
+        <button
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/70 hover:text-white hover:bg-white/8 border border-transparent hover:border-white/10 transition-all duration-200 group"
+        >
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 shadow-lg shadow-violet-500/25">
+            <MessageSquare className="h-4 w-4 text-white" />
+          </span>
+          <span className="flex-1 text-left">My Chats</span>
+          <ChevronRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
+        </button>
 
-                  {/* Normalized Mobile Number with Country Code */}
-                  {(() => {
-                    const raw = user.mobileNumber || user.mobile;
-                    const cc = user.countryCode;
-                    const num = raw?.toString().replace(/\D/g, '') || '';
-                    const ccNum = cc?.toString().replace(/[^\d]/g, '') || '';
-                    const phone = [ccNum && `+${ccNum}`, num].filter(Boolean).join(' ');
+        {/* Section: Create */}
+        <p className="text-[10px] uppercase tracking-widest text-white/30 font-bold px-3 pt-5 pb-1">Create</p>
 
-                    return (num || ccNum) && (
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Mobile:</span>
-                        <span className="text-white font-medium">
-                          {phone || 'Not provided'}
-                        </span>
-                      </div>
-                    );
-                  })()}
+        {/* Create Image */}
+        <button
+          onClick={() => toast({ title: '🖼️ Coming Soon!', description: 'AI image generation is on the way.' })}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/70 hover:text-white hover:bg-white/8 border border-transparent hover:border-white/10 transition-all duration-200 group"
+        >
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-400 to-cyan-500 shadow-lg shadow-emerald-500/25">
+            <ImagePlus className="h-4 w-4 text-white" />
+          </span>
+          <span className="flex-1 text-left">Create Image</span>
+          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-amber-500/20 text-amber-400 border border-amber-500/30">SOON</span>
+        </button>
 
-                  {user.email && (
-                    <div className="flex justify-between">
-                      <span className="text-gray-400">Email:</span>
-                      <span className="text-white font-medium text-xs">{user.email}</span>
-                    </div>
-                  )}
+        {/* Generate Video */}
+        <button
+          onClick={() => toast({ title: '🎬 Coming Soon!', description: 'AI video generation is coming soon.' })}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/70 hover:text-white hover:bg-white/8 border border-transparent hover:border-white/10 transition-all duration-200 group"
+        >
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-orange-500 to-red-500 shadow-lg shadow-orange-500/25">
+            <Video className="h-4 w-4 text-white" />
+          </span>
+          <span className="flex-1 text-left">Generate Video</span>
+          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-amber-500/20 text-amber-400 border border-amber-500/30">SOON</span>
+        </button>
 
-                  <div className="flex justify-between items-center pt-1 border-t border-white/10">
-                    <span className="text-gray-400">Plan:</span>
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${
-                      user.plan?.premium_plan > 0
-                        ? 'bg-gradient-to-r from-amber-400 to-pink-500 text-white'
-                        : 'bg-white/10 text-pink-300'
-                    }`}>
-                      {user.plan?.premium_plan > 0 ? '👑 Premium' : 'Free Plan'}
-                    </span>
-                  </div>
+        {/* AI Calls */}
+        <button
+          onClick={() => toast({ title: '📞 Coming Soon!', description: 'Voice calls with your AI companion are coming.' })}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/70 hover:text-white hover:bg-white/8 border border-transparent hover:border-white/10 transition-all duration-200 group"
+        >
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-sky-400 to-blue-600 shadow-lg shadow-sky-500/25">
+            <Phone className="h-4 w-4 text-white" />
+          </span>
+          <span className="flex-1 text-left">AI Calls</span>
+          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-amber-500/20 text-amber-400 border border-amber-500/30">SOON</span>
+        </button>
 
-                  {user.plan?.premium_plan === 0 && (
-                    <div className="flex justify-between text-xs">
-                      <span className="text-gray-400">Messages Left:</span>
-                      <span className="text-pink-400 font-semibold">
-                        {user.plan.monthly_message_limit ?? 30} / 30
-                      </span>
-                    </div>
-                  )}
-                </div>
+        {/* Create AI GF */}
+        <button
+          className="w-full flex items-center gap-3 px-3 py-2.5 mt-1 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-pink-500 via-fuchsia-500 to-purple-600 hover:from-pink-600 hover:via-fuchsia-600 hover:to-purple-700 border border-pink-400/30 shadow-lg shadow-pink-500/20 hover:shadow-pink-500/40 transition-all duration-200 group relative overflow-hidden"
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/15 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/20">
+            <Bot className="h-4 w-4 text-white" />
+          </span>
+          <span className="flex-1 text-left relative z-10">Create AI Girlfriend</span>
+          <Zap className="h-3.5 w-3.5 text-yellow-300 relative z-10" />
+        </button>
 
-                <div className="pt-3 border-t border-blue-500/20 mt-3">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="w-full text-red-400 hover:text-red-300 hover:bg-red-500/10 justify-center"
-                    onClick={handleLogout}
-                  >
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Logout
-                  </Button>
-                </div>
+        {/* Section: Account */}
+        <p className="text-[10px] uppercase tracking-widest text-white/30 font-bold px-3 pt-5 pb-1">Account</p>
+
+        {/* My Models */}
+        <button
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/70 hover:text-white hover:bg-white/8 border border-transparent hover:border-white/10 transition-all duration-200 group"
+        >
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 shadow-lg shadow-amber-500/25">
+            <Star className="h-4 w-4 text-white" />
+          </span>
+          <span className="flex-1 text-left">My Models</span>
+          <ChevronRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
+        </button>
+
+        {/* My Profile */}
+        <button
+          onClick={() => setShowProfile(!showProfile)}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/70 hover:text-white hover:bg-white/8 border border-transparent hover:border-white/10 transition-all duration-200 group"
+        >
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-blue-400 to-cyan-500 shadow-lg shadow-blue-500/25">
+            <User className="h-4 w-4 text-white" />
+          </span>
+          <span className="flex-1 text-left">My Profile</span>
+          <ChevronRight className={`h-3.5 w-3.5 transition-all duration-200 ${showProfile ? 'rotate-90 opacity-100' : 'opacity-0 group-hover:opacity-100'}`} />
+        </button>
+
+        {/* Profile Dropdown */}
+        {showProfile && user && (
+          <div className="mx-2 p-4 bg-gradient-to-br from-blue-500/10 to-cyan-600/10 border border-blue-500/20 rounded-2xl space-y-2.5 text-sm">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="h-9 w-9 rounded-full bg-gradient-to-br from-blue-400 to-cyan-500 flex items-center justify-center font-bold text-white text-sm">
+                {(user.name || user.email || 'U')[0].toUpperCase()}
+              </div>
+              <div>
+                <p className="text-white font-semibold text-sm leading-tight">{user.name || 'User'}</p>
+                <p className="text-white/40 text-xs">{user.email || ''}</p>
               </div>
             </div>
-          )}
-
-          {showProfile && !user && (
-            <div className="ml-4 p-4 bg-gradient-to-r from-gray-500/10 to-gray-600/10 border border-gray-500/20 rounded-xl">
-              <div className="text-sm text-gray-400 text-center">
-                <User className="h-8 w-8 mx-auto mb-2 text-gray-500" />
-                <p>Please login to view profile</p>
-                <Link href="/login">
-                  <Button size="sm" className="mt-2 bg-blue-600 hover:bg-blue-700">
-                    <LogIn className="mr-2 h-4 w-4" /> Login
-                  </Button>
-                </Link>
+            {(() => {
+              const raw = user.mobileNumber || user.mobile;
+              const cc = user.countryCode;
+              const num = raw?.toString().replace(/\D/g, '') || '';
+              const ccNum = cc?.toString().replace(/[^\d]/g, '') || '';
+              const phone = [ccNum && `+${ccNum}`, num].filter(Boolean).join(' ');
+              return (num || ccNum) && (
+                <div className="flex justify-between text-xs">
+                  <span className="text-white/40">Mobile</span>
+                  <span className="text-white/80 font-medium">{phone}</span>
+                </div>
+              );
+            })()}
+            <div className="flex justify-between items-center pt-2 border-t border-white/10">
+              <span className="text-white/40 text-xs">Plan</span>
+              <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${
+                user.plan?.premium_plan > 0
+                  ? 'bg-gradient-to-r from-amber-400 to-pink-500 text-white'
+                  : 'bg-white/10 text-pink-300'
+              }`}>
+                {user.plan?.premium_plan > 0 ? '👑 Premium' : 'Free Plan'}
+              </span>
+            </div>
+            {user.plan?.premium_plan === 0 && (
+              <div className="flex justify-between text-xs">
+                <span className="text-white/40">Messages Left</span>
+                <span className="text-pink-400 font-semibold">{user.plan.monthly_message_limit ?? 30} / 30</span>
               </div>
-            </div>
-          )}
-          <Button variant="ghost" className="w-full justify-start text-base text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-emerald-500/20 hover:to-teal-600/20 border border-transparent hover:border-emerald-500/30 rounded-xl py-3 transition-all duration-300 group">
-            <Star className="mr-3 group-hover:text-emerald-400 transition-colors" />
-            <span className="group-hover:text-white transition-colors">My Models</span>
-          </Button>
-        </div>
-      </nav>
-      <div className="mt-auto space-y-4 pt-6 border-t border-gradient-to-r from-pink-500/20 to-purple-600/20">
-        <Button variant="ghost" className="w-full justify-start text-base text-gray-300 hover:text-white hover:bg-gradient-to-r hover:from-orange-500/20 hover:to-red-600/20 border border-transparent hover:border-orange-500/30 rounded-xl py-3 transition-all duration-300 group">
-          <Share2 className="mr-3 group-hover:text-orange-400 transition-colors" />
-          <span className="group-hover:text-white transition-colors">Affiliate Program</span>
-        </Button>
-        <div className="flex items-center justify-between text-xs text-muted-foreground pt-2">
-          <Button variant="ghost" size="sm" className="text-xs text-gray-400 hover:text-white"><HelpCircle className="mr-2 h-4 w-4" /> Feedback</Button>
-          {user ? (
-            <div className="text-xs text-green-400 flex items-center gap-1">
-              <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-              {user.name || 'Logged In'}
-            </div>
-          ) : (
+            )}
+            <button
+              onClick={handleLogout}
+              className="w-full mt-2 flex items-center justify-center gap-2 py-1.5 rounded-lg text-xs text-red-400 hover:text-red-300 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-all"
+            >
+              <LogOut className="h-3.5 w-3.5" /> Logout
+            </button>
+          </div>
+        )}
+        {showProfile && !user && (
+          <div className="mx-2 p-4 bg-white/5 border border-white/10 rounded-2xl text-center">
+            <User className="h-8 w-8 mx-auto mb-2 text-white/20" />
+            <p className="text-white/40 text-xs mb-3">Please login to view profile</p>
             <Link href="/login">
-              <Button variant="ghost" size="sm" className="text-xs text-gray-400 hover:text-white"><LogIn className="mr-2 h-4 w-4" /> Login</Button>
+              <button className="w-full py-1.5 rounded-lg text-xs text-white bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 font-semibold transition-all">
+                <LogIn className="inline mr-1 h-3.5 w-3.5" /> Login
+              </button>
             </Link>
-          )}
-        </div>
+          </div>
+        )}
+      </nav>
+
+      {/* ── FOOTER ───────────────────────────────── */}
+      <div className="pt-4 mt-4 border-t border-white/8 space-y-1">
+        <button className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-white/40 hover:text-white/70 hover:bg-white/5 transition-all duration-200 group">
+          <Share2 className="h-4 w-4" />
+          <span>Affiliate Program</span>
+        </button>
+        <button className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-white/40 hover:text-white/70 hover:bg-white/5 transition-all duration-200 group">
+          <HelpCircle className="h-4 w-4" />
+          <span>Feedback</span>
+        </button>
+        {user ? (
+          <div className="flex items-center gap-2 px-3 py-2">
+            <div className="h-2 w-2 bg-emerald-400 rounded-full animate-pulse" />
+            <span className="text-xs text-emerald-400 font-medium">{user.name || 'Logged In'}</span>
+          </div>
+        ) : (
+          <Link href="/login">
+            <button className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-white/40 hover:text-white/70 hover:bg-white/5 transition-all duration-200">
+              <LogIn className="h-4 w-4" />
+              <span>Login</span>
+            </button>
+          </Link>
+        )}
       </div>
     </div>
   );
@@ -352,16 +410,7 @@ export function LandingPage() {
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4 mb-6">
-                <div className="flex items-center gap-3 liquid-glass px-4 py-2 rounded-2xl border border-white/15">
-                  <Sparkles className="text-pink-400 w-5 h-5" />
-                  <p className="font-semibold text-base sm:text-lg text-white">Adult only</p>
-                  <Switch
-                    checked={isAdultOnly}
-                    onCheckedChange={handleAdultOnlyToggle}
-                  />
-                  <Sparkles className="text-pink-400 w-5 h-5" />
-                </div>
+              <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-end gap-4 mb-6">
 
                 <Suspense fallback={<Button variant="outline" className="liquid-glass text-white border-white/20" disabled>Loading...</Button>}>
                   <Sheet>

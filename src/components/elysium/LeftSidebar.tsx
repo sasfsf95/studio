@@ -51,7 +51,7 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
   }
 
   return (
-    <div className="h-full bg-black/30 p-4 flex flex-col space-y-6 overflow-y-auto">
+    <div className="h-full bg-black/30 p-4 flex flex-col space-y-6 overflow-y-auto thin-scroll">
       <header className="flex justify-between items-center">
         <div className="flex items-center gap-2">
           <Crown className="h-6 w-6 text-yellow-400" />
