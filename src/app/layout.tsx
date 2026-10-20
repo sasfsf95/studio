@@ -35,6 +35,8 @@ export const metadata: Metadata = {
   },
 };
 
+const inter = Inter({ subsets: ['latin'] });
+
 export default function RootLayout({
   children,
 }: Readonly<{
