@@ -128,7 +128,7 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-liquid-flow relative overflow-hidden p-4">
+    <div className="flex items-center justify-center min-h-screen min-h-[100dvh] bg-liquid-flow relative overflow-hidden p-3 sm:p-4 pt-safe pb-safe">
       {/* Ambient background */}
       <div className="bg-glow-spot top-1/4 right-1/4 z-0"></div>
       <div className="bg-glow-spot-2 bottom-1/4 left-1/4 z-0"></div>
@@ -142,23 +142,23 @@ export default function SignupPage() {
         {/* Top gradient bar */}
         <div className="h-1 w-full bg-gradient-to-r from-purple-500 via-pink-500 to-purple-600"></div>
 
-        <CardHeader className="text-center pb-2 pt-8 px-8">
+        <CardHeader className="text-center pb-2 pt-6 sm:pt-8 px-5 sm:px-8">
           {/* Logo icon */}
           <div className="flex justify-center mb-4">
-            <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 via-pink-600 to-purple-700 flex items-center justify-center shadow-xl shadow-purple-500/40">
-              <Sparkles className="h-8 w-8 text-white" />
+            <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-purple-500 via-pink-600 to-purple-700 flex items-center justify-center shadow-xl shadow-purple-500/40">
+              <Sparkles className="h-7 w-7 sm:h-8 sm:w-8 text-white" />
               <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl blur opacity-30"></div>
             </div>
           </div>
-          <CardTitle className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-300 to-purple-500 drop-shadow-md">
+          <CardTitle className="text-2xl sm:text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-300 to-purple-500 drop-shadow-md">
             Create Account
           </CardTitle>
-          <CardDescription className="text-gray-400 text-sm mt-1">
+          <CardDescription className="text-gray-400 text-xs sm:text-sm mt-1">
             Join Girl.ai and find your perfect companion
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="px-8 pb-8 pt-4">
+        <CardContent className="px-5 sm:px-8 pb-6 sm:pb-8 pt-2 sm:pt-4">
           <form onSubmit={handleSignup} className="space-y-4">
             {/* Name */}
             <div className="space-y-1.5">

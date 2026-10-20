@@ -65,7 +65,7 @@ async function callOpenRouter(
   const apiKey = process.env.OPENROUTER_API_KEY;
 
   if (!apiKey) {
-    console.error("OpenRouter API key is missing.");
+    console.warn("OpenRouter API key is missing. Set OPENROUTER_API_KEY in Netlify environment variables.");
     return null;
   }
 
@@ -90,21 +90,26 @@ async function callOpenRouter(
     content: currentMessage
   });
 
+  // Verified working models on OpenRouter (fast, high quality dialogue)
   const models = [
-    "google/gemini-2.0-flash-001",
     "meta-llama/llama-3.3-70b-instruct",
     "deepseek/deepseek-chat",
-    "openrouter/auto"
+    "meta-llama/llama-3.1-8b-instruct",
+    "mistralai/mistral-small-24b-instruct-2501",
+    "qwen/qwen-2.5-72b-instruct"
   ];
 
   for (const model of models) {
     try {
-      console.log(`[OpenRouter Fallback] Trying model: ${model}`);
+      console.log(`[OpenRouter] Querying model: ${model}`);
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 6500);
+
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${apiKey}`,
-          'HTTP-Referer': process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:5000',
+          'HTTP-Referer': process.env.NEXT_PUBLIC_APP_URL || 'https://girlai.app',
           'X-Title': 'Girl.ai',
           'Content-Type': 'application/json',
         },
@@ -114,22 +119,24 @@ async function callOpenRouter(
           temperature: 0.7,
           max_tokens: 500,
         }),
+        signal: controller.signal,
       });
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         const errText = await response.text();
-        console.warn(`[OpenRouter Fallback] Model ${model} returned error status ${response.status}: ${errText}`);
+        console.warn(`[OpenRouter] Model ${model} returned error status ${response.status}: ${errText}`);
         continue;
       }
 
       const data = await response.json();
       const reply = data?.choices?.[0]?.message?.content;
-      if (reply && reply.trim()) {
-        console.log(`[OpenRouter Fallback] Success with model: ${model}`);
+      if (reply && typeof reply === 'string' && reply.trim()) {
+        console.log(`[OpenRouter] Success with model: ${model}`);
         return reply.trim();
       }
     } catch (err) {
-      console.warn(`[OpenRouter Fallback] Exception for model ${model}:`, err);
+      console.warn(`[OpenRouter] Exception or timeout for model ${model}:`, err);
     }
   }
 
@@ -149,54 +156,51 @@ export async function continueConversation({
 }): Promise<{ type: 'text' | 'audio' | 'image' | 'error', content: string }> {
   const systemPrompt = getSystemPrompt(companionName);
 
-  // 1. Try Gemini first
-  try {
-    const messages = buildMessages(systemPrompt, history || [], message);
+  // 1. Try Gemini only if a valid AIzaSy API key is present
+  const geminiKey = process.env.GOOGLE_GENAI_API_KEY || process.env.GEMINI_API_KEY || '';
+  const hasValidGeminiKey = geminiKey.startsWith('AIzaSy');
 
-    const response = await ai.generate({
-      model: googleAI.model('gemini-2.5-flash'),
-      messages: messages,
-      config: {
-        safetySettings: [
-          {
-            category: 'HARM_CATEGORY_HARASSMENT',
-            threshold: 'BLOCK_NONE',
-          },
-          {
-            category: 'HARM_CATEGORY_HATE_SPEECH',
-            threshold: 'BLOCK_NONE',
-          },
-          {
-            category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
-            threshold: 'BLOCK_NONE',
-          },
-          {
-            category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
-            threshold: 'BLOCK_NONE',
-          },
-        ],
-      },
-    });
+  if (hasValidGeminiKey) {
+    try {
+      const messages = buildMessages(systemPrompt, history || [], message);
 
-    const replyText = response.text;
+      const geminiPromise = ai.generate({
+        model: googleAI.model('gemini-2.5-flash'),
+        messages: messages,
+        config: {
+          safetySettings: [
+            { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
+            { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
+            { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },
+            { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
+          ],
+        },
+      });
 
-    if (replyText && replyText.trim()) {
-      return { type: 'text', content: replyText };
+      // Strict 3.5s timeout on Gemini so we never hit Netlify's 10s lambda limit
+      const timeoutPromise = new Promise<{ text?: string }>((_, reject) =>
+        setTimeout(() => reject(new Error('Gemini timeout')), 3500)
+      );
+
+      const response = await Promise.race([geminiPromise, timeoutPromise]);
+      const replyText = response?.text;
+
+      if (replyText && replyText.trim()) {
+        return { type: 'text', content: replyText.trim() };
+      }
+    } catch (error) {
+      console.warn("Gemini unavailable or timed out, switching to OpenRouter:", error);
     }
-
-    console.warn("Gemini returned empty response, attempting OpenRouter fallback...");
-  } catch (error) {
-    console.warn("Gemini failed, attempting OpenRouter fallback:", error);
   }
 
-  // 2. Fallback to OpenRouter
+  // 2. Fallback to OpenRouter (Meta Llama 3.3 70B, DeepSeek, etc.)
   try {
     const openRouterReply = await callOpenRouter(systemPrompt, history || [], message);
     if (openRouterReply) {
       return { type: 'text', content: openRouterReply };
     }
   } catch (orError) {
-    console.error("OpenRouter fallback also failed:", orError);
+    console.error("OpenRouter fallback failed:", orError);
   }
 
   return { type: 'error', content: "My circuits are a bit fuzzy right now, could you say that again?" };

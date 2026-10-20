@@ -78,7 +78,7 @@ export default function SubscribePage() {
   const router = useRouter();
 
   return (
-    <div className="bg-liquid-flow min-h-screen text-white p-4 sm:p-8 relative overflow-hidden">
+    <div className="bg-liquid-flow min-h-screen text-white p-3 sm:p-8 pt-safe relative overflow-hidden">
       {/* Ambient background glowing spots */}
       <div className="bg-glow-spot top-10 left-1/4 z-0"></div>
       <div className="bg-glow-spot-2 bottom-10 right-1/4 z-0"></div>
@@ -87,17 +87,17 @@ export default function SubscribePage() {
         <Button
           variant="ghost"
           onClick={() => router.push('/')}
-          className="mb-8 inline-flex items-center gap-2 text-gray-300 hover:text-white liquid-glass rounded-full px-5 py-2 border border-white/10 hover:border-white/30 transition-all duration-300"
+          className="mb-6 sm:mb-8 inline-flex items-center gap-2 text-gray-300 hover:text-white liquid-glass rounded-full px-4 sm:px-5 py-2 text-xs sm:text-sm border border-white/10 hover:border-white/30 transition-all duration-300"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Models
         </Button>
 
-        <div className="text-center mb-12">
-          <h1 className="text-5xl sm:text-6xl font-black mb-4 bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-300 to-pink-500 drop-shadow-xl tracking-tight">
+        <div className="text-center mb-8 sm:mb-12 px-2">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black mb-3 sm:mb-4 bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-300 to-pink-500 drop-shadow-xl tracking-tight break-words">
             CHOOSE YOUR CONNECTION
           </h1>
-          <p className="text-lg text-gray-300 max-w-xl mx-auto font-medium">
+          <p className="text-sm sm:text-lg text-gray-300 max-w-xl mx-auto font-medium">
             Unlock deeper levels of intimacy with photos, audio, and video content.
           </p>
         </div>

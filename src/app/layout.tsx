@@ -1,9 +1,18 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { ClientWrapper } from '@/components/elysium/ClientWrapper';
 
 const inter = Inter({ subsets: ['latin'] });
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: 'cover',
+  themeColor: '#07050e',
+};
 
 export const metadata: Metadata = {
   title: 'Girl.ai - Your Perfect AI Girlfriend & Virtual Companion',
@@ -32,9 +41,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark h-full w-full">
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="theme-color" content="#07050e" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -55,7 +68,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.className} antialiased bg-background text-foreground`}>
+      <body className={`${inter.className} antialiased bg-background text-foreground h-full w-full overflow-x-hidden min-h-screen min-h-[100dvh]`}>
         <ClientWrapper>{children}</ClientWrapper>
       </body>
     </html>

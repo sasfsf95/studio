@@ -5,7 +5,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Send, Mic, Heart, Sparkles, Sun, Camera, Gift, Drama, Flame, Loader2, Paperclip, Lock, Play, Pause, Square } from 'lucide-react';
+import { Send, Mic, MicOff, Volume2, VolumeX, Heart, Sparkles, Sun, Camera, Gift, Drama, Flame, Loader2, Paperclip, Lock, Play, Pause, Square } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -43,7 +43,7 @@ const icebreakerIcons = [
     <Gift className="h-4 w-4" />,
 ];
 
-function AudioPlayer({ src, messageId }: { src: string, messageId: string }) {
+function AudioPlayer({ src, messageId, onPlayChange }: { src: string; messageId: string; onPlayChange?: (playing: boolean) => void }) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -52,11 +52,18 @@ function AudioPlayer({ src, messageId }: { src: string, messageId: string }) {
     const audio = audioRef.current;
     if (!audio) return;
 
-    const handlePlay = () => setIsPlaying(true);
-    const handlePause = () => setIsPlaying(false);
+    const handlePlay = () => {
+      setIsPlaying(true);
+      onPlayChange?.(true);
+    };
+    const handlePause = () => {
+      setIsPlaying(false);
+      onPlayChange?.(false);
+    };
     const handleEnded = () => {
       setIsPlaying(false);
       setProgress(0);
+      onPlayChange?.(false);
     };
     const handleTimeUpdate = () => {
       if (audio.duration > 0) {
@@ -66,10 +73,10 @@ function AudioPlayer({ src, messageId }: { src: string, messageId: string }) {
     
     // Stop other audio players when this one starts
     const handleGlobalPlay = (event: CustomEvent) => {
-        if (event.detail.id !== messageId) {
-            audio.pause();
-        }
-    }
+      if (event.detail.id !== messageId) {
+        audio.pause();
+      }
+    };
 
     audio.addEventListener('play', handlePlay);
     audio.addEventListener('pause', handlePause);
@@ -84,16 +91,14 @@ function AudioPlayer({ src, messageId }: { src: string, messageId: string }) {
       audio.removeEventListener('timeupdate', handleTimeUpdate);
       document.removeEventListener('play-audio', handleGlobalPlay as EventListener);
     };
-  }, [messageId]);
+  }, [messageId, onPlayChange]);
 
   const togglePlayPause = () => {
     const audio = audioRef.current;
     if (audio) {
       if (audio.paused) {
-        // Dispatch event to pause other players
-        const playEvent = new CustomEvent('play-audio', { detail: { id: messageId } });
-        document.dispatchEvent(playEvent);
-        audio.play();
+        document.dispatchEvent(new CustomEvent('play-audio', { detail: { id: messageId } }));
+        audio.play().catch(e => console.warn('Audio play prevented:', e));
       } else {
         audio.pause();
       }
@@ -101,24 +106,34 @@ function AudioPlayer({ src, messageId }: { src: string, messageId: string }) {
   };
   
   const handleStop = () => {
-      const audio = audioRef.current;
-      if (audio) {
-          audio.pause();
-          audio.currentTime = 0;
-      }
-  }
+    const audio = audioRef.current;
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0;
+      setIsPlaying(false);
+      setProgress(0);
+      onPlayChange?.(false);
+    }
+  };
 
   return (
-    <div className="flex items-center gap-2 p-2 rounded-lg bg-black/20 mt-2">
+    <div className="flex items-center gap-2 p-2 rounded-xl bg-black/40 border border-white/10 mt-2 backdrop-blur-md">
       <audio ref={audioRef} src={src} preload="metadata"></audio>
-      <Button onClick={togglePlayPause} variant="ghost" size="icon" className="h-8 w-8 text-primary-foreground hover:bg-white/20">
-        {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+      <Button onClick={togglePlayPause} variant="ghost" size="icon" className="h-7 w-7 text-primary-foreground hover:bg-white/20 rounded-full shrink-0">
+        {isPlaying ? <Pause className="h-3.5 w-3.5 text-pink-400" /> : <Play className="h-3.5 w-3.5 text-white" />}
       </Button>
-      <div className="w-full bg-black/30 rounded-full h-1.5 flex-1">
-        <div className="bg-primary h-1.5 rounded-full" style={{ width: `${progress}%` }}></div>
+      <div className="w-full bg-white/10 rounded-full h-1.5 flex-1 overflow-hidden cursor-pointer" onClick={(e) => {
+        const audio = audioRef.current;
+        if (audio && audio.duration > 0) {
+          const rect = e.currentTarget.getBoundingClientRect();
+          const clickPos = (e.clientX - rect.left) / rect.width;
+          audio.currentTime = clickPos * audio.duration;
+        }
+      }}>
+        <div className="bg-gradient-to-r from-pink-500 to-purple-500 h-1.5 rounded-full transition-all duration-100" style={{ width: `${progress}%` }}></div>
       </div>
-      <Button onClick={handleStop} variant="ghost" size="icon" className="h-8 w-8 text-primary-foreground hover:bg-white/20">
-        <Square className="h-4 w-4" />
+      <Button onClick={handleStop} variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-white rounded-full shrink-0">
+        <Square className="h-3 w-3" />
       </Button>
     </div>
   );
@@ -131,6 +146,9 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [activeAudio, setActiveAudio] = useState<string | null>(null);
+  const [isListening, setIsListening] = useState(false);
+  const recognitionRef = useRef<any>(null);
+  const activeAudioElementRef = useRef<HTMLAudioElement | null>(null);
   const router = useRouter();
   const { toast } = useToast();
 
@@ -151,6 +169,200 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
       textareaRef.current?.focus();
     }
   }, [isAiResponding]);
+
+  // Clean up speech recognition and synthesis on unmount
+  useEffect(() => {
+    return () => {
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      try {
+        recognitionRef.current?.stop();
+      } catch (e) {}
+    };
+  }, []);
+
+  // Voice Speech: Text-to-Speech playback for AI companion
+  const handleSpeak = (messageId: string, text: string, audioUrl?: string) => {
+    if (typeof window === 'undefined') return;
+
+    // If currently active, stop it
+    if (activeAudio === messageId) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      if (activeAudioElementRef.current) {
+        activeAudioElementRef.current.pause();
+        activeAudioElementRef.current = null;
+      }
+      document.dispatchEvent(new CustomEvent('play-audio', { detail: { id: '__stop_all__' } }));
+      setActiveAudio(null);
+      return;
+    }
+
+    // Stop anything else currently playing
+    document.dispatchEvent(new CustomEvent('play-audio', { detail: { id: messageId } }));
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+    if (activeAudioElementRef.current) {
+      activeAudioElementRef.current.pause();
+      activeAudioElementRef.current = null;
+    }
+
+    // 1. If audioUrl is provided, play it
+    if (audioUrl) {
+      try {
+        const audio = new Audio(audioUrl);
+        activeAudioElementRef.current = audio;
+        setActiveAudio(messageId);
+        audio.play().catch(() => {
+          playSpeechUtterance(text, messageId);
+        });
+        audio.onended = () => {
+          setActiveAudio(null);
+          activeAudioElementRef.current = null;
+        };
+        audio.onerror = () => {
+          playSpeechUtterance(text, messageId);
+        };
+        return;
+      } catch (err) {
+        console.warn('Audio element play failed, falling back to speech synthesis:', err);
+      }
+    }
+
+    // 2. Fallback to Browser Speech Synthesis
+    playSpeechUtterance(text, messageId);
+  };
+
+  const playSpeechUtterance = (text: string, messageId: string) => {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
+      toast({
+        variant: 'destructive',
+        title: 'Speech Unavailable',
+        description: 'Audio speech is not supported in this browser.',
+      });
+      return;
+    }
+
+    const clean = text
+      .replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F900}-\u{1F9FF}\u{1FA70}-\u{1FAFF}]/gu, '')
+      .replace(/\*[^*]+\*/g, '')
+      .replace(/[_~`#>]/g, '')
+      .trim();
+
+    if (!clean) return;
+
+    const utterance = new SpeechSynthesisUtterance(clean);
+    const storedVoiceStyle = typeof window !== 'undefined' ? (localStorage.getItem('companionVoice') || 'soft-sensual') : 'soft-sensual';
+    let rate = 0.95;
+    let pitch = 1.05;
+
+    if (storedVoiceStyle === 'soft-sensual') {
+      rate = 0.92;
+      pitch = 1.05;
+    } else if (storedVoiceStyle === 'sweet-romantic') {
+      rate = 0.98;
+      pitch = 1.15;
+    } else if (storedVoiceStyle === 'deep-sensual') {
+      rate = 0.88;
+      pitch = 0.95;
+    } else if (storedVoiceStyle === 'playful-cheerful') {
+      rate = 1.05;
+      pitch = 1.2;
+    }
+
+    utterance.rate = rate;
+    utterance.pitch = pitch;
+
+    const voices = window.speechSynthesis.getVoices();
+    const femaleVoice = voices.find(v => 
+      (v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Victoria') || v.name.includes('Zira') || v.name.includes('Google UK English Female') || v.name.includes('Karen')) &&
+      v.lang.startsWith('en')
+    ) || voices.find(v => v.lang.startsWith('en'));
+
+    if (femaleVoice) {
+      utterance.voice = femaleVoice;
+    }
+
+    utterance.onstart = () => setActiveAudio(messageId);
+    utterance.onend = () => setActiveAudio(null);
+    utterance.onerror = () => setActiveAudio(null);
+
+    window.speechSynthesis.speak(utterance);
+  };
+
+  // Voice Input: Speech-to-Text Microphone
+  const toggleVoiceInput = () => {
+    if (typeof window === 'undefined') return;
+
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      toast({
+        variant: 'destructive',
+        title: 'Speech Recognition Unavailable',
+        description: 'Voice input is not supported in this browser. Please use Chrome, Edge, or the Android app.',
+      });
+      return;
+    }
+
+    if (isListening) {
+      try {
+        recognitionRef.current?.stop();
+      } catch (e) {}
+      setIsListening(false);
+      return;
+    }
+
+    try {
+      const recognition = new SpeechRecognition();
+      recognitionRef.current = recognition;
+      recognition.continuous = false;
+      recognition.interimResults = true;
+      recognition.lang = 'en-US';
+
+      recognition.onstart = () => {
+        setIsListening(true);
+        toast({
+          title: '🎙️ Listening...',
+          description: 'Speak now to your companion',
+        });
+      };
+
+      recognition.onresult = (event: any) => {
+        let transcript = '';
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          transcript += event.results[i][0].transcript;
+        }
+        if (transcript) {
+          setInputValue(transcript);
+        }
+      };
+
+      recognition.onerror = (event: any) => {
+        console.warn('Speech recognition error:', event.error);
+        setIsListening(false);
+        if (event.error !== 'no-speech') {
+          toast({
+            variant: 'destructive',
+            title: 'Mic Error',
+            description: `Could not recognize voice: ${event.error}`,
+          });
+        }
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+
+      recognition.start();
+    } catch (err) {
+      console.error('Failed to start speech recognition:', err);
+      setIsListening(false);
+    }
+  };
 
   const handleSend = () => {
     if (isLocked) {
@@ -230,32 +442,32 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
   const conversationStarted = messages.some((msg) => msg.sender === 'user');
 
   return (
-    <div className="relative h-full">
+    <div className="relative h-full flex flex-col min-h-0 overflow-hidden">
       {characterImage && (
         <Image
           src={characterImage}
           alt="Chat Background"
           fill
           quality={50}
-          className="absolute inset-0 h-full w-full object-cover object-top opacity-20 md:opacity-[0.08]"
+          className="absolute inset-0 h-full w-full object-cover object-top opacity-20 md:opacity-[0.08] pointer-events-none"
           data-ai-hint="beautiful woman"
           priority
         />
       )}
-      <div className="relative z-10 flex flex-col h-full p-2 sm:p-4 space-y-4">
-        <ScrollArea className="flex-1 pr-4 -mr-4">
-          <div className="space-y-8 p-4">
+      <div className="relative z-10 flex flex-col h-full min-h-0 p-2 sm:p-4 gap-2 sm:gap-3">
+        <ScrollArea className="flex-1 min-h-0 pr-1 sm:pr-4">
+          <div className="space-y-4 sm:space-y-6 p-1 sm:p-3">
             {messages.map((msg) => (
               <div 
                 key={msg.id} 
                 className={cn(
-                  "flex items-start gap-2 sm:gap-4 animate-message-in",
+                  "flex items-start gap-2 sm:gap-3 animate-message-in",
                   msg.sender === 'user' ? 'justify-end' : 'justify-start'
                 )}
               >
                 {msg.sender === 'ai' && (
                   <Avatar className={cn(
-                    "h-8 w-8 sm:h-10 sm:w-10 border-2 border-primary/50 transition-all",
+                    "h-8 w-8 sm:h-9 sm:w-9 border-2 border-primary/50 transition-all shrink-0",
                     activeAudio === msg.id && "ring-4 ring-primary animate-pulse"
                     )}>
                     <AvatarImage src={msg.avatar} alt={companionName} data-ai-hint="beautiful woman" className="object-cover object-top" />
@@ -263,11 +475,11 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
                   </Avatar>
                 )}
                 <div className={cn(
-                  "flex flex-col gap-1.5",
+                  "flex flex-col gap-1 max-w-[85%] sm:max-w-md",
                   msg.sender === 'user' ? 'items-end' : 'items-start'
                 )}>
                     <div className={cn(
-                      'max-w-md p-3 px-4 rounded-2xl text-sm sm:text-base leading-relaxed transition-all duration-300 ease-out',
+                      'p-2.5 px-3.5 sm:p-3 sm:px-4 rounded-2xl text-sm sm:text-base leading-relaxed transition-all duration-300 ease-out break-words',
                       msg.sender === 'user'
                         ? 'bg-gradient-to-br from-primary/95 to-fuchsia-600/95 text-primary-foreground rounded-br-lg shadow-lg shadow-primary/20 border border-white/10 backdrop-blur-md'
                         : 'liquid-glass text-card-foreground rounded-bl-lg'
@@ -275,31 +487,58 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
                       {msg.imageUrl && (
                         <Image src={msg.imageUrl} alt="Uploaded content" width={200} height={300} className="rounded-lg mb-2 max-w-full h-auto" data-ai-hint="photo message"/>
                       )}
-                      {msg.text && <p>{msg.text}</p>}
+                      {msg.text && <p className="whitespace-pre-wrap">{msg.text}</p>}
                       {msg.audioUrl && (
-                        <AudioPlayer src={msg.audioUrl} messageId={msg.id} />
+                        <AudioPlayer src={msg.audioUrl} messageId={msg.id} onPlayChange={(playing) => setActiveAudio(playing ? msg.id : null)} />
                       )}
                     </div>
-                    {msg.timestamp && <p className="text-xs text-muted-foreground px-1">{msg.timestamp}</p>}
+                    <div className="flex items-center gap-2 px-1">
+                      {msg.timestamp && <p className="text-[10px] sm:text-xs text-muted-foreground">{msg.timestamp}</p>}
+                      {msg.sender === 'ai' && (
+                        <button
+                          type="button"
+                          onClick={() => handleSpeak(msg.id, msg.text, msg.audioUrl)}
+                          className={cn(
+                            "inline-flex items-center gap-1 text-[11px] font-medium transition-colors px-1.5 py-0.5 rounded-full cursor-pointer",
+                            activeAudio === msg.id
+                              ? "text-pink-400 bg-pink-500/20 shadow-sm"
+                              : "text-white/40 hover:text-pink-300 hover:bg-white/10"
+                          )}
+                          title={activeAudio === msg.id ? "Stop voice" : "Listen to companion"}
+                        >
+                          {activeAudio === msg.id ? (
+                            <>
+                              <VolumeX className="h-3 w-3 animate-pulse text-pink-400" />
+                              <span className="text-[10px] text-pink-400">Stop</span>
+                            </>
+                          ) : (
+                            <>
+                              <Volume2 className="h-3 w-3" />
+                              <span className="text-[10px]">Listen</span>
+                            </>
+                          )}
+                        </button>
+                      )}
+                    </div>
                 </div>
                 {msg.sender === 'user' && (
-                  <Avatar className="h-8 w-8 sm:h-10 sm:w-10 border-2 border-border">
+                  <Avatar className="h-8 w-8 sm:h-9 sm:w-9 border-2 border-border shrink-0">
                     <AvatarFallback>U</AvatarFallback>
                   </Avatar>
                 )}
               </div>
             ))}
             {isAiResponding && (
-               <div className="flex items-start gap-4 justify-start animate-message-in">
-                 <Avatar className="h-10 w-10 border-2 border-primary/50">
+               <div className="flex items-start gap-2 sm:gap-3 justify-start animate-message-in">
+                 <Avatar className="h-8 w-8 sm:h-9 sm:w-9 border-2 border-primary/50 shrink-0">
                     <AvatarImage src={characterImage || "https://placehold.co/400x600.png"} alt={companionName} data-ai-hint="beautiful woman" className="object-cover object-top" />
                     <AvatarFallback>{companionName.charAt(0).toUpperCase()}</AvatarFallback>
                   </Avatar>
-                  <div className="max-w-sm p-3 px-4 rounded-2xl rounded-bl-lg liquid-glass text-card-foreground">
-                    <div className="flex items-center justify-center space-x-2 h-6">
-                      <span className="h-2 w-2 bg-muted-foreground rounded-full animate-pulse [animation-delay:-0.3s]"></span>
-                      <span className="h-2 w-2 bg-muted-foreground rounded-full animate-pulse [animation-delay:-0.15s]"></span>
-                      <span className="h-2 w-2 bg-muted-foreground rounded-full animate-pulse"></span>
+                  <div className="p-2.5 px-4 rounded-2xl rounded-bl-lg liquid-glass text-card-foreground">
+                    <div className="flex items-center justify-center space-x-1.5 h-5">
+                      <span className="h-2 w-2 bg-pink-400 rounded-full animate-pulse [animation-delay:-0.3s]"></span>
+                      <span className="h-2 w-2 bg-pink-400 rounded-full animate-pulse [animation-delay:-0.15s]"></span>
+                      <span className="h-2 w-2 bg-pink-400 rounded-full animate-pulse"></span>
                     </div>
                   </div>
               </div>
@@ -308,52 +547,52 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
           </div>
         </ScrollArea>
         
-        <div className="space-y-4">
+        <div className="shrink-0 space-y-1.5 sm:space-y-2 pb-safe">
           {!conversationStarted && !isLocked && (
             isLoadingIcebreakers ? (
-                <div className="flex items-center justify-center p-2"><Loader2 className="h-5 w-5 animate-spin text-muted-foreground" /></div>
+                <div className="flex items-center justify-center p-1"><Loader2 className="h-4 w-4 animate-spin text-muted-foreground" /></div>
             ) : (
-                <div className="flex flex-wrap gap-2 items-center justify-start">
+                <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 shrink-0">
                     {icebreakers.slice(0, 5).map((ice, index) => (
-                        <Button key={index} variant="outline" size="sm" className="rounded-full bg-black/30 border-white/10 text-muted-foreground hover:bg-black/50 hover:text-foreground" onClick={() => handleIcebreakerClick(ice)}>
-                            {icebreakerIcons[index % icebreakerIcons.length]} {ice}
+                        <Button key={index} variant="outline" size="sm" className="rounded-full bg-black/40 border-white/10 text-muted-foreground hover:bg-black/60 hover:text-foreground text-xs h-7 px-2.5 whitespace-nowrap shrink-0" onClick={() => handleIcebreakerClick(ice)}>
+                            {icebreakerIcons[index % icebreakerIcons.length]} <span className="ml-1">{ice}</span>
                         </Button>
                     ))}
                 </div>
             )
           )}
 
-          <div className="flex justify-start items-center gap-2 flex-wrap">
+          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 shrink-0">
               <Button 
                 variant="outline" 
-                className="rounded-full bg-black/30 border-white/10 text-muted-foreground hover:bg-black/50 hover:text-foreground text-xs h-8 px-2.5 sm:text-sm sm:h-9 sm:px-3"
+                className="rounded-full bg-black/40 border-white/10 text-muted-foreground hover:bg-black/60 hover:text-foreground text-xs h-7 px-2.5 sm:h-8 sm:px-3 whitespace-nowrap shrink-0"
                 onClick={() => handlePremiumAction("I want to send you a gift 🎁")}
                 disabled={isAiResponding}
               >
-                  <Gift className="mr-2 h-4 w-4" /> Send Gift
+                  <Gift className="mr-1 h-3.5 w-3.5 text-pink-400" /> Send Gift
               </Button>
               <Button 
                 variant="outline" 
-                className="rounded-full bg-black/30 border-white/10 text-muted-foreground hover:bg-black/50 hover:text-foreground text-xs h-8 px-2.5 sm:text-sm sm:h-9 sm:px-3"
+                className="rounded-full bg-black/40 border-white/10 text-muted-foreground hover:bg-black/60 hover:text-foreground text-xs h-7 px-2.5 sm:h-8 sm:px-3 whitespace-nowrap shrink-0"
                 onClick={() => handlePremiumAction("Let's do some role-playing.")}
                 disabled={isAiResponding}
               >
-                  <Drama className="mr-2 h-4 w-4" /> Role Play
+                  <Drama className="mr-1 h-3.5 w-3.5 text-purple-400" /> Role Play
               </Button>
               <Button 
                 variant="default" 
-                className="rounded-full bg-gradient-to-r from-primary to-fuchsia-600 text-primary-foreground shadow-lg shadow-primary/20 hover:opacity-90 transition-opacity text-xs h-8 px-2.5 sm:text-sm sm:h-9 sm:px-3"
+                className="rounded-full bg-gradient-to-r from-primary to-fuchsia-600 text-primary-foreground shadow-sm shadow-primary/20 hover:opacity-90 transition-opacity text-xs h-7 px-2.5 sm:h-8 sm:px-3 whitespace-nowrap shrink-0 font-medium"
                 onClick={() => handlePremiumAction("I want to get more intimate with you.")}
                 disabled={isAiResponding}
               >
-                  <Flame className="mr-2 h-4 w-4" /> Get Intimate
+                  <Flame className="mr-1 h-3.5 w-3.5" /> Get Intimate
               </Button>
           </div>
         
-          <div className="flex items-end gap-2 liquid-glass-active p-2">
+          <div className="flex items-end gap-1.5 sm:gap-2 liquid-glass-active p-1.5 sm:p-2 rounded-2xl">
             <input type="file" ref={fileInputRef} onChange={handleFileChange} className="hidden" accept="image/jpeg, image/png, image/gif, image/webp" />
-            <Button variant="ghost" onClick={handleAttachmentClick} disabled={isAiResponding || isLocked} className="flex-shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-full hover:bg-primary/20 disabled:opacity-50 disabled:cursor-not-allowed">
-                <Paperclip className="h-5 w-5 text-primary" />
+            <Button variant="ghost" size="icon" onClick={handleAttachmentClick} disabled={isAiResponding || isLocked} className="shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-full hover:bg-primary/20 disabled:opacity-50 disabled:cursor-not-allowed">
+                <Paperclip className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
             </Button>
             <Textarea
               ref={textareaRef}
@@ -366,29 +605,46 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
                 }
               }}
               placeholder="Tell me your desires..."
-              className="flex-1 bg-transparent border-0 resize-none focus-visible:ring-0 focus-visible:ring-offset-0 p-2 max-h-32 text-sm sm:text-base"
+              className="flex-1 bg-transparent border-0 resize-none focus-visible:ring-0 focus-visible:ring-offset-0 p-1.5 sm:p-2 max-h-24 sm:max-h-32 text-base leading-tight placeholder:text-muted-foreground"
               rows={1}
               disabled={isAiResponding}
             />
-            <Button variant="ghost" disabled={isAiResponding} className="flex-shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed">
-                <Mic className="h-5 w-5 text-primary-foreground" />
+            <Button
+              variant="ghost"
+              size="icon"
+              type="button"
+              onClick={toggleVoiceInput}
+              disabled={isAiResponding}
+              className={cn(
+                "shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-full transition-all duration-300",
+                isListening
+                  ? "bg-red-500 text-white animate-pulse ring-4 ring-pink-500/50"
+                  : "bg-primary hover:bg-primary/90 text-primary-foreground disabled:opacity-50 disabled:cursor-not-allowed"
+              )}
+              title={isListening ? "Stop listening" : "Click to speak with voice"}
+            >
+              {isListening ? (
+                <MicOff className="h-4 w-4 sm:h-5 sm:w-5" />
+              ) : (
+                <Mic className="h-4 w-4 sm:h-5 sm:w-5" />
+              )}
             </Button>
-            <Button onClick={handleSend} disabled={!inputValue.trim() || isAiResponding} className="bg-input hover:bg-input/80 flex-shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed">
-              <Send className="h-5 w-5" />
+            <Button onClick={handleSend} size="icon" disabled={!inputValue.trim() || isAiResponding} className="bg-primary/80 hover:bg-primary text-primary-foreground shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-xl disabled:opacity-40 disabled:cursor-not-allowed">
+              <Send className="h-4 w-4 sm:h-5 sm:w-5" />
             </Button>
           </div>
           {messagesLeft !== null && messagesLeft > 0 && (
-            <div className="text-center text-xs text-muted-foreground">
+            <div className="text-center text-[11px] sm:text-xs text-muted-foreground">
               You have <span className="font-bold text-pink-400">{messagesLeft}</span> monthly messages left.
             </div>
           )}
           {isLocked && (
-            <div className="text-center text-sm font-semibold p-2.5 rounded-xl bg-pink-500/10 text-pink-300 border border-pink-500/30 flex items-center justify-center gap-2">
-              <Lock className="h-4 w-4 text-pink-400" />
+            <div className="text-center text-xs sm:text-sm font-semibold p-2 sm:p-2.5 rounded-xl bg-pink-500/10 text-pink-300 border border-pink-500/30 flex items-center justify-center gap-2">
+              <Lock className="h-3.5 w-3.5 text-pink-400 shrink-0" />
               <span>Free limit completed please get premium</span>
               <Button
                 size="sm"
-                className="ml-2 h-7 px-3 text-xs bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white rounded-full shadow-md font-semibold"
+                className="ml-1 sm:ml-2 h-6 sm:h-7 px-2.5 sm:px-3 text-[11px] sm:text-xs bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white rounded-full shadow-md font-semibold shrink-0"
                 onClick={() => router.push('/subscribe')}
               >
                 Get Premium ✨

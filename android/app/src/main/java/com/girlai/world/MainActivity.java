@@ -137,6 +137,8 @@ public class MainActivity extends AppCompatActivity {
         settings.setSupportMultipleWindows(false);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
 
         // Customize User-Agent so backend/PWA knows it's the native wrapper
         String defaultUa = settings.getUserAgentString();

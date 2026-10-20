@@ -169,13 +169,13 @@ export default function ChatPage() {
         open={showPremiumDialog}
         onOpenChange={setShowPremiumDialog}
       />
-      <div className="h-screen w-full flex bg-liquid-flow text-foreground relative overflow-hidden">
+      <div className="h-screen h-[100dvh] max-h-[100dvh] w-full flex bg-liquid-flow text-foreground relative overflow-hidden">
         {/* Animated Liquid Background Glowing Spots */}
         <div className="bg-glow-spot top-10 left-[10%] z-0"></div>
         <div className="bg-glow-spot-2 bottom-10 right-[15%] z-0"></div>
 
         {/* Desktop Sidebar */}
-        <aside className="hidden md:block w-[360px] liquid-glass border-r-0 rounded-none sticky top-0 h-screen z-10">
+        <aside className="hidden md:block w-[360px] liquid-glass border-r-0 rounded-none sticky top-0 h-screen h-[100dvh] z-10">
           <LeftSidebar
             characterImage={characterImage}
             setCharacterImage={setCharacterImage}
@@ -188,22 +188,22 @@ export default function ChatPage() {
           />
         </aside>
 
-        <main className="flex-1 flex flex-col h-full relative z-10">
+        <main className="flex-1 flex flex-col h-full min-h-0 min-w-0 relative z-10 overflow-hidden">
           {/* Mobile Header & Sidebar Sheet */}
-          <div className="md:hidden flex items-center justify-between p-2 liquid-glass rounded-none border-t-0 border-l-0 border-r-0 backdrop-blur-xl shadow-lg">
-            <div className="flex items-center gap-1">
-              <Button variant="ghost" size="icon" className="text-muted-foreground hover:bg-accent/50 hover:text-white rounded-full transition-colors" onClick={() => router.push('/')}>
-                <ArrowLeft className="h-6 w-6" />
+          <div className="md:hidden flex items-center justify-between p-2 px-3 liquid-glass rounded-none border-t-0 border-l-0 border-r-0 backdrop-blur-xl shadow-lg shrink-0 pt-safe z-20">
+            <div className="flex items-center gap-1 min-w-0">
+              <Button variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground hover:bg-accent/50 hover:text-white rounded-full transition-colors shrink-0" onClick={() => router.push('/')}>
+                <ArrowLeft className="h-5 w-5" />
                 <span className="sr-only">Back</span>
               </Button>
               <Sheet>
                 <SheetTrigger asChild>
-                  <Button variant="ghost" size="icon" className="text-muted-foreground hover:bg-accent/50 hover:text-white rounded-full transition-colors">
-                    <Menu className="h-6 w-6" />
+                  <Button variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground hover:bg-accent/50 hover:text-white rounded-full transition-colors shrink-0">
+                    <Menu className="h-5 w-5" />
                     <span className="sr-only">Open Sidebar</span>
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="left" className="w-[300px] sm:w-[360px] p-0 liquid-glass border-t-0 border-l-0 border-b-0 rounded-none backdrop-blur-xl">
+                <SheetContent side="left" className="w-[85vw] max-w-[340px] p-0 liquid-glass border-t-0 border-l-0 border-b-0 rounded-none backdrop-blur-xl">
                   <SheetTitle className="sr-only">Companion Customization</SheetTitle>
                   <SheetDescription className="sr-only">Customize your AI companion's name, image, theme, and personality.</SheetDescription>
                   <LeftSidebar
@@ -218,20 +218,34 @@ export default function ChatPage() {
                   />
                 </SheetContent>
               </Sheet>
+              <div className="flex items-center gap-2 min-w-0 ml-1">
+                <div className="relative shrink-0">
+                  <Avatar className="h-8 w-8 ring-1 ring-primary/40">
+                    <AvatarImage src={characterImage || undefined} alt={companionName} className="object-cover object-top" />
+                    <AvatarFallback>{companionName.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-green-500 ring-2 ring-background"></span>
+                </div>
+                <div className="min-w-0">
+                  <span className="font-semibold text-sm truncate block">{companionName}</span>
+                  <span className="text-[10px] text-green-400 font-medium leading-none block">Online</span>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Avatar className="h-8 w-8">
-                <AvatarImage src={characterImage || undefined} alt={companionName} />
-                <AvatarFallback>{companionName.charAt(0)}</AvatarFallback>
-              </Avatar>
-              <span className="font-semibold">{companionName}</span>
+
+            <div className="flex items-center gap-1.5 shrink-0">
+              {!isPremium && (
+                <Link href="/subscribe">
+                  <Button size="sm" className="h-7 px-2.5 text-xs bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold rounded-full shadow-sm hover:opacity-90">
+                    <Sparkles className="h-3 w-3 mr-1" /> VIP
+                  </Button>
+                </Link>
+              )}
             </div>
-            {/* Spacer to balance the trigger buttons */}
-            <div className="w-20"></div>
           </div>
 
           {/* Desktop header */}
-          <div className="hidden md:flex items-center justify-between p-3 liquid-glass rounded-none border-t-0 border-l-0 border-r-0 backdrop-blur-xl shadow-lg">
+          <div className="hidden md:flex items-center justify-between p-3 liquid-glass rounded-none border-t-0 border-l-0 border-r-0 backdrop-blur-xl shadow-lg shrink-0">
             <Button variant="ghost" onClick={() => router.push('/')} className="hover:bg-accent/50 text-muted-foreground hover:text-foreground font-normal rounded-full">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back
@@ -246,7 +260,7 @@ export default function ChatPage() {
             <div className="w-24"></div> {/* Spacer */}
           </div>
 
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
             <ChatContainer
               characterImage={characterImage}
               companionName={companionName}

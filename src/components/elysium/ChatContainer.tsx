@@ -226,8 +226,12 @@ export function ChatContainer({
         });
 
         let audioResult = null;
-        if (activePremium && aiResponseData.type === 'text') {
-          audioResult = await getAudio(aiResponseData.content);
+        if (aiResponseData.type === 'text') {
+          try {
+            audioResult = await getAudio(aiResponseData.content);
+          } catch (e) {
+            console.error("Audio generation failed:", e);
+          }
         }
 
         const aiResponseMessage: Message = {
@@ -261,7 +265,7 @@ export function ChatContainer({
   };
 
   return (
-    <>
+    <div className="flex-1 h-full w-full flex flex-col min-h-0 overflow-hidden">
       <ChatInterface
         messages={messages}
         icebreakers={icebreakers}
@@ -275,6 +279,6 @@ export function ChatContainer({
         isPremium={activePremium}
         setShowPremiumDialog={setShowPremiumDialog}
       />
-    </>
+    </div>
   );
 }

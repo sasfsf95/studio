@@ -119,7 +119,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-liquid-flow relative overflow-hidden p-4">
+    <div className="flex items-center justify-center min-h-screen min-h-[100dvh] bg-liquid-flow relative overflow-hidden p-3 sm:p-4 pt-safe pb-safe">
       <div className="bg-glow-spot top-1/4 left-1/4 z-0"></div>
       <div className="bg-glow-spot-2 bottom-1/4 right-1/4 z-0"></div>
       <div className="absolute top-16 right-10 w-3 h-3 bg-pink-400 rounded-full animate-ping opacity-60 z-0"></div>
@@ -129,22 +129,22 @@ export default function LoginPage() {
       <Card className="w-full max-w-sm liquid-glass-modal rounded-3xl border border-white/20 shadow-2xl relative z-10 overflow-hidden">
         <div className="h-1 w-full bg-gradient-to-r from-pink-500 via-purple-500 to-pink-600"></div>
 
-        <CardHeader className="text-center pb-2 pt-8 px-8">
+        <CardHeader className="text-center pb-2 pt-6 sm:pt-8 px-5 sm:px-8">
           <div className="flex justify-center mb-4">
-            <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-500 via-purple-600 to-pink-700 flex items-center justify-center shadow-xl shadow-pink-500/40">
-              <Sparkles className="h-8 w-8 text-white" />
+            <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-pink-500 via-purple-600 to-pink-700 flex items-center justify-center shadow-xl shadow-pink-500/40">
+              <Sparkles className="h-7 w-7 sm:h-8 sm:w-8 text-white" />
               <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-500 to-purple-600 rounded-2xl blur opacity-30"></div>
             </div>
           </div>
-          <CardTitle className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-300 to-pink-500 drop-shadow-md">
+          <CardTitle className="text-2xl sm:text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-300 to-pink-500 drop-shadow-md">
             Welcome Back
           </CardTitle>
-          <CardDescription className="text-gray-400 text-sm mt-1">
+          <CardDescription className="text-gray-400 text-xs sm:text-sm mt-1">
             Sign in with your mobile &amp; password
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="px-8 pb-8 pt-4">
+        <CardContent className="px-5 sm:px-8 pb-6 sm:pb-8 pt-2 sm:pt-4">
           <form onSubmit={handleLogin} className="space-y-4">
 
             {/* Full Name */}

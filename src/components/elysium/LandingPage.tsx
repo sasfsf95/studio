@@ -338,18 +338,18 @@ export function LandingPage() {
           </div>
 
           <div className="relative z-10">
-            <header className="sticky top-0 z-20 liquid-glass rounded-none border-t-0 border-l-0 border-r-0 backdrop-blur-xl p-2 px-4 sm:p-4 flex justify-between items-center shadow-lg shadow-black/20">
-              <div className="flex items-center gap-4">
+            <header className="sticky top-0 z-20 liquid-glass rounded-none border-t-0 border-l-0 border-r-0 backdrop-blur-xl p-2 px-3 sm:px-4 flex justify-between items-center shadow-lg shadow-black/20 pt-safe">
+              <div className="flex items-center gap-2 sm:gap-4 min-w-0">
                 <div className="lg:hidden">
                   <Sheet>
                     <SheetTrigger asChild>
-                      <Button variant="ghost" size="icon">
-                        <Menu className="h-6 w-6" />
+                      <Button variant="ghost" size="icon" className="h-9 w-9 text-white/80 hover:text-white shrink-0">
+                        <Menu className="h-5 w-5" />
                       </Button>
                     </SheetTrigger>
-                    <SheetContent side="left" className="w-[320px] liquid-glass border-t-0 border-l-0 border-b-0 rounded-none p-6 backdrop-blur-xl">
+                    <SheetContent side="left" className="w-[85vw] max-w-[320px] liquid-glass border-t-0 border-l-0 border-b-0 rounded-none p-5 backdrop-blur-xl">
                       <SheetHeader>
-                        <div className="flex items-center justify-center gap-3 mb-10 p-4 rounded-2xl bg-gradient-to-r from-pink-500/10 to-purple-600/10 border border-pink-500/20 backdrop-blur-sm">
+                        <div className="flex items-center justify-center gap-3 mb-8 p-3 rounded-2xl bg-gradient-to-r from-pink-500/10 to-purple-600/10 border border-pink-500/20 backdrop-blur-sm">
                           <SheetTitle className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-400 to-pink-600 drop-shadow-lg">Girl.ai</SheetTitle>
                         </div>
                         <SheetDescription className="sr-only">Main navigation menu and options.</SheetDescription>
@@ -358,69 +358,79 @@ export function LandingPage() {
                     </SheetContent>
                   </Sheet>
                 </div>
+                <div className="flex items-center gap-1.5 lg:hidden">
+                  <span className="text-xl font-black bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-purple-300 to-pink-500">Girl.ai</span>
+                </div>
                 <div className="hidden sm:flex items-center gap-6 text-base font-semibold">
                   <Button variant="ghost" className="text-pink-400 border-b-2 border-pink-400 rounded-none px-3 py-2 h-auto hover:text-pink-300 hover:border-pink-300 bg-gradient-to-r from-pink-500/10 to-purple-600/10 transition-all duration-300">Girls</Button>
                 </div>
               </div>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
                 <Link href="/subscribe">
-                  <Button className="relative bg-gradient-to-r from-yellow-400 via-orange-500 to-yellow-600 hover:from-yellow-500 hover:via-orange-600 hover:to-yellow-700 text-black font-bold py-3 px-6 rounded-xl shadow-xl shadow-yellow-500/30 hover:shadow-yellow-500/50 border-2 border-yellow-300/50 hover:border-yellow-200/70 transition-all duration-300 group overflow-hidden">
+                  <Button className="relative bg-gradient-to-r from-yellow-400 via-orange-500 to-yellow-600 hover:from-yellow-500 hover:via-orange-600 hover:to-yellow-700 text-black font-extrabold h-8 sm:h-11 px-2.5 sm:px-5 rounded-xl shadow-lg shadow-yellow-500/20 border border-yellow-300/40 text-xs sm:text-base group overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-                    <Crown className="mr-2 relative z-10 group-hover:rotate-12 transition-transform duration-300" />
-                    <span className="relative z-10 font-extrabold text-lg">✨ Become Premium ✨</span>
-                    <div className="absolute -inset-1 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-xl blur opacity-30 group-hover:opacity-50 transition-opacity duration-300"></div>
+                    <Crown className="mr-1 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4 relative z-10 group-hover:rotate-12 transition-transform duration-300" />
+                    <span className="relative z-10">Premium</span>
                   </Button>
                 </Link>
 
-                <Suspense fallback={<Button className="bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold" disabled>Loading...</Button>}>
+                <Suspense fallback={null}>
                   <DonationDialog
                     open={isDonationDialogOpen}
                     onOpenChange={setIsDonationDialogOpen}
                   >
-                    <Button className="relative bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-xl shadow-xl shadow-pink-500/30 hover:shadow-pink-500/50 border-2 border-pink-300/50 hover:border-pink-200/70 transition-all duration-300 group overflow-hidden">
+                    <Button className="relative bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold h-8 sm:h-11 px-2 sm:px-4 rounded-xl shadow-lg shadow-pink-500/20 border border-pink-300/30 text-xs sm:text-base group overflow-hidden">
                       <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-                      <Heart className="mr-2 relative z-10 group-hover:scale-110 transition-transform duration-300" />
-                      <span className="relative z-10 font-extrabold text-lg">💝 Donate</span>
-                      <div className="absolute -inset-1 bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl blur opacity-30 group-hover:opacity-50 transition-opacity duration-300"></div>
+                      <Heart className="sm:mr-1.5 h-3.5 w-3.5 sm:h-4 sm:w-4 relative z-10 group-hover:scale-110 transition-transform duration-300" />
+                      <span className="relative z-10 hidden xs:inline">Donate</span>
                     </Button>
                   </DonationDialog>
                 </Suspense>
-                {!user && (
+                {!user ? (
                   <Link href="/login">
-                    <Button variant="outline" className="hidden sm:inline-flex liquid-glass text-white border-white/20 hover:bg-white/20 rounded-xl px-5">Login</Button>
+                    <Button variant="outline" className="h-8 sm:h-10 px-2.5 sm:px-4 text-xs sm:text-sm liquid-glass text-white border-white/20 hover:bg-white/20 rounded-xl">Login</Button>
                   </Link>
+                ) : (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setShowProfile(!showProfile)}
+                    className="h-8 w-8 sm:h-9 sm:w-9 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 text-white font-bold text-xs"
+                  >
+                    {(user.name || user.email || 'U')[0].toUpperCase()}
+                  </Button>
                 )}
               </div>
             </header>
 
-            <div className="p-2 sm:p-4 md:p-6">
+            <div className="p-2 sm:p-4 md:p-6 max-w-full overflow-hidden">
               {/* Premium SEO Hero Section */}
-              <div className="text-center mb-12 px-4">
-                <h1 className="text-5xl md:text-7xl font-black mb-6 premium-text drop-shadow-2xl tracking-tight leading-tight">
+              <div className="text-center mb-6 sm:mb-12 px-2 sm:px-4">
+                <h1 className="text-3xl sm:text-5xl md:text-7xl font-black mb-3 sm:mb-6 premium-text drop-shadow-2xl tracking-tight leading-tight break-words">
                   Your Perfect AI Girlfriend Awaits
                 </h1>
-                <p className="text-xl md:text-3xl text-gray-200 mb-8 max-w-4xl mx-auto font-medium leading-relaxed">
-                  Experience the future of virtual relationships with Girl.ai. Chat with beautiful AI girlfriends, enjoy intimate conversations, and build meaningful connections with advanced AI companions.
+                <p className="text-sm sm:text-lg md:text-2xl text-gray-200 mb-5 sm:mb-8 max-w-4xl mx-auto font-medium leading-relaxed">
+                  Experience the future of virtual relationships with Girl.ai. Chat with beautiful AI girlfriends, enjoy intimate conversations, and build meaningful connections with advanced companions.
                 </p>
-                <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-300 mb-10">
-                  <span className="liquid-glass border border-pink-500/30 px-5 py-3 rounded-full backdrop-blur-md premium-glow font-semibold text-white">🤖 Advanced AI Technology</span>
-                  <span className="liquid-glass border border-purple-500/30 px-5 py-3 rounded-full backdrop-blur-md premium-glow font-semibold text-white">💕 Emotional Intelligence</span>
-                  <span className="liquid-glass border border-yellow-500/30 px-5 py-3 rounded-full backdrop-blur-md premium-glow font-semibold text-white">🌟 Personalized Experience</span>
-                  <span className="liquid-glass border border-emerald-500/30 px-5 py-3 rounded-full backdrop-blur-md premium-glow font-semibold text-white">🔒 Private & Secure</span>
+                <div className="flex flex-wrap justify-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-300 mb-6 sm:mb-10">
+                  <span className="liquid-glass border border-pink-500/30 px-3 py-1.5 sm:px-5 sm:py-2.5 rounded-full backdrop-blur-md font-semibold text-white">🤖 Advanced AI</span>
+                  <span className="liquid-glass border border-purple-500/30 px-3 py-1.5 sm:px-5 sm:py-2.5 rounded-full backdrop-blur-md font-semibold text-white">💕 Emotional Intelligence</span>
+                  <span className="liquid-glass border border-yellow-500/30 px-3 py-1.5 sm:px-5 sm:py-2.5 rounded-full backdrop-blur-md font-semibold text-white">🌟 Personalized</span>
+                  <span className="liquid-glass border border-emerald-500/30 px-3 py-1.5 sm:px-5 sm:py-2.5 rounded-full backdrop-blur-md font-semibold text-white">🔒 Private & Secure</span>
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-end gap-4 mb-6">
+              <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-end gap-3 mb-4 sm:mb-6">
 
                 <Suspense fallback={<Button variant="outline" className="liquid-glass text-white border-white/20" disabled>Loading...</Button>}>
                   <Sheet>
                     <SheetTrigger asChild>
-                      <Button variant="outline" className="liquid-glass text-white border-white/20 hover:bg-white/20 rounded-xl px-5">
-                        <SlidersHorizontal className="mr-2 h-4 w-4 text-pink-400" />
+                      <Button variant="outline" className="liquid-glass text-white border-white/20 hover:bg-white/20 rounded-xl px-4 py-1.5 h-9 text-xs sm:text-sm">
+                        <SlidersHorizontal className="mr-2 h-3.5 w-3.5 text-pink-400" />
                         Filters
                       </Button>
                     </SheetTrigger>
-                    <SheetContent className="liquid-glass-modal border-l border-white/20 p-6 backdrop-blur-2xl text-white" side="right">
+                    <SheetContent className="liquid-glass-modal border-l border-white/20 p-5 backdrop-blur-2xl text-white w-[85vw] max-w-[340px]" side="right">
                       <SheetHeader>
                         <SheetTitle className="text-2xl font-bold text-white">Filters</SheetTitle>
                         <SheetDescription className="text-gray-300">
@@ -428,7 +438,7 @@ export function LandingPage() {
                         </SheetDescription>
                       </SheetHeader>
                       <div className="py-6">
-                        <div className="flex flex-wrap gap-2.5">
+                        <div className="flex flex-wrap gap-2">
                           {tags.map((tag) => (
                             <Button
                               key={tag}
@@ -436,13 +446,13 @@ export function LandingPage() {
                               size="sm"
                               className="rounded-full liquid-glass border-white/20 hover:bg-pink-500/30 hover:border-pink-400 text-xs sm:text-sm text-white transition-all duration-300"
                             >
-                              <PlusSquare className="h-4 w-4 mr-2 text-pink-400" /> {tag}
+                              <PlusSquare className="h-3.5 w-3.5 mr-1.5 text-pink-400" /> {tag}
                             </Button>
                           ))}
                         </div>
                       </div>
                       <SheetFooter>
-                        <Button type="submit" className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold h-12 rounded-xl border border-white/20 shadow-lg shadow-pink-500/25">
+                        <Button type="submit" className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold h-11 rounded-xl border border-white/20 shadow-lg shadow-pink-500/25">
                           Apply Filters
                         </Button>
                       </SheetFooter>
@@ -451,15 +461,15 @@ export function LandingPage() {
                 </Suspense>
               </div>
 
-              <div className="character-grid grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-6 p-2">
+              <div className="character-grid grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-6 p-1 sm:p-2 max-w-full">
                 {displayedCharacters.map((character, index) => (
                   <Card
                     key={character.id}
-                    className="relative liquid-glass rounded-3xl group cursor-pointer overflow-hidden premium-card-hover card-shine-effect"
+                    className="relative liquid-glass rounded-2xl sm:rounded-3xl group cursor-pointer overflow-hidden premium-card-hover card-shine-effect border border-white/10"
                     onClick={() => handleCharacterSelect(character)}
                   >
-                    <CardContent className="p-0 overflow-hidden rounded-[calc(1.5rem-1px)]">
-                      <div className="relative h-[320px] sm:h-[320px] w-full overflow-hidden">
+                    <CardContent className="p-0 overflow-hidden rounded-[calc(1rem-1px)] sm:rounded-[calc(1.5rem-1px)]">
+                      <div className="relative h-[220px] xs:h-[260px] sm:h-[320px] w-full overflow-hidden">
                         <Image
                           src={character.image}
                           alt={character.name}
@@ -469,18 +479,18 @@ export function LandingPage() {
                           className="character-card-image absolute inset-0 h-full w-full object-cover object-top transition-transform duration-300 ease-in-out group-hover:scale-105"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent transition-opacity duration-300 group-hover:from-black/80"></div>
-                        {character.tags?.includes('New') && <Badge className="absolute top-2 left-2 bg-primary border-none text-primary-foreground font-semibold">New</Badge>}
-                        <div className="absolute top-2 right-2 flex flex-col items-center gap-2">
-                          <Button size="icon" className="h-8 w-8 bg-black/50 hover:bg-primary backdrop-blur-sm transition-colors duration-300"><MessageSquare className="h-4 w-4" /></Button>
+                        {character.tags?.includes('New') && <Badge className="absolute top-2 left-2 bg-primary border-none text-primary-foreground font-semibold text-[10px] px-1.5 py-0.5">New</Badge>}
+                        <div className="absolute top-2 right-2 flex flex-col items-center gap-1.5">
+                          <Button size="icon" className="h-7 w-7 sm:h-8 sm:w-8 bg-black/50 hover:bg-primary backdrop-blur-sm transition-colors duration-300"><MessageSquare className="h-3.5 w-3.5" /></Button>
                           {character.online && <div className="h-2 w-2 rounded-full bg-green-400 ring-2 ring-offset-2 ring-offset-black/50 ring-green-400 animate-pulse"></div>}
                         </div>
-                        <div className="absolute bottom-2 left-2 flex items-center gap-2 text-white text-xs font-bold">
-                          <div className="flex items-center gap-1 bg-black/50 backdrop-blur-sm py-0.5 px-1.5 rounded-md transition-colors duration-300 group-hover:bg-primary/80"><Heart className="h-3 w-3 text-red-400" /> {character.likes}</div>
-                          <div className="flex items-center gap-1 bg-black/50 backdrop-blur-sm py-0.5 px-1.5 rounded-md transition-colors duration-300 group-hover:bg-primary/80"><Eye className="h-3 w-3 text-blue-300" /> {character.views}</div>
+                        <div className="absolute bottom-2 left-2 flex items-center gap-1.5 text-white text-[10px] sm:text-xs font-bold">
+                          <div className="flex items-center gap-1 bg-black/50 backdrop-blur-sm py-0.5 px-1.5 rounded-md transition-colors duration-300 group-hover:bg-primary/80"><Heart className="h-2.5 w-2.5 text-red-400" /> {character.likes}</div>
+                          <div className="flex items-center gap-1 bg-black/50 backdrop-blur-sm py-0.5 px-1.5 rounded-md transition-colors duration-300 group-hover:bg-primary/80"><Eye className="h-2.5 w-2.5 text-blue-300" /> {character.views}</div>
                         </div>
                       </div>
-                      <div className="p-3 bg-black/20 backdrop-blur-md">
-                        <h3 className="font-semibold text-white transition-colors duration-300 group-hover:text-primary">{character.name}</h3>
+                      <div className="p-2 sm:p-3 bg-black/30 backdrop-blur-md">
+                        <h3 className="font-semibold text-white text-xs sm:text-base truncate transition-colors duration-300 group-hover:text-primary">{character.name}</h3>
                       </div>
                     </CardContent>
                   </Card>
