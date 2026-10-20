@@ -143,6 +143,64 @@ async function callOpenRouter(
   return null;
 }
 
+// 0-config free fallback: ensures chat never fails even if Netlify environment variables are unset
+async function callFreeFallback(
+  systemPrompt: string,
+  history: { role: 'user' | 'model'; parts: { text: string }[] }[],
+  currentMessage: string
+): Promise<string | null> {
+  try {
+    const messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
+      { role: 'system', content: systemPrompt }
+    ];
+
+    if (history && history.length > 0) {
+      for (const h of history) {
+        const text = h.parts?.[0]?.text || '';
+        if (text) {
+          messages.push({
+            role: h.role === 'model' ? 'assistant' : 'user',
+            content: text
+          });
+        }
+      }
+    }
+
+    messages.push({
+      role: 'user',
+      content: currentMessage
+    });
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8500);
+
+    const response = await fetch('https://text.pollinations.ai/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        messages,
+        model: 'openai',
+        temperature: 0.7,
+      }),
+      signal: controller.signal,
+    });
+    clearTimeout(timeoutId);
+
+    if (response.ok) {
+      const text = await response.text();
+      if (text && text.trim()) {
+        console.log('[Free AI Fallback] Success');
+        return text.trim();
+      }
+    }
+  } catch (err) {
+    console.warn('[Free AI Fallback] Exception or timeout:', err);
+  }
+  return null;
+}
+
 export async function continueConversation({
   message,
   chatId,
@@ -193,7 +251,7 @@ export async function continueConversation({
     }
   }
 
-  // 2. Fallback to OpenRouter (Meta Llama 3.3 70B, DeepSeek, etc.)
+  // 2. Fallback to OpenRouter (if OPENROUTER_API_KEY is configured in Netlify)
   try {
     const openRouterReply = await callOpenRouter(systemPrompt, history || [], message);
     if (openRouterReply) {
@@ -201,6 +259,24 @@ export async function continueConversation({
     }
   } catch (orError) {
     console.error("OpenRouter fallback failed:", orError);
+  }
+
+  // 3. Resilient 0-config fallback (guarantees chat works if network permits)
+  try {
+    const freeReply = await callFreeFallback(systemPrompt, history || [], message);
+    if (freeReply) {
+      return { type: 'text', content: freeReply };
+    }
+  } catch (fallbackError) {
+    console.error("Free fallback failed:", fallbackError);
+  }
+
+  // Diagnostic message if API keys are missing in Netlify environment variables
+  if (!hasValidGeminiKey && !process.env.OPENROUTER_API_KEY) {
+    return {
+      type: 'error',
+      content: "⚠️ Netlify Configuration Required: Please add OPENROUTER_API_KEY or GOOGLE_GENAI_API_KEY to your Netlify Environment Variables (Site configuration -> Environment variables), then redeploy."
+    };
   }
 
   return { type: 'error', content: "My circuits are a bit fuzzy right now, could you say that again?" };
