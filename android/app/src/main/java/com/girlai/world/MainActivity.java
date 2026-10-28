@@ -33,8 +33,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TARGET_URL = "https://girlaiworld.netlify.app/";
-    private static final String APP_HOST = "girlaiworld.netlify.app";
+    private static final String TARGET_URL = "https://evermateai.netlify.app/";
+    private static final String APP_HOST = "evermateai.netlify.app";
 
     private WebView webView;
     private SwipeRefreshLayout swipeRefresh;

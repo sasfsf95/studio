@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://evermate.ai'),
+  metadataBase: new URL('https://evermateai.netlify.app'),
   alternates: {
     canonical: '/',
   },

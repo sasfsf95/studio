@@ -3,7 +3,7 @@ Allow: /
 Disallow: /api/
 
 # Sitemap
-Sitemap: https://evermate.ai/sitemap.xml
+Sitemap: https://evermateai.netlify.app/sitemap.xml
 
 # AI Girlfriend Keywords for Crawlers
 # AI girlfriend, virtual girlfriend, AI companion, AI chat, virtual companion
