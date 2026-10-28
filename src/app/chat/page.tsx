@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
 import { PremiumDialog } from '@/components/elysium/PremiumDialog';
+import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 
 export default function ChatPage() {
@@ -18,6 +19,9 @@ export default function ChatPage() {
   const [characterId, setCharacterId] = useState<string>('');
   const [theme, setTheme] = useState('romantic-pink');
   const [companionName, setCompanionName] = useState('Aria');
+  const [companionRole, setCompanionRole] = useState('girlfriend');
+  const [companionRoleLabel, setCompanionRoleLabel] = useState('AI Girlfriend');
+  const [companionConfig, setCompanionConfig] = useState<any>(null);
   const [isReady, setIsReady] = useState(false);
   const [isPremium, setIsPremium] = useState(false);
   const [showPremiumDialog, setShowPremiumDialog] = useState(false);
@@ -78,6 +82,18 @@ export default function ChatPage() {
         setCharacterId(character.id || 'default-chat');
         setTheme(character.theme || 'romantic-pink');
         setCompanionName(character.name || 'Aria');
+        const role = character.role || 'girlfriend';
+        const roleLabel = character.roleLabel || (role.charAt(0).toUpperCase() + role.slice(1).replace('_', ' '));
+        setCompanionRole(role);
+        setCompanionRoleLabel(roleLabel);
+        setCompanionConfig({
+          name: character.name || 'Aria',
+          role,
+          roleLabel,
+          personality: character.personality || '',
+          communicationStyle: character.communicationStyle || '',
+          memories: character.memories || '',
+        });
       } else {
         // If no character is selected, redirect to home page to choose one.
         router.push('/');
@@ -228,7 +244,7 @@ export default function ChatPage() {
                 </div>
                 <div className="min-w-0">
                   <span className="font-semibold text-sm truncate block">{companionName}</span>
-                  <span className="text-[10px] text-green-400 font-medium leading-none block">Online</span>
+                  <span className="text-[10px] text-green-400 font-medium leading-none block mt-0.5">Online</span>
                 </div>
               </div>
             </div>
@@ -251,11 +267,16 @@ export default function ChatPage() {
               Back
             </Button>
             <div className="flex items-center gap-3">
-              <Avatar className="h-9 w-9">
+              <Avatar className="h-9 w-9 ring-1 ring-primary/40">
                 <AvatarImage src={characterImage || undefined} alt={companionName} />
                 <AvatarFallback>{companionName.charAt(0)}</AvatarFallback>
               </Avatar>
-              <span className="font-semibold text-lg">{companionName}</span>
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-lg">{companionName}</span>
+                <span className="flex items-center gap-1 text-xs text-green-400 font-medium">
+                  <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse"></span> Online
+                </span>
+              </div>
             </div>
             <div className="w-24"></div> {/* Spacer */}
           </div>
@@ -264,6 +285,9 @@ export default function ChatPage() {
             <ChatContainer
               characterImage={characterImage}
               companionName={companionName}
+              companionRole={companionRole}
+              companionRoleLabel={companionRoleLabel}
+              companionConfig={companionConfig}
               isPremium={isPremium}
               setShowPremiumDialog={setShowPremiumDialog}
               chatId={characterId}

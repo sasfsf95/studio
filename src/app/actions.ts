@@ -3,18 +3,13 @@
 
 import { ai } from '@/ai/genkit';
 import { googleAI } from '@genkit-ai/googleai';
-import { textToSpeech, TextToSpeechOutput } from '@/ai/flows/text-to-speech';
-import { getSystemPrompt } from '@/ai/system-prompt';
+
+import { getSystemPrompt, CompanionPromptConfig } from '@/ai/system-prompt';
 import Stripe from 'stripe';
 
 
-export async function getAudio(text: string): Promise<TextToSpeechOutput | null> {
-  try {
-    return await textToSpeech(text);
-  } catch (error) {
-    console.error("Failed to generate audio:", error);
-    return null;
-  }
+export async function getAudio(_text: string): Promise<null> {
+  return null;
 }
 
 function buildMessages(systemPrompt: string, history: any[], currentMessage: string) {
@@ -109,8 +104,8 @@ async function callOpenRouter(
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${apiKey}`,
-          'HTTP-Referer': process.env.NEXT_PUBLIC_APP_URL || 'https://girlai.app',
-          'X-Title': 'Girl.ai',
+          'HTTP-Referer': process.env.NEXT_PUBLIC_APP_URL || 'https://evermate.app',
+          'X-Title': 'Evermate',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -289,13 +284,15 @@ export async function continueConversation({
   chatId,
   history,
   companionName = 'Yukitha',
+  companionConfig,
 }: {
   message: string;
   chatId: string;
   history?: { role: 'user' | 'model'; parts: { text: string }[] }[];
   companionName?: string;
+  companionConfig?: CompanionPromptConfig;
 }): Promise<{ type: 'text' | 'audio' | 'image' | 'error', content: string }> {
-  const systemPrompt = getSystemPrompt(companionName);
+  const systemPrompt = getSystemPrompt(companionConfig || companionName);
 
   // 1. Direct Gemini (using integrated key - 0 Netlify setup needed)
   try {

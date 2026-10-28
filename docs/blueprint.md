@@ -1,4 +1,4 @@
-# **App Name**: Elysium
+# **App Name**: Evermate
 
 ## Core Features:
 

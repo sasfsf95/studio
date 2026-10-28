@@ -7,7 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Crown, Sparkles, MessageSquare, Heart, Flame, WandSparkles, Users, Moon, Eclipse, Camera, Sun, Volume2 } from 'lucide-react';
+import { Crown, Sparkles, MessageSquare, Heart, Flame, WandSparkles, Users, Moon, Eclipse, Camera, Sun } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useRef } from 'react';
 import Image from 'next/image';
@@ -210,42 +210,7 @@ export function LeftSidebar({ characterImage, setCharacterImage, theme, setTheme
               </SelectContent>
             </Select>
           </div>
-          <div>
-            <Label htmlFor="voice-style" className="text-muted-foreground text-xs font-medium flex items-center gap-1.5">
-              <Volume2 className="h-3.5 w-3.5 text-primary" /> Companion Voice (Light Model)
-            </Label>
-            <Select defaultValue="soft-sensual" onValueChange={(val) => {
-              if (typeof window !== 'undefined') {
-                localStorage.setItem('companionVoice', val);
-              }
-            }}>
-              <SelectTrigger id="voice-style" className="mt-1 bg-black/40 border-white/10 h-9">
-                <SelectValue placeholder="Select a voice style" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="soft-sensual">
-                  <div className="flex items-center gap-2">
-                    <Heart className="h-4 w-4 text-pink-400"/> Soft &amp; Intimate
-                  </div>
-                </SelectItem>
-                <SelectItem value="sweet-romantic">
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="h-4 w-4 text-purple-400"/> Sweet Romance
-                  </div>
-                </SelectItem>
-                <SelectItem value="deep-sensual">
-                  <div className="flex items-center gap-2">
-                    <Flame className="h-4 w-4 text-red-400"/> Deep &amp; Sensual
-                  </div>
-                </SelectItem>
-                <SelectItem value="playful-cheerful">
-                  <div className="flex items-center gap-2">
-                    <Sun className="h-4 w-4 text-yellow-400"/> Playful &amp; Cheerful
-                  </div>
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+
         </CardContent>
       </Card>
     </div>

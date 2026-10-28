@@ -5,7 +5,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Send, Mic, MicOff, Volume2, VolumeX, Heart, Sparkles, Sun, Camera, Gift, Drama, Flame, Loader2, Paperclip, Lock, Play, Pause, Square } from 'lucide-react';
+import { Send, Mic, MicOff, Heart, Sparkles, Sun, Camera, Gift, Drama, Flame, Loader2, Paperclip, Lock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -43,112 +43,15 @@ const icebreakerIcons = [
     <Gift className="h-4 w-4" />,
 ];
 
-function AudioPlayer({ src, messageId, onPlayChange }: { src: string; messageId: string; onPlayChange?: (playing: boolean) => void }) {
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    const handlePlay = () => {
-      setIsPlaying(true);
-      onPlayChange?.(true);
-    };
-    const handlePause = () => {
-      setIsPlaying(false);
-      onPlayChange?.(false);
-    };
-    const handleEnded = () => {
-      setIsPlaying(false);
-      setProgress(0);
-      onPlayChange?.(false);
-    };
-    const handleTimeUpdate = () => {
-      if (audio.duration > 0) {
-        setProgress((audio.currentTime / audio.duration) * 100);
-      }
-    };
-    
-    // Stop other audio players when this one starts
-    const handleGlobalPlay = (event: CustomEvent) => {
-      if (event.detail.id !== messageId) {
-        audio.pause();
-      }
-    };
-
-    audio.addEventListener('play', handlePlay);
-    audio.addEventListener('pause', handlePause);
-    audio.addEventListener('ended', handleEnded);
-    audio.addEventListener('timeupdate', handleTimeUpdate);
-    document.addEventListener('play-audio', handleGlobalPlay as EventListener);
-
-    return () => {
-      audio.removeEventListener('play', handlePlay);
-      audio.removeEventListener('pause', handlePause);
-      audio.removeEventListener('ended', handleEnded);
-      audio.removeEventListener('timeupdate', handleTimeUpdate);
-      document.removeEventListener('play-audio', handleGlobalPlay as EventListener);
-    };
-  }, [messageId, onPlayChange]);
-
-  const togglePlayPause = () => {
-    const audio = audioRef.current;
-    if (audio) {
-      if (audio.paused) {
-        document.dispatchEvent(new CustomEvent('play-audio', { detail: { id: messageId } }));
-        audio.play().catch(e => console.warn('Audio play prevented:', e));
-      } else {
-        audio.pause();
-      }
-    }
-  };
-  
-  const handleStop = () => {
-    const audio = audioRef.current;
-    if (audio) {
-      audio.pause();
-      audio.currentTime = 0;
-      setIsPlaying(false);
-      setProgress(0);
-      onPlayChange?.(false);
-    }
-  };
-
-  return (
-    <div className="flex items-center gap-2 p-2 rounded-xl bg-black/40 border border-white/10 mt-2 backdrop-blur-md">
-      <audio ref={audioRef} src={src} preload="metadata"></audio>
-      <Button onClick={togglePlayPause} variant="ghost" size="icon" className="h-7 w-7 text-primary-foreground hover:bg-white/20 rounded-full shrink-0">
-        {isPlaying ? <Pause className="h-3.5 w-3.5 text-pink-400" /> : <Play className="h-3.5 w-3.5 text-white" />}
-      </Button>
-      <div className="w-full bg-white/10 rounded-full h-1.5 flex-1 overflow-hidden cursor-pointer" onClick={(e) => {
-        const audio = audioRef.current;
-        if (audio && audio.duration > 0) {
-          const rect = e.currentTarget.getBoundingClientRect();
-          const clickPos = (e.clientX - rect.left) / rect.width;
-          audio.currentTime = clickPos * audio.duration;
-        }
-      }}>
-        <div className="bg-gradient-to-r from-pink-500 to-purple-500 h-1.5 rounded-full transition-all duration-100" style={{ width: `${progress}%` }}></div>
-      </div>
-      <Button onClick={handleStop} variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground hover:text-white rounded-full shrink-0">
-        <Square className="h-3 w-3" />
-      </Button>
-    </div>
-  );
-}
-
 
 export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingIcebreakers, isAiResponding, characterImage, companionName, isLocked, messagesLeft, isPremium, setShowPremiumDialog }: ChatInterfaceProps) {
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [activeAudio, setActiveAudio] = useState<string | null>(null);
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef<any>(null);
-  const activeAudioElementRef = useRef<HTMLAudioElement | null>(null);
+  const transcriptRef = useRef<string>('');
   const router = useRouter();
   const { toast } = useToast();
 
@@ -170,128 +73,14 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
     }
   }, [isAiResponding]);
 
-  // Clean up speech recognition and synthesis on unmount
+  // Clean up speech recognition on unmount
   useEffect(() => {
     return () => {
-      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-      }
       try {
         recognitionRef.current?.stop();
       } catch (e) {}
     };
   }, []);
-
-  // Voice Speech: Text-to-Speech playback for AI companion
-  const handleSpeak = (messageId: string, text: string, audioUrl?: string) => {
-    if (typeof window === 'undefined') return;
-
-    // If currently active, stop it
-    if (activeAudio === messageId) {
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-      }
-      if (activeAudioElementRef.current) {
-        activeAudioElementRef.current.pause();
-        activeAudioElementRef.current = null;
-      }
-      document.dispatchEvent(new CustomEvent('play-audio', { detail: { id: '__stop_all__' } }));
-      setActiveAudio(null);
-      return;
-    }
-
-    // Stop anything else currently playing
-    document.dispatchEvent(new CustomEvent('play-audio', { detail: { id: messageId } }));
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-    }
-    if (activeAudioElementRef.current) {
-      activeAudioElementRef.current.pause();
-      activeAudioElementRef.current = null;
-    }
-
-    // 1. If audioUrl is provided, play it
-    if (audioUrl) {
-      try {
-        const audio = new Audio(audioUrl);
-        activeAudioElementRef.current = audio;
-        setActiveAudio(messageId);
-        audio.play().catch(() => {
-          playSpeechUtterance(text, messageId);
-        });
-        audio.onended = () => {
-          setActiveAudio(null);
-          activeAudioElementRef.current = null;
-        };
-        audio.onerror = () => {
-          playSpeechUtterance(text, messageId);
-        };
-        return;
-      } catch (err) {
-        console.warn('Audio element play failed, falling back to speech synthesis:', err);
-      }
-    }
-
-    // 2. Fallback to Browser Speech Synthesis
-    playSpeechUtterance(text, messageId);
-  };
-
-  const playSpeechUtterance = (text: string, messageId: string) => {
-    if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
-      toast({
-        variant: 'destructive',
-        title: 'Speech Unavailable',
-        description: 'Audio speech is not supported in this browser.',
-      });
-      return;
-    }
-
-    const clean = text
-      .replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F900}-\u{1F9FF}\u{1FA70}-\u{1FAFF}]/gu, '')
-      .replace(/\*[^*]+\*/g, '')
-      .replace(/[_~`#>]/g, '')
-      .trim();
-
-    if (!clean) return;
-
-    const utterance = new SpeechSynthesisUtterance(clean);
-    const storedVoiceStyle = typeof window !== 'undefined' ? (localStorage.getItem('companionVoice') || 'soft-sensual') : 'soft-sensual';
-    let rate = 0.95;
-    let pitch = 1.05;
-
-    if (storedVoiceStyle === 'soft-sensual') {
-      rate = 0.92;
-      pitch = 1.05;
-    } else if (storedVoiceStyle === 'sweet-romantic') {
-      rate = 0.98;
-      pitch = 1.15;
-    } else if (storedVoiceStyle === 'deep-sensual') {
-      rate = 0.88;
-      pitch = 0.95;
-    } else if (storedVoiceStyle === 'playful-cheerful') {
-      rate = 1.05;
-      pitch = 1.2;
-    }
-
-    utterance.rate = rate;
-    utterance.pitch = pitch;
-
-    const voices = window.speechSynthesis.getVoices();
-    const femaleVoice = voices.find(v => 
-      (v.name.includes('Female') || v.name.includes('Samantha') || v.name.includes('Victoria') || v.name.includes('Zira') || v.name.includes('Google UK English Female') || v.name.includes('Karen')) &&
-      v.lang.startsWith('en')
-    ) || voices.find(v => v.lang.startsWith('en'));
-
-    if (femaleVoice) {
-      utterance.voice = femaleVoice;
-    }
-
-    utterance.onstart = () => setActiveAudio(messageId);
-    utterance.onend = () => setActiveAudio(null);
-    utterance.onerror = () => setActiveAudio(null);
-
-    window.speechSynthesis.speak(utterance);
-  };
 
   // Voice Input: Speech-to-Text Microphone
   const toggleVoiceInput = () => {
@@ -322,29 +111,32 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
       recognition.continuous = false;
       recognition.interimResults = true;
       recognition.lang = 'en-US';
+      transcriptRef.current = '';
 
       recognition.onstart = () => {
         setIsListening(true);
         toast({
           title: '🎙️ Listening...',
-          description: 'Speak now to your companion',
+          description: 'Speak now — your response will be generated once you finish speaking.',
         });
       };
 
       recognition.onresult = (event: any) => {
-        let transcript = '';
-        for (let i = event.resultIndex; i < event.results.length; ++i) {
-          transcript += event.results[i][0].transcript;
+        let fullTranscript = '';
+        for (let i = 0; i < event.results.length; ++i) {
+          fullTranscript += event.results[i][0].transcript;
         }
-        if (transcript) {
-          setInputValue(transcript);
+        if (fullTranscript) {
+          transcriptRef.current = fullTranscript;
+          setInputValue(fullTranscript);
         }
       };
 
       recognition.onerror = (event: any) => {
         console.warn('Speech recognition error:', event.error);
         setIsListening(false);
-        if (event.error !== 'no-speech') {
+        transcriptRef.current = '';
+        if (event.error !== 'no-speech' && event.error !== 'aborted') {
           toast({
             variant: 'destructive',
             title: 'Mic Error',
@@ -355,12 +147,30 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
 
       recognition.onend = () => {
         setIsListening(false);
+        const textToSend = transcriptRef.current.trim();
+        if (textToSend) {
+          transcriptRef.current = '';
+          setInputValue('');
+          if (isLocked) {
+            toast({
+              variant: 'destructive',
+              title: 'Free Limit Reached',
+              description: 'Free limit completed please get premium',
+            });
+            router.push('/subscribe');
+            return;
+          }
+          if (!isAiResponding) {
+            onSendMessage(textToSend, undefined);
+          }
+        }
       };
 
       recognition.start();
     } catch (err) {
       console.error('Failed to start speech recognition:', err);
       setIsListening(false);
+      transcriptRef.current = '';
     }
   };
 
@@ -466,10 +276,7 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
                 )}
               >
                 {msg.sender === 'ai' && (
-                  <Avatar className={cn(
-                    "h-8 w-8 sm:h-9 sm:w-9 border-2 border-primary/50 transition-all shrink-0",
-                    activeAudio === msg.id && "ring-4 ring-primary animate-pulse"
-                    )}>
+                  <Avatar className="h-8 w-8 sm:h-9 sm:w-9 border-2 border-primary/50 shrink-0">
                     <AvatarImage src={msg.avatar} alt={companionName} data-ai-hint="beautiful woman" className="object-cover object-top" />
                     <AvatarFallback>{companionName.charAt(0).toUpperCase()}</AvatarFallback>
                   </Avatar>
@@ -488,38 +295,12 @@ export function ChatInterface({ messages, icebreakers, onSendMessage, isLoadingI
                         <Image src={msg.imageUrl} alt="Uploaded content" width={200} height={300} className="rounded-lg mb-2 max-w-full h-auto" data-ai-hint="photo message"/>
                       )}
                       {msg.text && <p className="whitespace-pre-wrap">{msg.text}</p>}
-                      {msg.audioUrl && (
-                        <AudioPlayer src={msg.audioUrl} messageId={msg.id} onPlayChange={(playing) => setActiveAudio(playing ? msg.id : null)} />
-                      )}
                     </div>
-                    <div className="flex items-center gap-2 px-1">
-                      {msg.timestamp && <p className="text-[10px] sm:text-xs text-muted-foreground">{msg.timestamp}</p>}
-                      {msg.sender === 'ai' && (
-                        <button
-                          type="button"
-                          onClick={() => handleSpeak(msg.id, msg.text, msg.audioUrl)}
-                          className={cn(
-                            "inline-flex items-center gap-1 text-[11px] font-medium transition-colors px-1.5 py-0.5 rounded-full cursor-pointer",
-                            activeAudio === msg.id
-                              ? "text-pink-400 bg-pink-500/20 shadow-sm"
-                              : "text-white/40 hover:text-pink-300 hover:bg-white/10"
-                          )}
-                          title={activeAudio === msg.id ? "Stop voice" : "Listen to companion"}
-                        >
-                          {activeAudio === msg.id ? (
-                            <>
-                              <VolumeX className="h-3 w-3 animate-pulse text-pink-400" />
-                              <span className="text-[10px] text-pink-400">Stop</span>
-                            </>
-                          ) : (
-                            <>
-                              <Volume2 className="h-3 w-3" />
-                              <span className="text-[10px]">Listen</span>
-                            </>
-                          )}
-                        </button>
-                      )}
-                    </div>
+                    {msg.timestamp && (
+                      <div className="flex items-center gap-2 px-1">
+                        <p className="text-[10px] sm:text-xs text-muted-foreground">{msg.timestamp}</p>
+                      </div>
+                    )}
                 </div>
                 {msg.sender === 'user' && (
                   <Avatar className="h-8 w-8 sm:h-9 sm:w-9 border-2 border-border shrink-0">

@@ -15,24 +15,36 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: 'Girl.ai - Your Perfect AI Girlfriend & Virtual Companion',
+  title: 'Evermate - Your Perfect AI Girlfriend & Virtual Companion',
   description:
-    'Meet Girl.ai, your ideal AI girlfriend and virtual companion. Experience intimate conversations, emotional support, and personalized AI girlfriend chat. Free AI companion with advanced personality.',
+    'Meet Evermate, your ideal AI girlfriend and virtual companion. Experience intimate conversations, emotional support, and personalized AI girlfriend chat. Free AI companion with advanced personality.',
   keywords:
     'AI girlfriend, virtual girlfriend, AI companion, AI chat, virtual companion, AI relationship, digital girlfriend, AI dating, virtual dating, emotional AI',
   robots: 'index, follow',
   openGraph: {
-    title: 'Girl.ai - Your Perfect AI Girlfriend & Virtual Companion',
+    title: 'Evermate - Your Perfect AI Girlfriend & Virtual Companion',
     description:
-      'Experience the future of AI relationships with Girl.ai. Your personalized AI girlfriend ready for meaningful conversations and emotional connection.',
+      'Experience the future of AI relationships with Evermate. Your personalized AI girlfriend ready for meaningful conversations and emotional connection.',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Girl.ai - Your Perfect AI Girlfriend',
+    title: 'Evermate - Your Perfect AI Girlfriend',
     description:
       'Meet your ideal AI girlfriend. Intimate conversations, emotional support, and personalized virtual companion experience.',
   },
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+  },
+  manifest: '/manifest.json',
 };
 
 export default function RootLayout({
@@ -54,7 +66,7 @@ export default function RootLayout({
             __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'SoftwareApplication',
-              name: 'Girl.ai',
+              name: 'Evermate',
               description:
                 'AI girlfriend and virtual companion for intimate conversations and emotional support',
               applicationCategory: 'Lifestyle',

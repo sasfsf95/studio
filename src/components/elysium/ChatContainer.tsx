@@ -3,15 +3,19 @@
 
 import { useState, useTransition, useEffect } from 'react';
 import { ChatInterface, Message } from './ChatInterface';
-import { continueConversation, getAudio } from '@/app/actions';
+import { continueConversation } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import { getUserPlan, useUserChatMessage, UserPlanData } from '@/app/plan-actions';
+import { RELATIONSHIP_ROLES } from '@/data/characters';
 
 interface ChatContainerProps {
   characterImage: string | null;
   companionName: string;
+  companionRole?: string;
+  companionRoleLabel?: string;
+  companionConfig?: any;
   isPremium: boolean;
   setShowPremiumDialog: (open: boolean) => void;
   chatId: string;
@@ -21,6 +25,9 @@ interface ChatContainerProps {
 export function ChatContainer({
   characterImage,
   companionName,
+  companionRole = 'girlfriend',
+  companionRoleLabel,
+  companionConfig,
   isPremium: initialIsPremium,
   setShowPremiumDialog,
   chatId,
@@ -97,13 +104,54 @@ export function ChatContainer({
 
   // Always start fresh — no chat history saved between sessions
   useEffect(() => {
-    const getInitialMessages = (name: string): Omit<Message, 'id' | 'timestamp' | 'avatar'>[] => [
-      { text: "Hey gorgeous... I've been waiting for you", sender: 'ai' },
-      { text: `I'm ${name}, your intimate AI companion ✨`, sender: 'ai' },
-      { text: "Tell me your deepest desires... I'm here to listen 💋", sender: 'ai' }
-    ];
+    const getInitialMessages = (name: string, role?: string): Omit<Message, 'id' | 'timestamp' | 'avatar'>[] => {
+      switch (role) {
+        case 'boyfriend':
+          return [
+            { text: "Hey beautiful... I've been waiting for you 💙", sender: 'ai' },
+            { text: `I'm ${name}. It's so good to see you ✨`, sender: 'ai' },
+            { text: "Tell me about your day, you've been on my mind all day 🥰", sender: 'ai' }
+          ];
+        case 'brother':
+          return [
+            { text: "Yo! What's going on? ⚡", sender: 'ai' },
+            { text: `Hey, it's ${name}. Hope you're ready for some fun!`, sender: 'ai' },
+            { text: "What are we getting into today? Tell me everything!", sender: 'ai' }
+          ];
+        case 'sister':
+          return [
+            { text: "Hey! So glad you're here ✨", sender: 'ai' },
+            { text: `It's ${name}! I've got so much to tell you.`, sender: 'ai' },
+            { text: "Spill the tea, how has your day been treating you? 💕", sender: 'ai' }
+          ];
+        case 'best_friend':
+          return [
+            { text: "Yooo bestie! Look who decided to show up 🤝", sender: 'ai' },
+            { text: `It's ${name}! We're about to have a great time.`, sender: 'ai' },
+            { text: "What's the latest update in your life? Let's catch up!", sender: 'ai' }
+          ];
+        case 'mentor':
+          return [
+            { text: "Greetings. It is great to connect with you. 🧠", sender: 'ai' },
+            { text: `I am ${name}. Great to chat with you today.`, sender: 'ai' },
+            { text: "What goals or challenges are on your mind today? Let's make progress.", sender: 'ai' }
+          ];
+        case 'custom':
+          return [
+            { text: `Hello! Great to connect with you. ✨`, sender: 'ai' },
+            { text: `I'm ${name}.`, sender: 'ai' },
+            { text: "I'm ready whenever you are. What would you like to talk about?", sender: 'ai' }
+          ];
+        default:
+          return [
+            { text: "Hey darling... I've been waiting for you 💕", sender: 'ai' },
+            { text: `I'm ${name}, so glad to see you ✨`, sender: 'ai' },
+            { text: "Tell me about your day... I missed you so much! 🥰", sender: 'ai' }
+          ];
+      }
+    };
     const clientTimestamp = format(new Date(), 'p');
-    const welcomeMessages = getInitialMessages(companionName).map((msg, i) => ({
+    const welcomeMessages = getInitialMessages(companionName, companionRole).map((msg, i) => ({
       ...msg,
       id: `${Date.now()}-${i}`,
       timestamp: clientTimestamp,
@@ -111,7 +159,7 @@ export function ChatContainer({
     }));
     setMessages(welcomeMessages);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [companionName, chatId]);
+  }, [companionName, companionRole, chatId]);
 
   // Update avatars when characterImage changes
   useEffect(() => {
@@ -125,19 +173,19 @@ export function ChatContainer({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [characterImage]);
 
-  // Use a static list of icebreakers to avoid API calls.
+  // Load role-appropriate icebreakers
   useEffect(() => {
     setIsLoadingIcebreakers(true);
-    const staticIcebreakers = [
-      "Tell me a secret...",
-      "What's on your mind?",
-      "I can't stop thinking about you.",
-      "Send me a selfie?",
-      "You make my heart race."
+    const roleObj = RELATIONSHIP_ROLES.find(r => r.id === (companionRole || 'girlfriend'));
+    const roleIcebreakers = roleObj?.icebreakers || [
+      "What's on your mind today?",
+      "Tell me how you are feeling.",
+      "What made you smile today?",
+      "Share something with me."
     ];
-    setIcebreakers(staticIcebreakers);
+    setIcebreakers(roleIcebreakers);
     setIsLoadingIcebreakers(false);
-  }, []);
+  }, [companionRole]);
 
   const handleSendMessage = async (text: string, imageUrl?: string) => {
     if (!text.trim() && !imageUrl) return;
@@ -223,30 +271,21 @@ export function ChatContainer({
           chatId,
           history,
           companionName,
+          companionConfig: companionConfig || {
+            name: companionName,
+            role: companionRole,
+            roleLabel: companionRoleLabel,
+          },
         });
-
-        let audioResult = null;
-        if (aiResponseData.type === 'text') {
-          try {
-            audioResult = await getAudio(aiResponseData.content);
-          } catch (e) {
-            console.error("Audio generation failed:", e);
-          }
-        }
 
         const aiResponseMessage: Message = {
           id: (Date.now() + 1).toString(),
-          text: aiResponseData.type === 'text' ? aiResponseData.content : '',
+          text: aiResponseData.content || '',
           sender: 'ai',
           timestamp: format(new Date(), 'p'),
           avatar: characterImage || placeholderAvatar,
-          audioUrl: aiResponseData.type === 'audio' ? aiResponseData.content : audioResult?.audioDataUri,
           imageUrl: aiResponseData.type === 'image' ? aiResponseData.content : undefined,
         };
-
-        if (aiResponseData.type === 'error') {
-          aiResponseMessage.text = aiResponseData.content;
-        }
 
         setMessages(prev => [...prev, aiResponseMessage]);
 

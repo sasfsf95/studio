@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GirlAI World</string>
+    <string name="app_name">Evermate</string>
     <string name="error_offline_title">You\'re Offline</string>
     <string name="error_offline_desc">Please check your internet connection and try again.</string>
     <string name="btn_retry">Retry</string>

@@ -11,10 +11,10 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: 'Girl.ai - Your Perfect AI Girlfriend & Virtual Companion',
-    template: '%s | Girl.ai - AI Girlfriend Chat'
+    default: 'Evermate - Your Perfect AI Girlfriend & Virtual Companion',
+    template: '%s | Evermate - AI Girlfriend Chat'
   },
-  description: 'Meet Girl.ai, your ideal AI girlfriend and virtual companion. Experience intimate conversations, emotional support, and personalized AI girlfriend chat. Free AI companion with advanced personality.',
+  description: 'Meet Evermate, your ideal AI girlfriend and virtual companion. Experience intimate conversations, emotional support, and personalized AI girlfriend chat. Free AI companion with advanced personality.',
   keywords: [
     'AI girlfriend',
     'virtual girlfriend',
@@ -32,15 +32,15 @@ export const metadata: Metadata = {
     'digital companion',
     'AI partner'
   ],
-  authors: [{ name: 'Girl.ai Team' }],
-  creator: 'Girl.ai',
-  publisher: 'Girl.ai',
+  authors: [{ name: 'Evermate Team' }],
+  creator: 'Evermate',
+  publisher: 'Evermate',
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://girl.ai'),
+  metadataBase: new URL('https://evermate.ai'),
   alternates: {
     canonical: '/',
   },
@@ -48,17 +48,17 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: '/',
-    siteName: 'Girl.ai',
-    title: 'Girl.ai - Your Perfect AI Girlfriend & Virtual Companion',
-    description: 'Experience the future of AI relationships with Girl.ai. Your personalized AI girlfriend ready for meaningful conversations and emotional connection.',
+    siteName: 'Evermate',
+    title: 'Evermate - Your Perfect AI Girlfriend & Virtual Companion',
+    description: 'Experience the future of AI relationships with Evermate. Your personalized AI girlfriend ready for meaningful conversations and emotional connection.',
     images: [],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Girl.ai - Your Perfect AI Girlfriend',
+    title: 'Evermate - Your Perfect AI Girlfriend',
     description: 'Meet your ideal AI girlfriend. Intimate conversations, emotional support, and personalized virtual companion experience.',
     images: [],
-    creator: '@girlai',
+    creator: '@evermate',
   },
   robots: {
     index: true,
@@ -71,6 +71,16 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  icons: {},
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+  },
   manifest: '/manifest.json',
 }

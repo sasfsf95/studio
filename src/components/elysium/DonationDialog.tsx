@@ -37,7 +37,7 @@ export function DonationDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-xl">
             <Heart className="text-pink-500" />
-            Support Girl.ai Development
+            Support Evermate Development
           </DialogTitle>
           <DialogDescription>
             Help us build more amazing features and improve your AI companion experience.

@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Customize User-Agent so backend/PWA knows it's the native wrapper
         String defaultUa = settings.getUserAgentString();
-        settings.setUserAgentString(defaultUa + " GirlAIWorld-App/1.0");
+        settings.setUserAgentString(defaultUa + " Evermate-App/1.0");
 
         // Cookies
         CookieManager cookieManager = CookieManager.getInstance();

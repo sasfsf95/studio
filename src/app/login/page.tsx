@@ -101,7 +101,7 @@ export default function LoginPage() {
       toast({
         title: result.isNewUser ? '🎉 Account Created & Logged In' : '✅ Login Successful',
         description: result.isNewUser
-          ? `Welcome to Girl.ai, ${name}! Your account has been created.`
+          ? `Welcome to Evermate, ${name}! Your account has been created.`
           : `Welcome back, ${result.user!.username || name}!`,
       });
 

@@ -112,7 +112,7 @@ export default function SignupPage() {
 
       toast({
         title: '🎉 Account Created!',
-        description: `Welcome to Girl.ai, ${name}! You're now logged in.`,
+        description: `Welcome to Evermate, ${name}! You're now logged in.`,
       });
       router.push('/');
     } catch (error: any) {
@@ -154,7 +154,7 @@ export default function SignupPage() {
             Create Account
           </CardTitle>
           <CardDescription className="text-gray-400 text-xs sm:text-sm mt-1">
-            Join Girl.ai and find your perfect companion
+            Join Evermate and find your perfect companion
           </CardDescription>
         </CardHeader>
 
